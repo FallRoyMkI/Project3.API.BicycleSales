@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BicycleSales.API", "BicycleSales.API\BicycleSales.API.csproj", "{CAAAFFD5-F79D-4BDD-B1B3-0F68FA7CB1A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BicycleSales.BLL", "BicycleSales.BLL\BicycleSales.BLL.csproj", "{8634E738-1592-4AF6-8B56-6D321C10621B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BicycleSales.DAL", "BicycleSales.DAL\BicycleSales.DAL.csproj", "{0B15A91E-1DCB-464A-80D7-6C2BE3F1A9EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{CAAAFFD5-F79D-4BDD-B1B3-0F68FA7CB1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAAAFFD5-F79D-4BDD-B1B3-0F68FA7CB1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAAAFFD5-F79D-4BDD-B1B3-0F68FA7CB1A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8634E738-1592-4AF6-8B56-6D321C10621B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8634E738-1592-4AF6-8B56-6D321C10621B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8634E738-1592-4AF6-8B56-6D321C10621B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8634E738-1592-4AF6-8B56-6D321C10621B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B15A91E-1DCB-464A-80D7-6C2BE3F1A9EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B15A91E-1DCB-464A-80D7-6C2BE3F1A9EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B15A91E-1DCB-464A-80D7-6C2BE3F1A9EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B15A91E-1DCB-464A-80D7-6C2BE3F1A9EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
