@@ -1,4 +1,4 @@
-﻿namespace BicycleSales.BLL.Models
+﻿namespace BicycleSales.DAL.Models
 {
     public class ProductTagDto
     {
