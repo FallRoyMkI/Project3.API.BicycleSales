@@ -1,9 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\AcceptanceProduct\Request\" />
+    <Folder Include="Models\Acceptance\Request\" />
+    <Folder Include="Models\Authorization\Request\" />
+    <Folder Include="Models\Factory\Request\" />
+    <Folder Include="Models\ShipmentAcceptance\Request\" />
+    <Folder Include="Models\Status\Request\" />
+    <Folder Include="Models\OrderProduct\Request\" />
+    <Folder Include="Models\ProductTag\Request\" />
+    <Folder Include="Models\Product\Request\" />
+    <Folder Include="Models\ShipmentProduct\Request\" />
+    <Folder Include="Models\Shipment\Request\" />
+    <Folder Include="Models\ShopProduct\Request\" />
+    <Folder Include="Models\Shop\Request\" />
+    <Folder Include="Models\Tag\Request\" />
+    <Folder Include="Models\UserType\Request\" />
+    <Folder Include="Models\User\Request\" />
+  </ItemGroup>
 
 </Project>
