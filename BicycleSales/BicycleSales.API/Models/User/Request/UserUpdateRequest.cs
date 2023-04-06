@@ -8,7 +8,6 @@ namespace BicycleSales.API.Models.User.Request
         public string Email { get; set; }
         public string Phone { get; set; }
         public bool IsMale { get; set; }
-        public int UserTypeId { get; set; }
         public int ShopId { get; set; }
     }
 }
