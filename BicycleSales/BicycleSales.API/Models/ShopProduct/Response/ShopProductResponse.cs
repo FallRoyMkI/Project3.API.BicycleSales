@@ -4,10 +4,10 @@ using BicycleSales.API.Models.Shop.Response;
 
 namespace BicycleSales.API.Models.ShopProduct.Response
 {
-    public class ShopProduct
+    public class ShopProductResponse
     {
         public int ProductCount { get; set; }
-        public ShopAddRequest ShopId { get; set; }
-        public ProductAddRequest Product { get; set; }
+        public ShopResponse ShopId { get; set; }
+        public ProductResponse Product { get; set; }
     }
 }

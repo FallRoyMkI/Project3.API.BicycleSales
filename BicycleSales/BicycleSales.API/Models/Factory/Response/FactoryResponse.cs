@@ -1,6 +1,6 @@
 ﻿namespace BicycleSales.API.Models.Factory.Response
 {
-    public class FactoryAddRequest
+    public class FactoryResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

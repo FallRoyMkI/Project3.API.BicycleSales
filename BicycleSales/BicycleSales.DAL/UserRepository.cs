@@ -12,7 +12,7 @@ public class UserRepository
         _context = context ?? new UserContext();
     }
 
-    public AuthorizationDto CreateAnAccount(AuthorizationDto auth)
+    public AuthorizationDto CreateAnAccount(AuthorizationDto auth, int? status = null)
     {
         _context.Authorizations.Add(auth);
         _context.SaveChanges();

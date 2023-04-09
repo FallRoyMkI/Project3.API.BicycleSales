@@ -7,7 +7,7 @@ namespace BicycleSales.API.Models.OrderProduct.Response
     {
         public int ProductCount { get; set; }
         public int ReadyProductCount { get; set; }
-        public OrderAddRequest Order { get; set; }
-        public ProductAddRequest Product { get; set; }
+        public OrderResponse Order { get; set; }
+        public ProductResponse Product { get; set; }
     }
 }

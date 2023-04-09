@@ -1,15 +1,15 @@
 ﻿using BicycleSales.API.Models.Acceptance.Response;
 using BicycleSales.API.Models.Factory.Response;
 using BicycleSales.API.Models.Shipment.Response;
-using BicycleSales.API.Models.Status.Response;
+using BicycleSales.API.Constant;
 
 namespace BicycleSales.API.Models.ShipmentAcceptance.Response
 {
-    public class ShipmentAcceptance
+    public class ShipmentAcceptanceResponse
     {
-        public ShipmetAddRequest Shipment { get; set; }
-        public AcceptanceAddRequest Acceptance { get; set; }
-        public StatusAddRequest Status { get; set; }
-        public FactoryAddRequest Factory { get; set; }
+        public ShipmentResponse Shipment { get; set; }
+        public AcceptanceResponse Acceptance { get; set; }
+        public ShipmentAcceptanceStatus Status { get; set; }
+        public FactoryResponse Factory { get; set; }
     }
 }

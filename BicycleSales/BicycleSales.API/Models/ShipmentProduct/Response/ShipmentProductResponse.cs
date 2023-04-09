@@ -8,7 +8,7 @@ namespace BicycleSales.API.Models.ShipmentProduct.Response
         public int Id { get; set; }
         public int ProductCount { get; set; }
         public int FactProductCount { get; set; }
-        public ProductAddRequest Product { get; set; }
-        public ShipmetAddRequest Shipment { get; set; }
+        public ProductResponse Product { get; set; }
+        public ShipmentResponse Shipment { get; set; }
     }
 }
