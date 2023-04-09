@@ -9,7 +9,7 @@ namespace BicycleSales.DAL.TESTS
         [SetUp]
         public void SetUp()
         {
-            AuthorizationDto firstUserAuth = new AuthorizationDto()
+            var firstUserAuth = new AuthorizationDto()
             {
                 Id = 1,
                 Login = "MainTestLogin",

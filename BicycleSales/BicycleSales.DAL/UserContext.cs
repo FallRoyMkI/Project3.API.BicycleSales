@@ -11,7 +11,7 @@ public class UserContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-     //   builder.UseSqlServer("connstring");
-     builder.UseInMemoryDatabase("ForTest");
+     builder.UseSqlServer("Data Source=DESKTOP-62LIE27;Initial Catalog = VELIKI; Integrated Security=False;Persist Security Info=False");
+     //builder.UseInMemoryDatabase("ForTest");
     }
 }

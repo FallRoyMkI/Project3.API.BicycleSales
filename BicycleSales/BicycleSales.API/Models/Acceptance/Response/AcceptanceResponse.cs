@@ -1,4 +1,6 @@
-﻿using BicycleSales.API.Models.Shop.Response;
+﻿using BicycleSales.API.Models.Shop.Request;
+using BicycleSales.API.Models.Shop.Response;
+using BicycleSales.API.Models.User.Request;
 using BicycleSales.API.Models.User.Response;
 
 namespace BicycleSales.API.Models.Acceptance.Response

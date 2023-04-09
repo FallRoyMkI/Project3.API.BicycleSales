@@ -1,6 +1,8 @@
 ﻿using BicycleSales.API.Models.Shop.Response;
 using BicycleSales.API.Models.User.Response;
 using BicycleSales.API.Models.OrderStatus.Response;
+using BicycleSales.API.Models.Shop.Request;
+using BicycleSales.API.Models.User.Request;
 
 namespace BicycleSales.API.Models.Order.Response
 {

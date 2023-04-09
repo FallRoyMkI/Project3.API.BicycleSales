@@ -1,10 +1,11 @@
 ﻿using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BicycleSales.DAL;
 
 public class UserRepository
 {
-    private UserContext _context;
+    private readonly UserContext _context;
 
     public UserRepository(UserContext context = null)
     {
@@ -57,8 +58,8 @@ public class UserRepository
             throw new ArgumentException("Cannot find user with such id");
         }
 
-    // почему то не работает !
-    //       _context.SaveChanges();
+    
+        _context.SaveChanges();
 
         return update;
     }

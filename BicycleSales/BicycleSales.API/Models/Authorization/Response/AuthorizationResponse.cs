@@ -1,6 +1,6 @@
 ﻿namespace BicycleSales.API.Models.AuthorizationProduct.Response
 {
-    public class AuthorizationAddRequest
+    public class AuthorizationResponse
     {
         public int Id { get; set; }
         public string Login { get; set; }
