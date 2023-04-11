@@ -9,4 +9,13 @@
         public UserDto SignedBy { get; set; }
         public ShopDto Shop { get; set; }
     }
+
+    public class AcceptanceProductDto
+    {
+        public int Id { get; set; }
+        public int ProductCount { get; set; }
+        public int FactProductCount { get; set; }
+        public ProductDto Product { get; set; }
+        public AcceptanceDto Acceptance { get; set; }
+    }
 }

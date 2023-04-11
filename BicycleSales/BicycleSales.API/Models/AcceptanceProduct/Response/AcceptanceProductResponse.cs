@@ -3,12 +3,12 @@ using BicycleSales.API.Models.Product.Response;
 
 namespace BicycleSales.API.Models.AcceptanceProduct.Response
 {
-    public class AcceptanceProductAddRequest
+    public class AcceptanceProductResponse
     {
         public int Id { get; set; }
         public int ProductCount { get; set; }
         public int FactProductCount { get; set; }
-        public ProductAddRequest Product { get; set; }
-        public AcceptanceAddRequest Acceptance { get; set; }
+        public ProductResponse Product { get; set; }
+        public AcceptanceResponse Acceptance { get; set; }
     }
 }

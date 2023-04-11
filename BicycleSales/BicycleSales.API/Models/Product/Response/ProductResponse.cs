@@ -1,6 +1,6 @@
 ﻿namespace BicycleSales.API.Models.Product.Response
 {
-    public class ProductAddRequest
+    public class ProductResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
