@@ -1,7 +1,10 @@
-﻿using BicycleSales.API.Models.Product.Request;
+﻿using AutoMapper;
+using BicycleSales.API.Models.Product.Request;
 using BicycleSales.API.Models.Product.Response;
 using BicycleSales.BLL;
+using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace BicycleSales.API.Controllers
 {
@@ -9,21 +12,26 @@ namespace BicycleSales.API.Controllers
     [ApiController]
     public class ProductControler : ControllerBase
     {
-        private readonly MapperAPI _mapper = new();
+        private readonly MapperAPI _mapper = new MapperAPI();
+        private readonly ProductManager _productManager = new ProductManager();
 
-        [HttpGet(Name = "CreateNewProduct")]
-        public ProductResponse CreateNewProduct(string name, int cost)
+        [HttpPost]
+        public IActionResult CreateProduct(ProductAddRequest productAddRequest)
         {
-            var productRequest = new ProductAddRequest()
-            {
-                Name = name,
-                Cost = cost
-            };
-
-            var product = _mapper.MapProductAddRequestToProduct(productRequest);
-            var callback = new ProductManager().CreateProduct(product);
+            var product = _mapper.MapProductAddRequestToProduct(productAddRequest);
+            var callback = _productManager.CreateProduct(product);
             var result = _mapper.MapProductToProductResponse(callback);
-            return result;
+
+            return Ok(result);
+        }
+
+        [HttpGet(Name = "GetAllProducts")]
+        public IActionResult GetAllProducts()
+        {
+            var listProducts = _productManager.GetAllProducts();
+            var result = _mapper.MapListProductToListProductResponse(listProducts);
+
+            return Ok(result);
         }
     }
 }

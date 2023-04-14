@@ -47,4 +47,9 @@ public class MapperBLL
     {
         return _cfg.CreateMapper().Map<Product>(productDto);
     }
+    public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<Product>>(listProductsDto);
+    }
+    
 }

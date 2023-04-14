@@ -18,5 +18,10 @@ namespace BicycleSales.DAL
             _context.SaveChanges();
             return product;
         }
+
+        public IEnumerable<ProductDto> GetAllProducts()
+        {
+            return _context.Product.ToList();
+        }
     }
 }

@@ -53,5 +53,9 @@ public class MapperAPI
     {
         return _cfg.CreateMapper().Map<ProductResponse>(productBll);
     }
+    public IEnumerable<ProductResponse> MapListProductToListProductResponse(IEnumerable<Product> listProducts)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<ProductResponse>>(listProducts);
+    }
 
 }
