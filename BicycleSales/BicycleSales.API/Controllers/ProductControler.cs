@@ -15,7 +15,7 @@ namespace BicycleSales.API.Controllers
         private readonly MapperAPI _mapper = new MapperAPI();
         private readonly ProductManager _productManager = new ProductManager();
 
-        [HttpPost]
+        [HttpPost(Name = "CreateProduct")]
         public IActionResult CreateProduct(ProductAddRequest productAddRequest)
         {
             var product = _mapper.MapProductAddRequestToProduct(productAddRequest);
@@ -30,6 +30,16 @@ namespace BicycleSales.API.Controllers
         {
             var listProducts = _productManager.GetAllProducts();
             var result = _mapper.MapListProductToListProductResponse(listProducts);
+
+            return Ok(result);
+        }
+
+        [HttpPut(Name = "UpdateProduct")]
+        public IActionResult UpdateProduct(ProductUpdateRequest productUpdateRequest)
+        {
+            var product = _mapper.MapProductUpdateRequestToProduct(productUpdateRequest);
+            var callback = _productManager.UpdateProduct(product);
+            var result = _mapper.MapProductToProductResponse(callback);
 
             return Ok(result);
         }

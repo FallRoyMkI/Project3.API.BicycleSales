@@ -21,7 +21,20 @@ namespace BicycleSales.DAL
 
         public IEnumerable<ProductDto> GetAllProducts()
         {
-            return _context.Product.ToList();
+            return _context.Product.Where(t => t.IsDeleted == false).ToList();
         }
+
+        public ProductDto UpdateProduct(ProductDto product)
+        {
+            var existingModel = _context.Product
+                 .Single(t => t.Id == product.Id);
+
+            existingModel.Name = product.Name;
+            existingModel.Cost = product.Cost;
+
+            _context.SaveChanges();
+
+            return existingModel;
+        }   
     }
 }

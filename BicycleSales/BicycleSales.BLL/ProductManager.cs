@@ -30,5 +30,14 @@ namespace BicycleSales.BLL
             
             return result;
         }
+
+        public Product UpdateProduct(Product prodcut)
+        {
+            var productDto = _mapper.MapProductToProductDto(prodcut);
+            var callback = _productRepository.UpdateProduct(productDto);
+            var result = _mapper.MapProductDtoToProduct(callback);
+
+            return result;
+        }
     }
 }

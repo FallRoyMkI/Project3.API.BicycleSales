@@ -12,6 +12,7 @@ namespace BicycleSales.DAL.Models
         
         [Required]
         public int Cost { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class ProductTagDto

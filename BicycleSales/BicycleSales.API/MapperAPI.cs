@@ -25,6 +25,7 @@ public class MapperAPI
 
                 cfg.CreateMap<ProductAddRequest, Product>();
                 cfg.CreateMap<Product, ProductResponse>();
+                cfg.CreateMap<ProductUpdateRequest, Product>();
             });
     }
 
@@ -57,5 +58,10 @@ public class MapperAPI
     {
         return _cfg.CreateMapper().Map<IEnumerable<ProductResponse>>(listProducts);
     }
+    public Product MapProductUpdateRequestToProduct(ProductUpdateRequest productUpdateRequest)
+    {
+        return _cfg.CreateMapper().Map<Product>(productUpdateRequest);
+    }
+    
 
 }
