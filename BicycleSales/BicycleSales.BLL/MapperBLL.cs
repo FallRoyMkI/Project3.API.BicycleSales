@@ -14,8 +14,11 @@ public class MapperBLL
             cfg =>
             {
                 cfg.CreateMap<AuthorizationDto, Authorization>().ReverseMap();
-
+                
                 cfg.CreateMap<UserDto, User>().ReverseMap();
+
+                cfg.CreateMap<Product, ProductDto>().ReverseMap();
+                cfg.CreateMap<ProductDto, Product>().ReverseMap();
             });
     }
 
@@ -35,5 +38,13 @@ public class MapperBLL
     public UserDto MapUserToUserDto(User user)
     {
         return _cfg.CreateMapper().Map<UserDto>(user);
+    }
+    public ProductDto MapProductToProductDto(Product productBll)
+    {
+        return _cfg.CreateMapper().Map<ProductDto>(productBll);
+    }
+    public Product MapProductDtoToProduct(ProductDto productDto)
+    {
+        return _cfg.CreateMapper().Map<Product>(productDto);
     }
 }

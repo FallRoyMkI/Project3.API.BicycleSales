@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace BicycleSales.DAL;
+namespace BicycleSales.DAL.Contexts;
 
 public class UserContext : DbContext
 {
@@ -11,7 +11,7 @@ public class UserContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-     builder.UseSqlServer("Data Source=DESKTOP-62LIE27;Initial Catalog = VELIKI; TrustServerCertificate=True;Integrated Security=SSPI", builder => builder.EnableRetryOnFailure());
-     //builder.UseInMemoryDatabase("ForTest");
+        builder.UseSqlServer(@"Data Source=DESKTOP-MH87Q5L\SQLEXPRESS;Initial Catalog = VELIKI; TrustServerCertificate=True;Integrated Security=SSPI", builder => builder.EnableRetryOnFailure());
+        //builder.UseInMemoryDatabase("ForTest");
     }
 }

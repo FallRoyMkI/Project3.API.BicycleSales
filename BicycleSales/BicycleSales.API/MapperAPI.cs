@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BicycleSales.API.Models.AuthorizationProduct.Request;
 using BicycleSales.API.Models.AuthorizationProduct.Response;
+using BicycleSales.API.Models.Product.Request;
+using BicycleSales.API.Models.Product.Response;
 using BicycleSales.API.Models.User.Request;
 using BicycleSales.API.Models.User.Response;
 using BicycleSales.BLL.Models;
@@ -20,6 +22,9 @@ public class MapperAPI
 
                 cfg.CreateMap<User, UserResponse>();
                 cfg.CreateMap<UserAddRequest, User>();
+
+                cfg.CreateMap<ProductAddRequest, Product>();
+                cfg.CreateMap<Product, ProductResponse>();
             });
     }
 
@@ -40,6 +45,13 @@ public class MapperAPI
     {
         return _cfg.CreateMapper().Map<User>(userAddRequest);
     }
+    public Product MapProductAddRequestToProduct(ProductAddRequest productAddRequest)
+    {
+        return _cfg.CreateMapper().Map<Product>(productAddRequest);
+    }
+    public ProductResponse MapProductToProductResponse(Product productBll)
+    {
+        return _cfg.CreateMapper().Map<ProductResponse>(productBll);
+    }
 
-    
 }

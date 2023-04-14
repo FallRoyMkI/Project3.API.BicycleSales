@@ -1,10 +1,16 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace BicycleSales.DAL.Models
 {
     public class ProductDto
     {
+        [Key]
         public int Id { get; set; }
+        
+        [Required]
         public string Name { get; set; }
+        
+        [Required]
         public int Cost { get; set; }
     }
 
