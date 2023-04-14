@@ -16,7 +16,7 @@ namespace BicycleSales.DAL
         {
             _context.Product.Add(product);
             _context.SaveChanges();
-            return product;
+            return _context.Product.Single(p => p.Id == product.Id); 
         }
 
         public IEnumerable<ProductDto> GetAllProducts()
