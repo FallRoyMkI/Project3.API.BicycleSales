@@ -31,10 +31,21 @@ namespace BicycleSales.DAL
 
             existingModel.Name = product.Name;
             existingModel.Cost = product.Cost;
-
             _context.SaveChanges();
 
             return existingModel;
-        }   
+        }
+
+        public ProductDto DeleteProduct(int id)
+        {
+            var existingModel = _context.Product
+                 .Single(t => t.Id == id);
+
+            existingModel.IsDeleted = true;
+            _context.SaveChanges();
+
+            return existingModel;
+        }
+        
     }
 }

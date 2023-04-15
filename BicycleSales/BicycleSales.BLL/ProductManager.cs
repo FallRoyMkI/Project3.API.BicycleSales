@@ -39,5 +39,14 @@ namespace BicycleSales.BLL
 
             return result;
         }
+
+        public Product DeleteProduct(int id)
+        {
+            var callback = _productRepository.DeleteProduct(id);
+            var result = _mapper.MapProductDtoToProduct(callback);
+
+            return result;
+        }
+        
     }
 }

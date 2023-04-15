@@ -43,5 +43,14 @@ namespace BicycleSales.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            var callback = _productManager.DeleteProduct(id);
+            var result = _mapper.MapProductToProductResponse(callback);
+
+            return Ok(result);
+        }
     }
 }
