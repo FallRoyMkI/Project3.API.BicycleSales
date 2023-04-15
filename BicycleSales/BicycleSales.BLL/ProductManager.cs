@@ -47,6 +47,14 @@ namespace BicycleSales.BLL
 
             return result;
         }
-        
+
+        public Product GetProductById(int id)
+        {
+            var productsDto = _productRepository.GetProductById(id);
+            var result = _mapper.MapProductDtoToProduct(productsDto);
+
+            return result;
+        }
+
     }
 }

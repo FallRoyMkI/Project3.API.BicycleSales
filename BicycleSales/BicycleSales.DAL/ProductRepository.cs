@@ -21,13 +21,13 @@ namespace BicycleSales.DAL
 
         public IEnumerable<ProductDto> GetAllProducts()
         {
-            return _context.Product.Where(t => t.IsDeleted == false).ToList();
+            return _context.Product.Where(p => p.IsDeleted == false).ToList();
         }
 
         public ProductDto UpdateProduct(ProductDto product)
         {
             var existingModel = _context.Product
-                 .Single(t => t.Id == product.Id);
+                 .Single(p => p.Id == product.Id);
 
             existingModel.Name = product.Name;
             existingModel.Cost = product.Cost;
@@ -39,13 +39,19 @@ namespace BicycleSales.DAL
         public ProductDto DeleteProduct(int id)
         {
             var existingModel = _context.Product
-                 .Single(t => t.Id == id);
+                 .Single(p => p.Id == id);
 
             existingModel.IsDeleted = true;
             _context.SaveChanges();
 
             return existingModel;
         }
-        
+
+        public ProductDto GetProductById(int id)
+        {
+            return _context.Product
+                .Where(p => p.IsDeleted == false)
+                .Single(p => p.Id == id); //если выбранный продукт удален, то ошибка будет
+        }
     }
 }
