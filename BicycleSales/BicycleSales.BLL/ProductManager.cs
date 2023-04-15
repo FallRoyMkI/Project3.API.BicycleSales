@@ -56,5 +56,20 @@ namespace BicycleSales.BLL
             return result;
         }
 
+        public Tag CreateTag(Tag tag)
+        {
+            var tagDto = _mapper.MapTagToTagDto(tag);
+            var callback = _productRepository.CreateTag(tagDto);
+            var result = _mapper.MapTagDtoToTag(callback);
+
+            return result;
+        }
+        public ProductTag AddProductTag(int productId, int tagId)
+        {
+            var callback = _productRepository.AddProductTag(productId, tagId);
+            var result = _mapper.MapProductTagDtoToProductTag(callback);
+
+            return result;
+        }
     }
 }

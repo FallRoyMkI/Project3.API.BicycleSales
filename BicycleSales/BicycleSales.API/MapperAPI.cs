@@ -1,12 +1,15 @@
-﻿using AutoMapper;
+﻿using BicycleSales.API.Models.AuthorizationProduct.Response;
 using BicycleSales.API.Models.AuthorizationProduct.Request;
-using BicycleSales.API.Models.AuthorizationProduct.Response;
 using BicycleSales.API.Models.Product.Request;
 using BicycleSales.API.Models.Product.Response;
-using BicycleSales.API.Models.User.Request;
 using BicycleSales.API.Models.User.Response;
+using BicycleSales.API.Models.Tag.Response;
+using BicycleSales.API.Models.User.Request;
+using BicycleSales.API.Models.Tag.Request;
 using BicycleSales.BLL.Models;
 using BicycleSales.DAL.Models;
+using AutoMapper;
+using BicycleSales.API.Models.ProductTag.Request;
 
 namespace BicycleSales.API;
 
@@ -26,6 +29,11 @@ public class MapperAPI
                 cfg.CreateMap<ProductAddRequest, Product>();
                 cfg.CreateMap<Product, ProductResponse>();
                 cfg.CreateMap<ProductUpdateRequest, Product>();
+
+                cfg.CreateMap<TagAddRequest, Tag>();
+                cfg.CreateMap<Tag, TagResponse>();
+
+                cfg.CreateMap<ProductTag, ProductTagResponse>();
             });
     }
 
@@ -62,6 +70,19 @@ public class MapperAPI
     {
         return _cfg.CreateMapper().Map<Product>(productUpdateRequest);
     }
-    
 
+    public Tag MapTagAddRequestToTag(TagAddRequest tagAddRequest)
+    {
+        return _cfg.CreateMapper().Map<Tag>(tagAddRequest);
+    }
+    public TagResponse MapTagToTagResponse(Tag tag)
+    {
+        return _cfg.CreateMapper().Map<TagResponse>(tag);
+    }
+
+    public ProductTagResponse MapProductTagToProductTagResponse(ProductTag productTag)
+    {
+        return _cfg.CreateMapper().Map<ProductTagResponse>(productTag);
+    }
+    
 }

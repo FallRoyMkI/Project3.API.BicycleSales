@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BicycleSales.API.Models.Product.Request;
 using BicycleSales.API.Models.Product.Response;
+using BicycleSales.API.Models.Tag.Request;
 using BicycleSales.BLL;
 using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +16,24 @@ namespace BicycleSales.API.Controllers
         private readonly MapperAPI _mapper = new MapperAPI();
         private readonly ProductManager _productManager = new ProductManager();
 
-        [HttpPost(Name = "CreateProduct")]
+        [HttpPost("create-product", Name = "CreateProduct")]
         public IActionResult CreateProduct(ProductAddRequest productAddRequest)
         {
-            var product = _mapper.MapProductAddRequestToProduct(productAddRequest);
-            var callback = _productManager.CreateProduct(product);
-            var result = _mapper.MapProductToProductResponse(callback);
+            try
+            {
+                var product = _mapper.MapProductAddRequestToProduct(productAddRequest);
+                var callback = _productManager.CreateProduct(product);
+                var result = _mapper.MapProductToProductResponse(callback);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
 
-        [HttpGet(Name = "GetAllProducts")]
+        [HttpGet("get-all-product", Name = "GetAllProducts")]
         public IActionResult GetAllProducts()
         {
             var listProducts = _productManager.GetAllProducts();
@@ -34,7 +42,7 @@ namespace BicycleSales.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut(Name = "UpdateProduct")]
+        [HttpPut("update-product", Name = "UpdateProduct")]
         public IActionResult UpdateProduct(ProductUpdateRequest productUpdateRequest)
         {
             var product = _mapper.MapProductUpdateRequestToProduct(productUpdateRequest);
@@ -47,19 +55,66 @@ namespace BicycleSales.API.Controllers
         [HttpDelete("{id}", Name = "DeleteProduct")]
         public IActionResult DeleteProduct(int id)
         {
-            var callback = _productManager.DeleteProduct(id);
-            var result = _mapper.MapProductToProductResponse(callback);
+            try
+            {
+                var callback = _productManager.DeleteProduct(id);
+                var result = _mapper.MapProductToProductResponse(callback);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch(Exception ex) 
+            {
+                return Ok(ex.Message);
+            }
         }
 
-        [HttpGet("{id}", Name = "GetProductById")]
+        [HttpGet("get-product-{id}", Name = "GetProductById")]
         public IActionResult GetProductById(int id)
         {
-            var product = _productManager.GetProductById(id);
-            var result = _mapper.MapProductToProductResponse(product);
+            try
+            {
+                var product = _productManager.GetProductById(id);
+                var result = _mapper.MapProductToProductResponse(product);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpPost("create-tag",Name = "CreateTag")]
+        public IActionResult CreateTag(TagAddRequest tagAddRequest)
+        {
+            try
+            {
+                var tag = _mapper.MapTagAddRequestToTag(tagAddRequest);
+                var callback = _productManager.CreateTag(tag);
+                var result = _mapper.MapTagToTagResponse(callback);
+
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpPost("add-productTag-{productId}-{tagId}", Name = "AddProductTag")]
+        public IActionResult AddProductTag(int productId, int tagId)
+        {
+            try
+            {
+                var callback = _productManager.AddProductTag(productId, tagId);
+                var result = _mapper.MapProductTagToProductTagResponse(callback);
+
+                return Ok(result);
+            }
+            catch(Exception ex) 
+            {
+                return Ok(ex.Message);
+            }
         }
     }
 }

@@ -1,9 +1,16 @@
-﻿namespace BicycleSales.DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BicycleSales.DAL.Models
 {
     public class ShopDto
     {
+        [Key]
         public int Id { get; set; }
+        
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Location { get; set; }
 
         public override bool Equals(object? obj)

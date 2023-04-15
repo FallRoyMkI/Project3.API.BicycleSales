@@ -19,6 +19,11 @@ public class MapperBLL
 
                 cfg.CreateMap<Product, ProductDto>().ReverseMap();
                 cfg.CreateMap<ProductDto, Product>().ReverseMap();
+
+                cfg.CreateMap<Tag, TagDto>().ReverseMap();
+                cfg.CreateMap<TagDto, Tag>().ReverseMap();
+
+                cfg.CreateMap<ProductTagDto, ProductTag>().ReverseMap();
             });
     }
 
@@ -50,6 +55,21 @@ public class MapperBLL
     public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto)
     {
         return _cfg.CreateMapper().Map<IEnumerable<Product>>(listProductsDto);
+    }
+
+    public TagDto MapTagToTagDto(Tag tagBll)
+    {
+        return _cfg.CreateMapper().Map<TagDto>(tagBll);
+    }
+    
+    public Tag MapTagDtoToTag(TagDto tagDto)
+    {
+        return _cfg.CreateMapper().Map<Tag>(tagDto);
+    }
+
+    public ProductTag MapProductTagDtoToProductTag(ProductTagDto productTagDto)
+    {
+        return _cfg.CreateMapper().Map<ProductTag>(productTagDto);
     }
     
 }
