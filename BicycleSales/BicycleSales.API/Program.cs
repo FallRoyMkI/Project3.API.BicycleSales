@@ -1,3 +1,4 @@
+using BicycleSales.API;
 using BicycleSales.API.MapperProfiles;
 
 
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(typeof(MapperApiAuthorizationProfile), typeof(MapperApiUserProfile));
+builder.Services.AddAutoMapper(typeof(MapperApiAuthorizationProfile), typeof(MapperApiUserProfile), typeof(MapperAPI));
 
 var app = builder.Build();
 

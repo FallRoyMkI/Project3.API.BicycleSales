@@ -8,12 +8,10 @@ namespace BicycleSales.API.MapperProfiles;
 
 public class MapperApiUserProfile : Profile
 {
-    private IShopManager kek;
+    
     public MapperApiUserProfile()
     {
         CreateMap<User, UserResponse>();
-        CreateMap<UserAddRequest, User>()
-            .ForMember(x=> x.Shop, 
-                y =>y.MapFrom(x=> kek.GetInfoAboutTheShopById(x.ShopId)));
+        CreateMap<UserAddRequest, User>();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Azure;
-using BicycleSales.DAL.Contexts;
+﻿using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL

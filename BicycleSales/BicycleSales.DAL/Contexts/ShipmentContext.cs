@@ -1,7 +1,7 @@
 ﻿using BicycleSales.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BicycleSales.DAL;
+namespace BicycleSales.DAL.Contexts;
 
 public class ShipmentContext : DbContext
 {

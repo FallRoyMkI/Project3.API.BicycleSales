@@ -1,4 +1,5 @@
-﻿using BicycleSales.API.Models.AuthorizationProduct.Request;
+﻿using AutoMapper;
+using BicycleSales.API.Models.AuthorizationProduct.Request;
 using BicycleSales.API.Models.AuthorizationProduct.Response;
 using BicycleSales.API.Models.User.Request;
 using BicycleSales.API.Models.User.Response;

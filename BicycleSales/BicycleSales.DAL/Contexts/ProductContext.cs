@@ -1,5 +1,5 @@
-﻿using BicycleSales.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL.Contexts
 {
@@ -11,7 +11,9 @@ namespace BicycleSales.DAL.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseSqlServer(@"Data Source=DESKTOP-MH87Q5L\SQLEXPRESS;Initial Catalog = VELIKI; TrustServerCertificate=True;Integrated Security=SSPI", builder => builder.EnableRetryOnFailure());
+            builder.UseSqlServer(@"Data Source=DESKTOP-MH87Q5L\SQLEXPRESS;
+                                                Initial Catalog = VELIKI; TrustServerCertificate=True;Integrated Security=SSPI", 
+                             builder => builder.EnableRetryOnFailure());
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

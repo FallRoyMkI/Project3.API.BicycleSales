@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using BicycleSales.API.Models.Product.Request;
-using BicycleSales.API.Models.Product.Response;
+﻿using BicycleSales.API.Models.Product.Request;
 using BicycleSales.API.Models.Tag.Request;
 using BicycleSales.BLL;
-using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+
 
 namespace BicycleSales.API.Controllers
 {

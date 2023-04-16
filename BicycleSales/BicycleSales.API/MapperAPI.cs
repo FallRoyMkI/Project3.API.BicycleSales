@@ -13,7 +13,7 @@ using BicycleSales.API.Models.ProductTag.Request;
 
 namespace BicycleSales.API;
 
-public class MapperAPI
+public class MapperAPI : Profile
 {
     private readonly MapperConfiguration _cfg;
     public MapperAPI()

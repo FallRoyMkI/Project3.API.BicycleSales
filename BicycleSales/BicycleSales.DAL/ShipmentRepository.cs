@@ -1,4 +1,5 @@
-﻿using BicycleSales.DAL.Interfaces;
+﻿using BicycleSales.DAL.Contexts;
+using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL;

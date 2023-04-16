@@ -1,11 +1,6 @@
-﻿using BicycleSales.API.Models.AuthorizationProduct.Response;
-using BicycleSales.API.Models.AuthorizationProduct.Request;
-using BicycleSales.API.Models.User.Response;
-using BicycleSales.API.Models.User.Request;
-using BicycleSales.BLL.Interfaces;
+﻿using BicycleSales.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using BicycleSales.BLL.Models;
-using BicycleSales.Constants;
 using BicycleSales.BLL;
 using AutoMapper;
 using BicycleSales.API.Models.Order.Request;

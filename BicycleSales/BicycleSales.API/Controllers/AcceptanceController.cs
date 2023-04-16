@@ -1,12 +1,12 @@
-﻿using BicycleSales.BLL.Interfaces;
+﻿using BicycleSales.API.Models.AcceptanceProduct.Response;
+using BicycleSales.API.Models.AcceptanceProduct.Request;
+using BicycleSales.API.Models.Acceptance.Response;
+using BicycleSales.API.Models.Acceptance.Request;
+using BicycleSales.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using BicycleSales.BLL.Models;
 using BicycleSales.BLL;
 using AutoMapper;
-using BicycleSales.API.Models.Acceptance.Request;
-using BicycleSales.API.Models.Acceptance.Response;
-using BicycleSales.API.Models.AcceptanceProduct.Request;
-using BicycleSales.API.Models.AcceptanceProduct.Response;
 
 namespace BicycleSales.API.Controllers;
 

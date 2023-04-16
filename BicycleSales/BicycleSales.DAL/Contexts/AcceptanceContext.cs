@@ -1,7 +1,7 @@
-﻿using BicycleSales.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using BicycleSales.DAL.Models;
 
-namespace BicycleSales.DAL;
+namespace BicycleSales.DAL.Contexts;
 
 public class AcceptanceContext : DbContext
 {
