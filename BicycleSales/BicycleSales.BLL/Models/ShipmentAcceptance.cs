@@ -1,11 +1,10 @@
-﻿
-using BicycleSales.BLL.Constant;
+﻿using BicycleSales.Constants;
 
 namespace BicycleSales.BLL.Models
 {
     public class ShipmentAcceptance
     {
-        public Shipmet Shipment { get; set; }
+        public Shipment Shipment { get; set; }
         public Acceptance Acceptance { get; set; }
         public ShipmentAcceptanceStatus Status { get; set; } = ShipmentAcceptanceStatus.ShipmentCreated;
         public Factory Factory { get; set; }

@@ -1,4 +1,4 @@
-﻿using BicycleSales.BLL.Constant;
+﻿using BicycleSales.Constants;
 namespace BicycleSales.BLL.Models
 {
     public class Order

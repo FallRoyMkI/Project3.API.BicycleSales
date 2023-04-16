@@ -14,7 +14,7 @@ namespace BicycleSales.DAL.TESTS
                 Id = 1,
                 Login = "MainTestLogin",
                 Password = "MainTestPassword",
-                UserStatus = UserStatus.CommonUser
+                Status = UserStatus.CommonUser
             };
             _repository.CreateAnAccount(firstUserAuth);
 
@@ -41,7 +41,7 @@ namespace BicycleSales.DAL.TESTS
         [TestCaseSource(typeof(EditAccountInfoTestSources))]
         public void EditAccountInfoTest(AuthorizationDto input, AuthorizationDto expected)
         {
-            var actual = _repository.EditAccountInfo(input);
+            var actual = _repository.UpdateAccountInfo(input);
 
             Assert.AreEqual(actual, expected);
         }
@@ -57,7 +57,7 @@ namespace BicycleSales.DAL.TESTS
         [TestCaseSource(typeof(EditUserInfoTestSources))]
         public void EditUserInfoTest(UserDto input, UserDto expected)
         {
-            var actual = _repository.EditUserInfo(input);
+            var actual = _repository.UpdateUserInfo(input);
 
             Assert.AreEqual(actual, expected);
         }

@@ -1,13 +1,19 @@
-﻿
-namespace BicycleSales.API.Models.User.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BicycleSales.API.Models.User.Request;
+
+public class UserAddRequest
 {
-    public class UserAddRequest
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public bool IsMale { get; set; }
-        public int AuthorizationId { get; set; }
-        public int ShopId { get; set; }
-    }
+    [Required]
+    public string Name { get; set; }
+    [Required]
+    public string Email { get; set; }
+    [Required]
+    public string Phone { get; set; }
+    [Required]
+    public bool IsMale { get; set; }
+    [Required]
+    public int AuthorizationId { get; set; }
+    [Required]
+    public int ShopId { get; set; }
 }

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BicycleSales.BLL", "Bicycle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BicycleSales.DAL", "BicycleSales.DAL\BicycleSales.DAL.csproj", "{0B15A91E-1DCB-464A-80D7-6C2BE3F1A9EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BicycleSales.DAL.TESTS", "BicycleSales.DAL.TESTS\BicycleSales.DAL.TESTS.csproj", "{F6E3E0C1-2B8F-43DD-95B9-21DF764B6A19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BicycleSales.DAL.TESTS", "BicycleSales.DAL.TESTS\BicycleSales.DAL.TESTS.csproj", "{F6E3E0C1-2B8F-43DD-95B9-21DF764B6A19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BicycleSales.Constants", "Constants\BicycleSales.Constants.csproj", "{D0917259-0357-4386-B0CF-148B4E733D31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F6E3E0C1-2B8F-43DD-95B9-21DF764B6A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6E3E0C1-2B8F-43DD-95B9-21DF764B6A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6E3E0C1-2B8F-43DD-95B9-21DF764B6A19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0917259-0357-4386-B0CF-148B4E733D31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0917259-0357-4386-B0CF-148B4E733D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0917259-0357-4386-B0CF-148B4E733D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0917259-0357-4386-B0CF-148B4E733D31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
