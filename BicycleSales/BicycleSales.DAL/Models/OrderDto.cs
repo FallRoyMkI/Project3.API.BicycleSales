@@ -1,4 +1,4 @@
-﻿using BicycleSales.DAL.Constant;
+﻿using BicycleSales.Constants;
 
 namespace BicycleSales.DAL.Models
 {

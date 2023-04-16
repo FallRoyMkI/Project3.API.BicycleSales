@@ -1,8 +1,10 @@
-﻿namespace BicycleSales.API.Models.AuthorizationProduct.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BicycleSales.API.Models.AuthorizationProduct.Request;
+public class AuthorizationAddRequest
 {
-    public class AuthorizationAddRequest
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-    }
+    [Required]
+    public string Login { get; set; }
+    [Required]
+    public string Password { get; set; }
 }

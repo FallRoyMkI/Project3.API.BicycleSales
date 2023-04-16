@@ -1,10 +1,11 @@
-﻿namespace BicycleSales.API.Models.AuthorizationProduct.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BicycleSales.API.Models.AuthorizationProduct.Request;
+public class AuthorizationUpdateRequest
 {
-    public class AuthorizationUpdateRequest
-    {
-        public int Id { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public bool IsDeleted { get; set; }
-    }
+    [Required]
+    public int Id { get; set; }
+
+    public string? Login { get; set; }
+    public string? Password { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace BicycleSales.API.Models.Acceptance.Request
 {
-    public class ShipmentUpdateRequest
+    public class AcceptanceUpdateRequest
     {
         public int Id { get; set; }
         public DateTime FactTime { get; set; }

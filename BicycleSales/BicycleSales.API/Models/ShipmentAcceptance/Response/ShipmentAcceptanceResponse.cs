@@ -1,7 +1,7 @@
 ﻿using BicycleSales.API.Models.Acceptance.Response;
 using BicycleSales.API.Models.Factory.Response;
 using BicycleSales.API.Models.Shipment.Response;
-using BicycleSales.API.Constant;
+using BicycleSales.Constants;
 
 namespace BicycleSales.API.Models.ShipmentAcceptance.Response
 {

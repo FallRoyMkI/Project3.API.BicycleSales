@@ -1,6 +1,6 @@
 ﻿using BicycleSales.API.Models.Shop.Response;
 using BicycleSales.API.Models.User.Response;
-using BicycleSales.API.Constant;
+using BicycleSales.Constants;
 
 
 

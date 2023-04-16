@@ -1,4 +1,4 @@
-﻿namespace BicycleSales.DAL.Constant;
+﻿namespace BicycleSales.Constants;
 
 public enum ShipmentAcceptanceStatus
 {

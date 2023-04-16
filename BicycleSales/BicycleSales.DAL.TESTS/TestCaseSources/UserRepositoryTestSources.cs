@@ -10,14 +10,14 @@ public class CreateAnAccountTestSources : IEnumerable
         {
             Login = "NewUserLogin",
             Password = "NewUserPassword",
-            UserStatus = UserStatus.CommonUser
+            Status = UserStatus.CommonUser
         };
         var expected = new AuthorizationDto()
         {
             Id = 2,
             Login = "NewUserLogin",
             Password = "NewUserPassword",
-            UserStatus = UserStatus.CommonUser
+            Status = UserStatus.CommonUser
         };
         yield return new Object[] { input, expected };
     }
@@ -31,14 +31,14 @@ public class EditAccountInfoTestSources : IEnumerable
             Id = 1,
             Login = "EditedLogin",
             Password = "EditedPassword",
-            UserStatus = UserStatus.CommonUser
+            Status = UserStatus.CommonUser
         };
         var expected = new AuthorizationDto()
         {
             Id = 1,
             Login = "EditedLogin",
             Password = "EditedPassword",
-            UserStatus = UserStatus.CommonUser
+            Status = UserStatus.CommonUser
         };
         yield return new Object[] { input, expected };
     }
@@ -54,7 +54,7 @@ public class AddUserInfoTestSources : IEnumerable
             Email = "NewUserEmail",
             Phone = "NewUserPhone",
             IsMale = true,
-            Authorization = new AuthorizationDto {Id = 2,Login = "NewUserLogin", Password = "NewUserPassword", UserStatus = (UserStatus)1},
+            Authorization = new AuthorizationDto {Id = 2,Login = "NewUserLogin", Password = "NewUserPassword", Status = (UserStatus)1},
             Shop = new ShopDto {Id = 2, Location = "TestShopLocation", Name = "VeloDriveShop"}
         };
     
@@ -65,7 +65,7 @@ public class AddUserInfoTestSources : IEnumerable
             Email = "NewUserEmail",
             Phone = "NewUserPhone",
             IsMale = true,
-            Authorization = new AuthorizationDto { Id = 2, Login = "NewUserLogin", Password = "NewUserPassword", UserStatus = (UserStatus)1 },
+            Authorization = new AuthorizationDto { Id = 2, Login = "NewUserLogin", Password = "NewUserPassword", Status = (UserStatus)1 },
             Shop = new ShopDto { Id = 2, Location = "TestShopLocation", Name = "VeloDriveShop" }
         };
         yield return new Object[] { input, expected };
@@ -92,7 +92,7 @@ public class EditUserInfoTestSources : IEnumerable
             Email = "EditedUserEmail",
             Phone = "EditedUserPhone",
             IsMale = true,
-            Authorization = new AuthorizationDto() { Id = 1, Login = "MainTestLogin", Password = "MainTestPassword", UserStatus = UserStatus.CommonUser },
+            Authorization = new AuthorizationDto() { Id = 1, Login = "MainTestLogin", Password = "MainTestPassword", Status = UserStatus.CommonUser },
             Shop = new ShopDto { Id = 5, Location = "EditedShopLocation", Name = "VeloDriveShop" }
         };
         yield return new Object[] { input, expected };
@@ -111,7 +111,7 @@ public class GetUserByIdTestSources : IEnumerable
             Email = "MainTestUserEmail",
             Phone = "MainTestUserPhone",
             IsMale = false,
-            Authorization = new AuthorizationDto() { Id = 1, Login = "MainTestLogin", Password = "MainTestPassword", UserStatus = UserStatus.CommonUser },
+            Authorization = new AuthorizationDto() { Id = 1, Login = "MainTestLogin", Password = "MainTestPassword", Status = UserStatus.CommonUser },
             Shop = new() { Id = 2, Location = "MainTestShopLocation", Name = "VeloDriveShop" }
         };
         yield return new Object[] { id, expected };

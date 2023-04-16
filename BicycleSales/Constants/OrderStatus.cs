@@ -1,4 +1,4 @@
-﻿namespace BicycleSales.API.Constant;
+﻿namespace BicycleSales.Constants;
 
 public enum OrderStatus
 {

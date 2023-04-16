@@ -1,7 +1,7 @@
 ﻿
 namespace BicycleSales.API.Models.Acceptance.Request
 {
-    public class ShipmentAddRequest
+    public class AcceptanceAddRequest
     {
         public DateTime PlanedTime { get; set; }
         public int UserIdWhichFormed { get; set; }

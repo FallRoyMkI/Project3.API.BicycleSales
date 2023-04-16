@@ -1,6 +1,6 @@
 ﻿namespace BicycleSales.DAL.Models
 {
-    public class ShipmetDto
+    public class ShipmentDto
     {
         public int Id { get; set; }
         public DateTime PlanedTime { get; set; }
@@ -16,6 +16,6 @@
         public int ProductCount { get; set; }
         public int FactProductCount { get; set; }
         public ProductDto Product { get; set; }
-        public ShipmetDto Shipment { get; set; }
+        public ShipmentDto Shipment { get; set; }
     }
 }
