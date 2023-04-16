@@ -1,4 +1,4 @@
-﻿using BicycleSales.BLL.Interfaces;
+using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
 using BicycleSales.DAL.Models;
 using AutoMapper;
@@ -29,6 +29,9 @@ public class MapperBLL : IMapperBLL
                 cfg.CreateMap<Acceptance,AcceptanceDto>().ReverseMap();
 
                 cfg.CreateMap<AcceptanceProduct,AcceptanceDto>().ReverseMap();
+                cfg.CreateMap<Product, ProductDto>().ReverseMap();
+                cfg.CreateMap<Tag, TagDto>().ReverseMap();
+                cfg.CreateMap<ProductTagDto, ProductTag>().ReverseMap();
             });
     }
 
@@ -108,4 +111,32 @@ public class MapperBLL : IMapperBLL
     {
         return _cfg.CreateMapper().Map<AcceptanceProductDto>(acceptanceProduct);
     }
+    public ProductDto MapProductToProductDto(Product productBll)
+    {
+        return _cfg.CreateMapper().Map<ProductDto>(productBll);
+    }
+    public Product MapProductDtoToProduct(ProductDto productDto)
+    {
+        return _cfg.CreateMapper().Map<Product>(productDto);
+    }
+    public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<Product>>(listProductsDto);
+    }
+
+    public TagDto MapTagToTagDto(Tag tagBll)
+    {
+        return _cfg.CreateMapper().Map<TagDto>(tagBll);
+    }
+    
+    public Tag MapTagDtoToTag(TagDto tagDto)
+    {
+        return _cfg.CreateMapper().Map<Tag>(tagDto);
+    }
+
+    public ProductTag MapProductTagDtoToProductTag(ProductTagDto productTagDto)
+    {
+        return _cfg.CreateMapper().Map<ProductTag>(productTagDto);
+    }
+    
 }

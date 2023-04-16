@@ -1,4 +1,4 @@
-﻿using BicycleSales.DAL.Interfaces;
+using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL;
@@ -72,3 +72,4 @@ public class UserRepository : IUserRepository
         return _context.Authorizations.ToList().Contains(_context.Authorizations.ToList().Find(x => x.Login == login));
     }
 }
+using BicycleSales.DAL.Contexts;
