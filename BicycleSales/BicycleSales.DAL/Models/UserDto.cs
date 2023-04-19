@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
 
 namespace BicycleSales.DAL.Models;
 
@@ -11,9 +13,17 @@ public class UserDto
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public bool? IsMale { get; set; }
+
+    public int AuthorizationId { get; set; }
+
     [Required]
+    //[ForeignKey(nameof(AuthorizationId))]
     public AuthorizationDto Authorization { get; set; }
-    public ShopDto? Shop { get; set; }
+
+    public int ShopId { get; set; }
+
+    //[ForeignKey(nameof(ShopId))]
+    public ShopDto Shop { get; set; }
 
     public override bool Equals(object? obj)
     {

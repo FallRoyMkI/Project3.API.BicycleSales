@@ -6,11 +6,11 @@ namespace BicycleSales.DAL;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly OrderContext _context;
+    private readonly Context _context;
 
-    public OrderRepository(OrderContext context = null)
+    public OrderRepository(Context context = null)
     {
-        _context = context ?? new OrderContext();
+        _context = context ?? new Context();
     }
 
     public OrderDto CreateAnOrder(OrderDto order)

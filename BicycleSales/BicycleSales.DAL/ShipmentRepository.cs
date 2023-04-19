@@ -6,11 +6,11 @@ namespace BicycleSales.DAL;
 
 public class ShipmentRepository : IShipmentRepository
 {
-    private readonly ShipmentContext _context;
+    private readonly Context _context;
 
-    public ShipmentRepository(ShipmentContext context = null)
+    public ShipmentRepository(Context context = null)
     {
-        _context = context ?? new ShipmentContext();
+        _context = context ?? new Context();
     }
 
     public ShipmentDto CreateNewShipment(ShipmentDto shipment)
@@ -35,7 +35,7 @@ public class ShipmentRepository : IShipmentRepository
 
     public ShipmentProductDto AddProductToShipment(ShipmentProductDto shipmentProduct)
     {
-        _context.ShipmentProduct.Add(shipmentProduct);
+        _context.ShipmentProducts.Add(shipmentProduct);
         _context.SaveChanges();
 
         return shipmentProduct;
@@ -43,7 +43,7 @@ public class ShipmentRepository : IShipmentRepository
 
     public ShipmentProductDto UpdateProductInShipment(ShipmentProductDto shipmentProduct)
     {
-        var update = _context.ShipmentProduct.ToList().Find(x => x.Id == shipmentProduct.Id);
+        var update = _context.ShipmentProducts.ToList().Find(x => x.Id == shipmentProduct.Id);
         if (update is null) throw new ArgumentException("Cannot find shipmentProduct with such Id");
 
         update.FactProductCount = shipmentProduct.FactProductCount;

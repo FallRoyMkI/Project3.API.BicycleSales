@@ -6,11 +6,11 @@ namespace BicycleSales.DAL;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UserContext _context;
+    private readonly Context _context;
 
-    public UserRepository(UserContext context = null)
+    public UserRepository(Context context = null)
     {
-        _context = context ?? new UserContext();
+        _context = context ?? new Context();
     }
 
     public AuthorizationDto CreateAnAccount(AuthorizationDto auth)

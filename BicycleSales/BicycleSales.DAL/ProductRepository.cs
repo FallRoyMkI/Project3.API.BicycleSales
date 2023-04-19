@@ -5,16 +5,16 @@ namespace BicycleSales.DAL
 {
     public class ProductRepository
     {
-        private readonly ProductContext _context;
+        private readonly Context _context;
 
-        public ProductRepository(ProductContext context = null)
+        public ProductRepository(Context context = null)
         {
-            _context = context ?? new ProductContext();
+            _context = context ?? new Context();
         }
 
         public ProductDto CreateProduct(ProductDto product)
         {
-            if(_context.Product.ToList().Find(p => p.Name == product.Name) is not null) 
+            if(_context.Products.ToList().Find(p => p.Name == product.Name) is not null) 
             {
                 throw new Exception($"Продукт с таким Name:{product.Name} существует");
             }
@@ -24,20 +24,20 @@ namespace BicycleSales.DAL
             }
             else
             {
-                _context.Product.Add(product);
+                _context.Products.Add(product);
                 _context.SaveChanges();
-                return _context.Product.Single(p => p.Id == product.Id);
+                return _context.Products.Single(p => p.Id == product.Id);
             }
         }
 
         public IEnumerable<ProductDto> GetAllProducts()
         {
-            return _context.Product.Where(p => p.IsDeleted == false).ToList();
+            return _context.Products.Where(p => p.IsDeleted == false).ToList();
         }
 
         public ProductDto UpdateProduct(ProductDto product)
         {
-            var existingModel = _context.Product
+            var existingModel = _context.Products
                  .Single(p => p.Id == product.Id);
 
             existingModel.Name = product.Name;
@@ -49,7 +49,7 @@ namespace BicycleSales.DAL
 
         public ProductDto DeleteProduct(int id)
         {
-            var existingModel = _context.Product.ToList().Find(p => p.Id == id);
+            var existingModel = _context.Products.ToList().Find(p => p.Id == id);
             
             if (existingModel is not null)
             {
@@ -73,7 +73,7 @@ namespace BicycleSales.DAL
 
         public ProductDto GetProductById(int id)
         {
-            var existingModel = _context.Product.ToList().Find(p => p.Id == id);
+            var existingModel = _context.Products.ToList().Find(p => p.Id == id);
 
             if (existingModel is not null)
             {
@@ -94,7 +94,7 @@ namespace BicycleSales.DAL
 
         public TagDto CreateTag(TagDto tag)
         {
-            var _existingTag = _context.Tag.ToList().Find(t => t.Name == tag.Name);
+            var _existingTag = _context.Tags.ToList().Find(t => t.Name == tag.Name);
 
             if (_existingTag is not null)
             {
@@ -102,15 +102,15 @@ namespace BicycleSales.DAL
             }
             else
             {
-                _context.Tag.Add(tag);
+                _context.Tags.Add(tag);
                 _context.SaveChanges();
-                return _context.Tag.Single(t => t.Id == tag.Id);
+                return _context.Tags.Single(t => t.Id == tag.Id);
             }
         }
         public ProductTagDto AddProductTag(int productId, int tagId)
         {
-            var existingProduct = _context.Product.Where(p => p.IsDeleted == false).ToList().Find(p => p.Id == productId);
-            var existingTag = _context.Tag.ToList().Find(t => t.Id == tagId);
+            var existingProduct = _context.Products.Where(p => p.IsDeleted == false).ToList().Find(p => p.Id == productId);
+            var existingTag = _context.Tags.ToList().Find(t => t.Id == tagId);
 
             if (existingProduct is not null && existingTag is not null) 
             {
@@ -122,13 +122,13 @@ namespace BicycleSales.DAL
                     TagId = tagId
                 };
 
-                if (_context.ProductTag.Any(p => p == productTagDto))
+                if (_context.ProductTags.Any(p => p == productTagDto))
                 {
                     throw new Exception($"ProductTag с productId:{productId} и с tagId:{tagId} уже существует");;
                 }
                 else
                 {
-                    _context.ProductTag.Add(productTagDto);
+                    _context.ProductTags.Add(productTagDto);
                     _context.SaveChanges();
                     return productTagDto;
                 }

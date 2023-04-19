@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BicycleSales.DAL.Models
 {
@@ -24,8 +25,18 @@ namespace BicycleSales.DAL.Models
 
     public class ShopProductDto
     {
+        [Key]
+        public int Id { get; set; }
         public int ProductCount { get; set; }
-        public ShopDto ShopId { get; set; }
-        public ProductDto Product { get; set; }
+
+        public int ShopId { get; set; }
+
+        [ForeignKey(nameof(ShopId))]
+        public virtual ShopDto Shop { get; set; }
+
+        public int ProductId { get; set; }
+
+        [ForeignKey(nameof(ProductId))]
+        public virtual ProductDto Product { get; set; }
     }
 }

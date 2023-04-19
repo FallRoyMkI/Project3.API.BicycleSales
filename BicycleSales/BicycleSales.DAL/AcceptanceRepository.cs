@@ -6,11 +6,11 @@ namespace BicycleSales.DAL;
 
 public class AcceptanceRepository : IAcceptanceRepository
 {
-    private readonly AcceptanceContext _context;
+    private readonly Context _context;
 
-    public AcceptanceRepository(AcceptanceContext context = null)
+    public AcceptanceRepository(Context context = null)
     {
-        _context = context ?? new AcceptanceContext();
+        _context = context ?? new Context();
     }
 
     public AcceptanceDto CreateNewAcceptance(AcceptanceDto acceptance)
@@ -35,7 +35,7 @@ public class AcceptanceRepository : IAcceptanceRepository
 
     public AcceptanceProductDto AddProductToAcceptance(AcceptanceProductDto acceptanceProduct)
     {
-        _context.AcceptanceProduct.Add(acceptanceProduct);
+        _context.AcceptanceProducts.Add(acceptanceProduct);
         _context.SaveChanges();
 
         return acceptanceProduct;
@@ -43,7 +43,7 @@ public class AcceptanceRepository : IAcceptanceRepository
 
     public AcceptanceProductDto UpdateProductInAcceptance(AcceptanceProductDto acceptanceProduct)
     {
-        var update = _context.AcceptanceProduct.ToList().Find(x => x.Id == acceptanceProduct.Id);
+        var update = _context.AcceptanceProducts.ToList().Find(x => x.Id == acceptanceProduct.Id);
         if (update is null) throw new ArgumentException("Cannot find acceptanceProduct with such Id");
 
         update.FactProductCount = acceptanceProduct.FactProductCount;
