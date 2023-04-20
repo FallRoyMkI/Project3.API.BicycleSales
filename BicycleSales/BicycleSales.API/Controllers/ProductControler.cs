@@ -1,6 +1,12 @@
-﻿using BicycleSales.API.Models.Product.Request;
+﻿using AutoMapper;
+using BicycleSales.API.Models.Product.Request;
+using BicycleSales.API.Models.Product.Response;
+using BicycleSales.API.Models.ProductTag.Request;
 using BicycleSales.API.Models.Tag.Request;
+using BicycleSales.API.Models.Tag.Response;
 using BicycleSales.BLL;
+using BicycleSales.BLL.Interfaces;
+using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,17 +16,23 @@ namespace BicycleSales.API.Controllers
     [ApiController]
     public class ProductControler : ControllerBase
     {
-        private readonly MapperAPI _mapper = new MapperAPI();
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IMapper _mapper;
+        private readonly IProductManager _productManager;
+
+        public ProductControler(IMapper mapper = null, IProductManager productManager = null)
+        {
+            _mapper = mapper; //?? new Mapper();
+            _productManager = productManager ?? new ProductManager();
+        }
 
         [HttpPost("create-product", Name = "CreateProduct")]
         public IActionResult CreateProduct(ProductAddRequest productAddRequest)
         {
             try
             {
-                var product = _mapper.MapProductAddRequestToProduct(productAddRequest);
-                var callback = _productManager.CreateProduct(product);
-                var result = _mapper.MapProductToProductResponse(callback);
+                var product = _mapper.Map<Product>(productAddRequest);
+                var callback = ((ProductManager)_productManager).CreateProduct(product);
+                var result = _mapper.Map<ProductResponse>(callback);
 
                 return Ok(result);
             }
@@ -30,21 +42,28 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-all-product", Name = "GetAllProducts")]
+        [HttpGet("get-all-products", Name = "GetAllProducts")]
         public IActionResult GetAllProducts()
         {
-            var listProducts = _productManager.GetAllProducts();
-            var result = _mapper.MapListProductToListProductResponse(listProducts);
+            try
+            {
+                var listProducts = ((ProductManager)_productManager).GetAllProducts();
+                var result = _mapper.Map<IEnumerable<ProductResponse>>(listProducts);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
 
         [HttpPut("update-product", Name = "UpdateProduct")]
         public IActionResult UpdateProduct(ProductUpdateRequest productUpdateRequest)
         {
-            var product = _mapper.MapProductUpdateRequestToProduct(productUpdateRequest);
-            var callback = _productManager.UpdateProduct(product);
-            var result = _mapper.MapProductToProductResponse(callback);
+            var product = _mapper.Map<Product>(productUpdateRequest);
+            var callback = ((ProductManager)_productManager).UpdateProduct(product);
+            var result = _mapper.Map<ProductResponse>(callback);
 
             return Ok(result);
         }
@@ -54,8 +73,8 @@ namespace BicycleSales.API.Controllers
         {
             try
             {
-                var callback = _productManager.DeleteProduct(id);
-                var result = _mapper.MapProductToProductResponse(callback);
+                var callback = ((ProductManager)_productManager).DeleteProduct(id);
+                var result = _mapper.Map<ProductResponse>(callback);
 
                 return Ok(result);
             }
@@ -70,8 +89,8 @@ namespace BicycleSales.API.Controllers
         {
             try
             {
-                var product = _productManager.GetProductById(id);
-                var result = _mapper.MapProductToProductResponse(product);
+                var product = ((ProductManager)_productManager).GetProductById(id);
+                var result = _mapper.Map<ProductResponse>(product);
 
                 return Ok(result);
             }
@@ -86,9 +105,9 @@ namespace BicycleSales.API.Controllers
         {
             try
             {
-                var tag = _mapper.MapTagAddRequestToTag(tagAddRequest);
-                var callback = _productManager.CreateTag(tag);
-                var result = _mapper.MapTagToTagResponse(callback);
+                var tag = _mapper.Map<Tag>(tagAddRequest);
+                var callback = ((ProductManager)_productManager).CreateTag(tag);
+                var result = _mapper.Map<TagResponse>(callback);
 
                 return Ok(result);
             }
@@ -103,8 +122,8 @@ namespace BicycleSales.API.Controllers
         {
             try
             {
-                var callback = _productManager.AddProductTag(productId, tagId);
-                var result = _mapper.MapProductTagToProductTagResponse(callback);
+                var callback = ((ProductManager)_productManager).AddProductTag(productId, tagId);
+                var result = _mapper.Map<ProductTagResponse>(callback);
 
                 return Ok(result);
             }

@@ -132,14 +132,11 @@ public class MapperBLL : IMapperBLL
         return _cfg.CreateMapper().Map<IEnumerable<Product>>(listProductsDto);
     }
 
-
-
     public TagDto MapTagToTagDto(Tag tagBll)
     {
         return _cfg.CreateMapper().Map<TagDto>(tagBll);
     }
 
-    
     public Tag MapTagDtoToTag(TagDto tagDto)
 
     {
@@ -147,7 +144,6 @@ public class MapperBLL : IMapperBLL
         return _cfg.CreateMapper().Map<Tag>(tagDto);
 
     }
-
     public ProductTag MapProductTagDtoToProductTag(ProductTagDto productTagDto)
 
     {
@@ -163,4 +159,10 @@ public class MapperBLL : IMapperBLL
     {
         return _cfg.CreateMapper().Map<Shop>(shopDto);
     }
+
+    public IEnumerable<Shop> MapListShopDtoToListShop(IEnumerable<ShopDto> shopsDto)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<Shop>>(shopsDto);
+    }
+    
 }

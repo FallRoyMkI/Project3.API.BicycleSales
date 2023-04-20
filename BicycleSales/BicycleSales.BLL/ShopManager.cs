@@ -24,5 +24,29 @@ namespace BicycleSales.BLL
 
             return result;
         }
+
+        public IEnumerable<Shop> GetAllShops()
+        {
+            var shopsDto = ((ShopRepository)_shopRepository).GetAllShops();
+            var result = _mapper.MapListShopDtoToListShop(shopsDto);
+
+            return result;
+        }
+
+        public Shop GetShopById(int id)
+        {
+            var shopDto = ((ShopRepository)_shopRepository).GetShopById(id);
+            var result = _mapper.MapShopDtoToShop(shopDto);
+
+            return result;
+        }
+
+        public Shop DeleteShop(int id)
+        {
+            var callback = ((ShopRepository)_shopRepository).DeleteShop(id);
+            var result = _mapper.MapShopDtoToShop(callback);
+
+            return result;
+        }
     }
 }

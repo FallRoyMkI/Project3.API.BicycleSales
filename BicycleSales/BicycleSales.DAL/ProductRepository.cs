@@ -1,9 +1,10 @@
 ﻿using BicycleSales.DAL.Contexts;
+using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly Context _context;
 
@@ -32,7 +33,16 @@ namespace BicycleSales.DAL
 
         public IEnumerable<ProductDto> GetAllProducts()
         {
-            return _context.Products.Where(p => p.IsDeleted == false).ToList();
+            var existingProducts = _context.Products.Where(p => p.IsDeleted == false).ToList();
+            
+            if(existingProducts.Count > 0)
+            {
+                return existingProducts;
+            }
+            else
+            {
+                throw new Exception("Список продуктов пуст");
+            }
         }
 
         public ProductDto UpdateProduct(ProductDto product)
@@ -88,7 +98,7 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception($"Продукт с id:{id} не существует");
+                throw new Exception($"Продукта с id:{id} не существует");
             }
         }
 

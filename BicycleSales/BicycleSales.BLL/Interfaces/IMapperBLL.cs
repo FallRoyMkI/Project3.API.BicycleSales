@@ -11,22 +11,26 @@ public interface IMapperBLL
     public UserDto MapUserToUserDto(User user);
     public Order MapOrderDtoToOrder(OrderDto dto);
     public OrderDto MapOrderToOrderDto(Order order);
+    public IEnumerable<Order> MapOrderDtoListToOrderList(IEnumerable<OrderDto> dtos);
     public OrderProduct MapOrderProductDtoToOrderProduct(OrderProductDto dto);
     public OrderProductDto MapOrderProductToOrderProductDto(OrderProduct orderProduct);
-    public IEnumerable<Order> MapOrderDtoListToOrderList(IEnumerable<OrderDto> dtos);
-
     public Shipment MapShipmentDtoToShipment(ShipmentDto dto);
-    public ShipmentDto MapShipmentToShipmentDto(Shipment orderProduct);
-
+    public ShipmentDto MapShipmentToShipmentDto(Shipment shipment);
     public ShipmentProduct MapShipmentProductDtoToShipmentProduct(ShipmentProductDto dto);
-    public ShipmentProductDto MapShipmentProductToShipmentProductDto(ShipmentProduct dto);
-
+    public ShipmentProductDto MapShipmentProductToShipmentProductDto(ShipmentProduct shipmentProduct);
     public Acceptance MapAcceptanceDtoToAcceptance(AcceptanceDto dto);
     public AcceptanceDto MapAcceptanceToAcceptanceDto(Acceptance acceptance);
-
     public AcceptanceProduct MapAcceptanceProductDtoToAcceptanceProduct(AcceptanceProductDto dto);
     public AcceptanceProductDto MapAcceptanceProductToAcceptanceProductDto(AcceptanceProduct acceptanceProduct);
-
+    public ProductDto MapProductToProductDto(Product productBll);
+    public Product MapProductDtoToProduct(ProductDto productDto);
+    public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto);
+    public TagDto MapTagToTagDto(Tag tagBll);
+    public Tag MapTagDtoToTag(TagDto tagDto);
+    public ProductTag MapProductTagDtoToProductTag(ProductTagDto productTagDto);
     public ShopDto MapShopToShopDto(Shop shop);
     public Shop MapShopDtoToShop(ShopDto shopDto);
+    public IEnumerable<Shop> MapListShopDtoToListShop(IEnumerable<ShopDto> shopsDto);
+
+
 }

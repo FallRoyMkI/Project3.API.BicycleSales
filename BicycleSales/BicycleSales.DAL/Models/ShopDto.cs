@@ -14,6 +14,7 @@ namespace BicycleSales.DAL.Models
         [Required]
         public string Location { get; set; }
 
+        public bool IsDeleted { get; set; }
         public override bool Equals(object? obj)
         {
             return obj is ShopDto shop &&
