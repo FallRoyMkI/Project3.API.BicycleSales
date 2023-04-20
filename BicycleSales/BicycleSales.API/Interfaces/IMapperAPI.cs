@@ -7,7 +7,7 @@ using BicycleSales.BLL.Models;
 
 namespace BicycleSales.API.Interfaces
 {
-    public interface IMapperAPI
+    public interface IMapperAPI 
     {
         public AuthorizationResponse MapAuthorizationToAuthorizationResponse(Authorization authBLL);
         public Authorization MapAuthorizationAddRequestToAuthorization(AuthorizationAddRequest authAddRequest);

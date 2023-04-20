@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(typeof(MapperApiAuthorizationProfile), typeof(MapperApiUserProfile), typeof(MapperAPI));
+builder.Services.AddAutoMapper(typeof(MapperApiAuthorizationProfile), typeof(MapperApiUserProfile), typeof(MapperAPI), typeof(MapperApiShopProfile));
 
 var app = builder.Build();
 

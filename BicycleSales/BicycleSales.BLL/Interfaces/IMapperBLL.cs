@@ -26,4 +26,7 @@ public interface IMapperBLL
 
     public AcceptanceProduct MapAcceptanceProductDtoToAcceptanceProduct(AcceptanceProductDto dto);
     public AcceptanceProductDto MapAcceptanceProductToAcceptanceProductDto(AcceptanceProduct acceptanceProduct);
+
+    public ShopDto MapShopToShopDto(Shop shop);
+    public Shop MapShopDtoToShop(ShopDto shopDto);
 }
