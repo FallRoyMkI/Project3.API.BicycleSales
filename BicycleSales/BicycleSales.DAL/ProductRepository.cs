@@ -1,6 +1,11 @@
-﻿using BicycleSales.DAL.Contexts;
+﻿using BicycleSales.Constants.CustomExceptions;
+using BicycleSales.Constants.CustomExceptions.Product;
+using BicycleSales.Constants.CustomExceptions.ProductTag;
+using BicycleSales.Constants.CustomExceptions.Tag;
+using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
+using System.Data;
 
 namespace BicycleSales.DAL
 {
@@ -13,15 +18,16 @@ namespace BicycleSales.DAL
             _context = context ?? new Context();
         }
 
-        public ProductDto CreateProduct(ProductDto product)
+        public async Task<ProductDto> CreateProduct(ProductDto product)
         {
-            if(_context.Products.ToList().Find(p => p.Name == product.Name) is not null) 
+            if(_context.Products
+                .ToList().Find(p => p.Name == product.Name) is not null) 
             {
-                throw new Exception($"Продукт с таким Name:{product.Name} существует");
+                throw new ProductException($"Продукт с таким Name:{product.Name} существует");
             }
             else if (product.Cost <= 0)
             {
-                throw new Exception("Цена продукта должна быть больше 0");
+                throw new ProductException("Цена продукта должна быть больше 0");
             }
             else
             {
@@ -31,9 +37,10 @@ namespace BicycleSales.DAL
             }
         }
 
-        public IEnumerable<ProductDto> GetAllProducts()
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
         {
-            var existingProducts = _context.Products.Where(p => p.IsDeleted == false).ToList();
+            var existingProducts = _context.Products
+                .Where(p => p.IsDeleted == false).ToList();
             
             if(existingProducts.Count > 0)
             {
@@ -41,31 +48,39 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception("Список продуктов пуст");
+                throw new ProductException("Список продуктов пуст");
             }
         }
 
-        public ProductDto UpdateProduct(ProductDto product)
+        public async Task<ProductDto> UpdateProduct(ProductDto product)
         {
             var existingModel = _context.Products
-                 .Single(p => p.Id == product.Id);
+                 .ToList().Find(p => p.Id == product.Id);
 
-            existingModel.Name = product.Name;
-            existingModel.Cost = product.Cost;
-            _context.SaveChanges();
-
-            return existingModel;
+            if (existingModel is not null)
+            {
+                existingModel.Name = product.Name;
+                existingModel.Cost = product.Cost;
+                _context.SaveChanges();
+                
+                return existingModel;
+            }
+            else
+            {
+                throw new ProductException($"Продукта с id:{product.Id} не существует");
+            }
         }
 
-        public ProductDto DeleteProduct(int id)
+        public async Task<ProductDto> DeleteProduct(int id)
         {
-            var existingModel = _context.Products.ToList().Find(p => p.Id == id);
+            var existingModel = _context.Products
+                .ToList().Find(p => p.Id == id);
             
             if (existingModel is not null)
             {
                 if(existingModel.IsDeleted == true)
                 {
-                    throw new Exception($"Продукт c id:{id} уже и так удалён");
+                    throw new ProductException($"Продукт c id:{id} уже и так удалён");
                 }
                 else
                 {
@@ -77,19 +92,20 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception($"Продукта с id:{id} не существует");
+                throw new ProductException($"Продукта с id:{id} не существует");
             }
         }
 
-        public ProductDto GetProductById(int id)
+        public async Task<ProductDto> GetProductById(int id)
         {
-            var existingModel = _context.Products.ToList().Find(p => p.Id == id);
+            var existingModel = _context.Products
+                .ToList().Find(p => p.Id == id);
 
             if (existingModel is not null)
             {
                 if (existingModel.IsDeleted == true)
                 {
-                    throw new Exception($"Продукт с id:{id} удалён");
+                    throw new ProductException($"Продукт с id:{id} удалён");
                 }
                 else
                 {
@@ -98,17 +114,18 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception($"Продукта с id:{id} не существует");
+                throw new ProductException($"Продукта с id:{id} не существует");
             }
         }
 
-        public TagDto CreateTag(TagDto tag)
+        public async Task<TagDto> CreateTag(TagDto tag)
         {
-            var _existingTag = _context.Tags.ToList().Find(t => t.Name == tag.Name);
+            var _existingTag = _context.Tags
+                .ToList().Find(t => t.Name == tag.Name);
 
             if (_existingTag is not null)
             {
-                throw new Exception("Тэг с таким именем существует");
+                throw new TagException($"Тэг с таким именем:{tag.Name} уже существует");
             }
             else
             {
@@ -117,10 +134,13 @@ namespace BicycleSales.DAL
                 return _context.Tags.Single(t => t.Id == tag.Id);
             }
         }
-        public ProductTagDto AddProductTag(int productId, int tagId)
+        public async Task<ProductTagDto> AddProductTag(int productId, int tagId)
         {
-            var existingProduct = _context.Products.Where(p => p.IsDeleted == false).ToList().Find(p => p.Id == productId);
-            var existingTag = _context.Tags.ToList().Find(t => t.Id == tagId);
+            var existingProduct = _context.Products
+                .Where(p => p.IsDeleted == false).ToList().Find(p => p.Id == productId);
+            
+            var existingTag = _context.Tags
+                .ToList().Find(t => t.Id == tagId);
 
             if (existingProduct is not null && existingTag is not null) 
             {
@@ -134,7 +154,7 @@ namespace BicycleSales.DAL
 
                 if (_context.ProductTags.Any(p => p == productTagDto))
                 {
-                    throw new Exception($"ProductTag с productId:{productId} и с tagId:{tagId} уже существует");;
+                    throw new ProductTagException($"ProductTag с productId:{productId} и с tagId:{tagId} уже существует");;
                 }
                 else
                 {
@@ -145,9 +165,9 @@ namespace BicycleSales.DAL
             }
             else 
             {
-                if (existingProduct is null) { throw new Exception($"Продукта с productId:{productId} не существует"); }
-                else if (existingTag is null) { throw new Exception($"Тэга с existingTag:{existingTag} не существует"); }
-                else { throw new Exception($"Продукта с productId:{productId} не существует и Тэга с existingTag:{existingTag} не существует"); }
+                if (existingProduct is null) { throw new ProductException($"Продукта с productId:{productId} не существует"); }
+                else if (existingTag is null) { throw new TagException($"Тэга с existingTag:{existingTag} не существует"); }
+                else { throw new ProductTagException($"Продукта с productId:{productId} не существует и Тэга с existingTag:{existingTag} не существует"); }
             }
         }
     }

@@ -16,34 +16,34 @@ namespace BicycleSales.BLL
             _shopRepository = shopRepository ?? new ShopRepository();
         }
 
-        public Shop CreateNewShop(Shop shop)
+        public async Task<Shop> CreateNewShop(Shop shop)
         {
             var shopDto = _mapper.MapShopToShopDto(shop);
-            var callback = ((ShopRepository)_shopRepository).CreateNewShop(shopDto);
+            var callback = await ((ShopRepository)_shopRepository).CreateNewShop(shopDto);
             var result = _mapper.MapShopDtoToShop(callback);
 
             return result;
         }
 
-        public IEnumerable<Shop> GetAllShops()
+        public async Task<IEnumerable<Shop>> GetAllShops()
         {
-            var shopsDto = ((ShopRepository)_shopRepository).GetAllShops();
+            var shopsDto = await ((ShopRepository)_shopRepository).GetAllShops();
             var result = _mapper.MapListShopDtoToListShop(shopsDto);
 
             return result;
         }
 
-        public Shop GetShopById(int id)
+        public async Task<Shop> GetShopById(int id)
         {
-            var shopDto = ((ShopRepository)_shopRepository).GetShopById(id);
+            var shopDto = await ((ShopRepository)_shopRepository).GetShopById(id);
             var result = _mapper.MapShopDtoToShop(shopDto);
 
             return result;
         }
 
-        public Shop DeleteShop(int id)
+        public async Task<Shop> DeleteShop(int id)
         {
-            var callback = ((ShopRepository)_shopRepository).DeleteShop(id);
+            var callback = await ((ShopRepository)_shopRepository).DeleteShop(id);
             var result = _mapper.MapShopDtoToShop(callback);
 
             return result;

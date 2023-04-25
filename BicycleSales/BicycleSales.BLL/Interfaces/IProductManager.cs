@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace BicycleSales.BLL.Interfaces;
 public interface IProductManager
 {
-    public Product CreateProduct(Product prodcut);
-    public IEnumerable<Product> GetAllProducts();
-    public Product UpdateProduct(Product prodcut);
-    public Product DeleteProduct(int id);
-    public Product GetProductById(int id);
-    public Tag CreateTag(Tag tag);
-    public ProductTag AddProductTag(int productId, int tagId);
+    public Task<Product> CreateProduct(Product prodcut);
+    public Task<IEnumerable<Product>> GetAllProductsAsync();
+    public Task<Product> UpdateProduct(Product prodcut);
+    public Task<Product> DeleteProduct(int id);
+    public Task<Product> GetProductById(int id);
+    public Task<Tag> CreateTag(Tag tag);
+    public Task<ProductTag> AddProductTag(int productId, int tagId);
     
 }
 

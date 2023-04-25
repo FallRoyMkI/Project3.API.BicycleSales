@@ -164,5 +164,4 @@ public class MapperBLL : IMapperBLL
     {
         return _cfg.CreateMapper().Map<IEnumerable<Shop>>(shopsDto);
     }
-    
 }

@@ -1,4 +1,5 @@
-﻿using BicycleSales.DAL.Contexts;
+﻿using BicycleSales.Constants.CustomExceptions.Shop;
+using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 using Microsoft.Identity.Client;
@@ -19,11 +20,11 @@ namespace BicycleSales.DAL
             _context = context ?? new Context();
         }
 
-        public ShopDto CreateNewShop(ShopDto shop)
+        public async Task<ShopDto> CreateNewShop(ShopDto shop)
         {
             if (_context.Shops.ToList().Find(s => s.Location == shop.Location) is not null)
             {
-                throw new Exception($"Магазин с таким Location:{shop.Location} уже существует");
+                throw new ShopException($"Магазин с таким Location:{shop.Location} уже существует");
             }
             else
             {
@@ -33,7 +34,7 @@ namespace BicycleSales.DAL
                 return _context.Shops.Single(s => s.Id == shop.Id);
             }
         }
-        public IEnumerable<ShopDto> GetAllShops()
+        public async Task<IEnumerable<ShopDto>> GetAllShops()
         {
             var existingShops = _context.Shops.Where(s => s.IsDeleted == false).ToList();
 
@@ -43,11 +44,11 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception("Список магазинов пуст");
+                throw new ShopException("Список магазинов пуст");
             }
         }
 
-        public ShopDto GetShopById(int id)
+        public async Task<ShopDto> GetShopById(int id)
         {
             var existingShop = _context.Shops.ToList().Find(s => s.Id == id);
 
@@ -55,7 +56,7 @@ namespace BicycleSales.DAL
             {
                 if (existingShop.IsDeleted == true)
                 {
-                    throw new Exception($"Магазин с id:{id} удалён");
+                    throw new ShopException($"Магазин с id:{id} удалён");
                 }
                 else
                 {
@@ -64,11 +65,11 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception($"Магазина с id:{id} не существует");
+                throw new ShopException($"Магазина с id:{id} не существует");
             }
         }
 
-        public ShopDto DeleteShop(int id)
+        public async Task<ShopDto> DeleteShop(int id)
         {
             var existingModel = _context.Shops.ToList().Find(s => s.Id == id);
 
@@ -76,7 +77,7 @@ namespace BicycleSales.DAL
             {
                 if (existingModel.IsDeleted == true)
                 {
-                    throw new Exception($"Магазин c id:{id} уже и так удалён");
+                    throw new ShopException($"Магазин c id:{id} уже и так удалён");
                 }
                 else
                 {
@@ -88,7 +89,7 @@ namespace BicycleSales.DAL
             }
             else
             {
-                throw new Exception($"Магазина с id:{id} не существует");
+                throw new ShopException($"Магазина с id:{id} не существует");
             }
         }
     }

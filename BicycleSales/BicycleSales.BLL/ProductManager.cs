@@ -17,62 +17,63 @@ namespace BicycleSales.BLL
             _mapper = mapper ?? new MapperBLL();
             _productRepository = productRepository ?? new ProductRepository();
         }
-        public Product CreateProduct(Product prodcut)
+        public async Task<Product> CreateProduct(Product prodcut)
         {
             var productDto = _mapper.MapProductToProductDto(prodcut);
-            var callback = ((ProductRepository)_productRepository).CreateProduct(productDto);
+            var callback = await ((ProductRepository)_productRepository).CreateProduct(productDto);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            var productsDto = ((ProductRepository)_productRepository).GetAllProducts();
+            var productsDto = await ((ProductRepository)_productRepository).GetAllProductsAsync();
             var result = _mapper.MapListProductDtoToListProduct(productsDto);
             
             return result;
         }
 
-        public Product UpdateProduct(Product prodcut)
+        public async Task<Product> UpdateProduct(Product prodcut)
         {
             var productDto = _mapper.MapProductToProductDto(prodcut);
-            var callback = ((ProductRepository)_productRepository).UpdateProduct(productDto);
+            var callback = await ((ProductRepository)_productRepository).UpdateProduct(productDto);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
         }
 
-        public Product DeleteProduct(int id)
+        public async Task<Product> DeleteProduct(int id)
         {
-            var callback = ((ProductRepository)_productRepository).DeleteProduct(id);
+            var callback = await ((ProductRepository)_productRepository).DeleteProduct(id);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
         }
 
-        public Product GetProductById(int id)
+        public async Task<Product> GetProductById(int id)
         {
-            var productsDto = ((ProductRepository)_productRepository).GetProductById(id);
+            var productsDto = await ((ProductRepository)_productRepository).GetProductById(id);
             var result = _mapper.MapProductDtoToProduct(productsDto);
 
             return result;
         }
 
-        public Tag CreateTag(Tag tag)
+        public async Task<Tag> CreateTag(Tag tag)
         {
             var tagDto = _mapper.MapTagToTagDto(tag);
-            var callback = ((ProductRepository)_productRepository).CreateTag(tagDto);
+            var callback = await ((ProductRepository)_productRepository).CreateTag(tagDto);
             var result = _mapper.MapTagDtoToTag(callback);
 
             return result;
         }
-        public ProductTag AddProductTag(int productId, int tagId)
+        public async Task<ProductTag> AddProductTag(int productId, int tagId)
         {
-            var callback = ((ProductRepository)_productRepository).AddProductTag(productId, tagId);
+            var callback = await ((ProductRepository)_productRepository).AddProductTag(productId, tagId);
             var result = _mapper.MapProductTagDtoToProductTag(callback);
 
             return result;
         }
+
     }
 }

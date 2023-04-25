@@ -3,9 +3,9 @@
 namespace BicycleSales.BLL.Interfaces;
 public interface IShopManager
 {
-    public Shop CreateNewShop(Shop shop);
-    public IEnumerable<Shop> GetAllShops();
-    public Shop GetShopById(int id);
-    public Shop DeleteShop(int id);
+    public Task<Shop> CreateNewShop(Shop shop);
+    public Task<IEnumerable<Shop>> GetAllShops();
+    public Task<Shop> GetShopById(int id);
+    public Task<Shop> DeleteShop(int id);
 }
 

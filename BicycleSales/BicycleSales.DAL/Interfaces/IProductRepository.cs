@@ -9,12 +9,12 @@ namespace BicycleSales.DAL.Interfaces
 {
     public interface IProductRepository
     {
-        public ProductDto CreateProduct(ProductDto product);
-        public IEnumerable<ProductDto> GetAllProducts();
-        public ProductDto UpdateProduct(ProductDto product);
-        public ProductDto DeleteProduct(int id);
-        public ProductDto GetProductById(int id);
-        public TagDto CreateTag(TagDto tag);
-        public ProductTagDto AddProductTag(int productId, int tagId);
+        public Task<ProductDto> CreateProduct(ProductDto product);
+        public Task<IEnumerable<ProductDto>> GetAllProductsAsync();
+        public Task<ProductDto> UpdateProduct(ProductDto product);
+        public Task<ProductDto> DeleteProduct(int id);
+        public Task<ProductDto> GetProductById(int id);
+        public Task<TagDto> CreateTag(TagDto tag);
+        public Task<ProductTagDto> AddProductTag(int productId, int tagId);
     }
 }

@@ -9,9 +9,9 @@ namespace BicycleSales.DAL.Interfaces
 {
     public interface IShopRepository
     {
-        public ShopDto CreateNewShop(ShopDto shop);
-        public IEnumerable<ShopDto> GetAllShops();
-        public ShopDto GetShopById(int id);
-        public ShopDto DeleteShop(int id);
+        public Task<ShopDto> CreateNewShop(ShopDto shop);
+        public Task<IEnumerable<ShopDto>> GetAllShops();
+        public Task<ShopDto> GetShopById(int id);
+        public Task<ShopDto> DeleteShop(int id);
     }
 }
