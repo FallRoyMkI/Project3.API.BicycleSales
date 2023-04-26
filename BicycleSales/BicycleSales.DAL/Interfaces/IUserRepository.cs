@@ -14,4 +14,5 @@ public interface IUserRepository
     public UserDto GetUserById(int userId);
 
     public bool IsLoginExist(string login);
+    public bool IsUserExist(int id);
 }

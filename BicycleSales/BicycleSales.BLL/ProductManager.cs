@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.BLL
 {
-    public class ProductManager
+    public class ProductManager : IProductManager
     {
         private readonly MapperBLL _mapper;
         private readonly ProductRepository _productRepository = new ProductRepository();

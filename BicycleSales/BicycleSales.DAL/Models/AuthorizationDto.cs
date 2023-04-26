@@ -8,13 +8,8 @@ public class AuthorizationDto
     [Key]
     public int Id { get; set; }
 
-    [Required]
     public string? Login { get; set; }
-
-    [Required]
     public string? Password { get; set; }
-
-    [Required]
     public UserStatus? Status { get; set; }
 
     public override bool Equals(object? obj)

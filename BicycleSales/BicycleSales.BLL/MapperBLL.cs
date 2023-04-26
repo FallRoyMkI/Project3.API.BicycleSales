@@ -28,7 +28,7 @@ public class MapperBLL : IMapperBLL
 
                 cfg.CreateMap<Acceptance,AcceptanceDto>().ReverseMap();
 
-                cfg.CreateMap<AcceptanceProduct,AcceptanceDto>().ReverseMap();
+                cfg.CreateMap<AcceptanceProduct,AcceptanceProductDto>().ReverseMap();
 
                 cfg.CreateMap<Product, ProductDto>().ReverseMap();
 

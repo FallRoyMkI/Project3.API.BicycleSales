@@ -1,9 +1,10 @@
 ﻿using BicycleSales.DAL.Contexts;
+using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly Context _context;
 
@@ -24,6 +25,7 @@ namespace BicycleSales.DAL
             }
             else
             {
+                product.IsDeleted = false;
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 return _context.Products.Single(p => p.Id == product.Id);
@@ -139,6 +141,11 @@ namespace BicycleSales.DAL
                 else if (existingTag is null) { throw new Exception($"Тэга с existingTag:{existingTag} не существует"); }
                 else { throw new Exception($"Продукта с productId:{productId} не существует и Тэга с existingTag:{existingTag} не существует"); }
             }
+        }
+
+        public bool IsProductExist(int id)
+        {
+            return _context.Products.ToList().Exists(x => x.Id == id && x.IsDeleted == false);
         }
     }
 }

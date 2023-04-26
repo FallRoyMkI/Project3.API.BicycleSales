@@ -7,8 +7,10 @@ namespace BicycleSales.API.Models.AcceptanceProduct.Response
     {
         public int Id { get; set; }
         public int ProductCount { get; set; }
-        public int FactProductCount { get; set; }
+        public int? FactProductCount { get; set; }
         public ProductResponse Product { get; set; }
         public AcceptanceResponse Acceptance { get; set; }
+        public int ProductId { get; set; }
+        public int AcceptanceId { get; set; }
     }
 }

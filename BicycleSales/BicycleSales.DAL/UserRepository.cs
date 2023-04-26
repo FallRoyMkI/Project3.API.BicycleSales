@@ -1,5 +1,5 @@
-using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
+using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL;
@@ -55,10 +55,7 @@ public class UserRepository : IUserRepository
 
     public UserDto GetUserById(int id)
     {
-        var result = _context.Users.ToList().Find(x => x.Id == id);
-        if (result is null) throw new ArgumentException("Cannot find user with such id");
-
-        return result;
+        return _context.Users.ToList().Find(x => x.Id == id)!; 
     }
     public AuthorizationDto GetAuthorizationById(int id)
     {
@@ -70,6 +67,11 @@ public class UserRepository : IUserRepository
 
     public bool IsLoginExist(string login)
     {
-        return _context.Authorizations.ToList().Contains(_context.Authorizations.ToList().Find(x => x.Login == login));
+        return _context.Authorizations.ToList().Exists(x => x.Login == login);
+    }
+
+    public bool IsUserExist(int id)
+    {
+        return _context.Users.ToList().Exists(x => x.Id == id);
     }
 }

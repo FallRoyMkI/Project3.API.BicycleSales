@@ -1,6 +1,12 @@
-﻿using BicycleSales.API.Models.Product.Request;
+﻿using AutoMapper;
+using BicycleSales.API.Models.Product.Request;
+using BicycleSales.API.Models.Product.Response;
+using BicycleSales.API.Models.ProductTag.Request;
 using BicycleSales.API.Models.Tag.Request;
+using BicycleSales.API.Models.Tag.Response;
 using BicycleSales.BLL;
+using BicycleSales.BLL.Interfaces;
+using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,17 +16,23 @@ namespace BicycleSales.API.Controllers
     [ApiController]
     public class ProductControler : ControllerBase
     {
-        private readonly MapperAPI _mapper = new MapperAPI();
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IMapper _mapper;
+        private readonly IProductManager _productManager ;
+
+        public ProductControler(IMapper mapper = null, IProductManager productManager = null)
+        {
+            _mapper = mapper; //?? new Mapper();
+            _productManager = productManager ??  new ProductManager();
+        }
 
         [HttpPost("create-product", Name = "CreateProduct")]
         public IActionResult CreateProduct(ProductAddRequest productAddRequest)
         {
             try
             {
-                var product = _mapper.MapProductAddRequestToProduct(productAddRequest);
+                var product = _mapper.Map<Product>(productAddRequest);
                 var callback = _productManager.CreateProduct(product);
-                var result = _mapper.MapProductToProductResponse(callback);
+                var result = _mapper.Map<ProductResponse>(callback);
 
                 return Ok(result);
             }
@@ -34,7 +46,7 @@ namespace BicycleSales.API.Controllers
         public IActionResult GetAllProducts()
         {
             var listProducts = _productManager.GetAllProducts();
-            var result = _mapper.MapListProductToListProductResponse(listProducts);
+            var result = _mapper.Map<List<ProductResponse>>(listProducts);
 
             return Ok(result);
         }
@@ -42,9 +54,9 @@ namespace BicycleSales.API.Controllers
         [HttpPut("update-product", Name = "UpdateProduct")]
         public IActionResult UpdateProduct(ProductUpdateRequest productUpdateRequest)
         {
-            var product = _mapper.MapProductUpdateRequestToProduct(productUpdateRequest);
+            var product = _mapper.Map<Product>(productUpdateRequest);
             var callback = _productManager.UpdateProduct(product);
-            var result = _mapper.MapProductToProductResponse(callback);
+            var result = _mapper.Map<ProductResponse>(callback);
 
             return Ok(result);
         }
@@ -55,7 +67,7 @@ namespace BicycleSales.API.Controllers
             try
             {
                 var callback = _productManager.DeleteProduct(id);
-                var result = _mapper.MapProductToProductResponse(callback);
+                var result = _mapper.Map<ProductResponse>(callback);
 
                 return Ok(result);
             }
@@ -71,7 +83,7 @@ namespace BicycleSales.API.Controllers
             try
             {
                 var product = _productManager.GetProductById(id);
-                var result = _mapper.MapProductToProductResponse(product);
+                var result = _mapper.Map<ProductResponse>(product);
 
                 return Ok(result);
             }
@@ -86,9 +98,9 @@ namespace BicycleSales.API.Controllers
         {
             try
             {
-                var tag = _mapper.MapTagAddRequestToTag(tagAddRequest);
+                var tag = _mapper.Map<Tag>(tagAddRequest);
                 var callback = _productManager.CreateTag(tag);
-                var result = _mapper.MapTagToTagResponse(callback);
+                var result = _mapper.Map<TagResponse>(callback);
 
                 return Ok(result);
             }
@@ -104,7 +116,7 @@ namespace BicycleSales.API.Controllers
             try
             {
                 var callback = _productManager.AddProductTag(productId, tagId);
-                var result = _mapper.MapProductTagToProductTagResponse(callback);
+                var result = _mapper.Map<ProductTagResponse>(callback);
 
                 return Ok(result);
             }

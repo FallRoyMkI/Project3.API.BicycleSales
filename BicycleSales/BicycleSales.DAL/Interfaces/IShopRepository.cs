@@ -10,5 +10,7 @@ namespace BicycleSales.DAL.Interfaces
     public interface IShopRepository
     {
         public ShopDto CreateNewShop(ShopDto shop);
+        public ShopDto GetShopById(int id);
+        public bool IsShopExist(int id);
     }
 }
