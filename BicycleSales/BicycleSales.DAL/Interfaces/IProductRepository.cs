@@ -16,5 +16,6 @@ namespace BicycleSales.DAL.Interfaces
         public Task<ProductDto> GetProductById(int id);
         public Task<TagDto> CreateTag(TagDto tag);
         public Task<ProductTagDto> AddProductTag(int productId, int tagId);
+        public bool IsProductExist(int id);
     }
 }

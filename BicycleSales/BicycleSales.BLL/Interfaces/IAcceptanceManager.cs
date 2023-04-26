@@ -4,14 +4,13 @@ namespace BicycleSales.BLL.Interfaces;
 
 public interface IAcceptanceManager
 {
-    public Acceptance CreateNewAcceptance(Acceptance acceptance);
+    public Task<Acceptance> CreateNewAcceptance(Acceptance acceptance);
+    public Task<Acceptance> UpdateAcceptance(Acceptance acceptance);
 
-    public Acceptance UpdateAcceptance(Acceptance acceptance);
+    public Task<AcceptanceProduct> AddProductToAcceptance(AcceptanceProduct acceptanceProduct);
 
-    public AcceptanceProduct AddProductToAcceptance(AcceptanceProduct acceptanceProduct);
-
-    public AcceptanceProduct UpdateProductInAcceptance(AcceptanceProduct acceptanceProduct);
+    public Task<AcceptanceProduct> UpdateProductInAcceptance(AcceptanceProduct acceptanceProduct);
     
-    public Acceptance GetAcceptanceById(int id);
-    public IEnumerable<AcceptanceProduct> GetAllProductFromAcceptanceById(int id);
+    public Task<Acceptance> GetAcceptanceById(int id);
+    public Task<IEnumerable<AcceptanceProduct>> GetAllProductFromAcceptanceById(int id);
 }

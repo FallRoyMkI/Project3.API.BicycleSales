@@ -25,12 +25,12 @@ public class AcceptanceController : ControllerBase
     }
 
     [HttpPost("create-new-acceptance")]
-    public IActionResult CreateNewAcceptance([FromBody] AcceptanceAddRequest acceptanceRequest)
+    public async Task<IActionResult> CreateNewAcceptance([FromBody] AcceptanceAddRequest acceptanceRequest)
     {
         try
         {
             var acceptance = _mapper.Map<Acceptance>(acceptanceRequest);
-            var callback = _acceptanceManager.CreateNewAcceptance(acceptance);
+            var callback = await _acceptanceManager.CreateNewAcceptance(acceptance);
             var result = _mapper.Map<AcceptanceResponse>(callback);
 
             return Ok(result);
@@ -50,12 +50,12 @@ public class AcceptanceController : ControllerBase
     }
 
     [HttpPost("add-products-to-acceptance")]
-    public IActionResult AddProductToAcceptance([FromBody] AcceptanceProductAddRequest acceptanceProductRequest)
+    public async Task<IActionResult> AddProductToAcceptance([FromBody] AcceptanceProductAddRequest acceptanceProductRequest)
     {
         try
         {
             var acceptanceProduct = _mapper.Map<AcceptanceProduct>(acceptanceProductRequest);
-            var callback = _acceptanceManager.AddProductToAcceptance(acceptanceProduct);
+            var callback = await _acceptanceManager.AddProductToAcceptance(acceptanceProduct);
             var result = _mapper.Map<AcceptanceProductResponse>(callback);
 
             return Ok(result);
@@ -80,12 +80,12 @@ public class AcceptanceController : ControllerBase
 
 
     [HttpPut("update-products-in-acceptance")]
-    public IActionResult UpdateProductInAcceptance([FromQuery] AcceptanceProductUpdateRequest acceptanceProductRequest)
+    public async Task<IActionResult> UpdateProductInAcceptance([FromQuery] AcceptanceProductUpdateRequest acceptanceProductRequest)
     {
         try
         {
             var acceptanceProduct = _mapper.Map<AcceptanceProduct>(acceptanceProductRequest);
-            var callback = _acceptanceManager.UpdateProductInAcceptance(acceptanceProduct);
+            var callback = await _acceptanceManager.UpdateProductInAcceptance(acceptanceProduct);
             var result = _mapper.Map<AcceptanceProductResponse>(callback);
 
             return Ok(result);
@@ -109,12 +109,12 @@ public class AcceptanceController : ControllerBase
     }
 
     [HttpPut("update-acceptance")]
-    public IActionResult UpdateAcceptance([FromQuery] AcceptanceUpdateRequest acceptanceRequest)
+    public async Task<IActionResult> UpdateAcceptance([FromQuery] AcceptanceUpdateRequest acceptanceRequest)
     {
         try
         {
             var acceptance = _mapper.Map<Acceptance>(acceptanceRequest);
-            var callback = _acceptanceManager.UpdateAcceptance(acceptance);
+            var callback = await _acceptanceManager.UpdateAcceptance(acceptance);
             var result = _mapper.Map<AcceptanceResponse>(callback);
 
             return Ok(result);
@@ -134,14 +134,14 @@ public class AcceptanceController : ControllerBase
     }
 
     [HttpGet("get-acceptance-{id}")]
-    public IActionResult GetAcceptanceById([FromRoute] int id)
+    public async Task<IActionResult> GetAcceptanceById([FromRoute] int id)
     {
         try
         {
-            var callback = _acceptanceManager.GetAcceptanceById(id);
+            var callback = await _acceptanceManager.GetAcceptanceById(id);
             var result = _mapper.Map<FullAcceptanceInfoResponse>(callback);
 
-            var productsCallback = _acceptanceManager.GetAllProductFromAcceptanceById(id);
+            var productsCallback = await _acceptanceManager.GetAllProductFromAcceptanceById(id);
             var products = _mapper.Map<IEnumerable<AcceptanceProductLowInfoResponse>>(productsCallback);
             result.Products = products.ToList(); 
 

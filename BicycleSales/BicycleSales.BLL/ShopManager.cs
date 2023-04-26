@@ -41,12 +41,5 @@ namespace BicycleSales.BLL
             return result;
         }
 
-        public async Task<Shop> DeleteShop(int id)
-        {
-            var callback = await ((ShopRepository)_shopRepository).DeleteShop(id);
-            var result = _mapper.MapShopDtoToShop(callback);
-
-            return result;
-        }
     }
 }

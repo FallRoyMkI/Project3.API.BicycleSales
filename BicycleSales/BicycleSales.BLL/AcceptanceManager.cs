@@ -26,7 +26,7 @@ public class AcceptanceManager : IAcceptanceManager
         _productRepository = productRepository ?? new ProductRepository();
     }
 
-    public Acceptance CreateNewAcceptance(Acceptance acceptance)
+    public async Task<Acceptance> CreateNewAcceptance(Acceptance acceptance)
     {
         if (!_userRepository.IsUserExist(acceptance.FormedById)) 
             throw new ObjectNotExistException("User", acceptance.FormedById);
@@ -40,15 +40,15 @@ public class AcceptanceManager : IAcceptanceManager
 
         callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
         callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
-        callback.FormedBy.Shop = _shopRepository.GetShopById(callback.FormedBy.ShopId);
-        callback.Shop = _shopRepository.GetShopById(callback.ShopId);
+        callback.FormedBy.Shop = await _shopRepository.GetShopById(callback.FormedBy.ShopId);
+        callback.Shop =await _shopRepository.GetShopById(callback.ShopId);
 
         var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
 
         return result;
     }
 
-    public AcceptanceProduct AddProductToAcceptance(AcceptanceProduct acceptanceProduct)
+    public async Task<AcceptanceProduct> AddProductToAcceptance(AcceptanceProduct acceptanceProduct)
     {
         if (!_acceptanceRepository.IsAcceptanceExist(acceptanceProduct.AcceptanceId))
             throw new ObjectNotExistException("Acceptance", acceptanceProduct.AcceptanceId);
@@ -65,16 +65,16 @@ public class AcceptanceManager : IAcceptanceManager
         callback.Acceptance = _acceptanceRepository.GetAcceptanceById(acceptanceProduct.AcceptanceId);
         callback.Acceptance.FormedBy = _userRepository.GetUserById(callback.Acceptance.FormedById);
         callback.Acceptance.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.Acceptance.FormedBy.AuthorizationId);
-        callback.Acceptance.FormedBy.Shop = _shopRepository.GetShopById(callback.Acceptance.FormedBy.ShopId);
-        callback.Acceptance.Shop = _shopRepository.GetShopById(callback.Acceptance.ShopId);
-        callback.Product = _productRepository.GetProductById(callback.ProductId);
+        callback.Acceptance.FormedBy.Shop = await _shopRepository.GetShopById(callback.Acceptance.FormedBy.ShopId);
+        callback.Acceptance.Shop = await _shopRepository.GetShopById(callback.Acceptance.ShopId);
+        callback.Product = await _productRepository.GetProductById(callback.ProductId);
 
         var result = _mapper.MapAcceptanceProductDtoToAcceptanceProduct(callback);
 
         return result;
     }
 
-    public AcceptanceProduct UpdateProductInAcceptance(AcceptanceProduct acceptanceProduct)
+    public async Task<AcceptanceProduct> UpdateProductInAcceptance(AcceptanceProduct acceptanceProduct)
     {
         if (!_acceptanceRepository.IsAcceptanceExist(acceptanceProduct.AcceptanceId))
             throw new ObjectNotExistException("Acceptance", acceptanceProduct.AcceptanceId);
@@ -91,16 +91,16 @@ public class AcceptanceManager : IAcceptanceManager
         callback.Acceptance = _acceptanceRepository.GetAcceptanceById(acceptanceProduct.AcceptanceId);
         callback.Acceptance.FormedBy = _userRepository.GetUserById(callback.Acceptance.FormedById);
         callback.Acceptance.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.Acceptance.FormedBy.AuthorizationId);
-        callback.Acceptance.FormedBy.Shop = _shopRepository.GetShopById(callback.Acceptance.FormedBy.ShopId);
-        callback.Acceptance.Shop = _shopRepository.GetShopById(callback.Acceptance.ShopId);
-        callback.Product = _productRepository.GetProductById(callback.ProductId);
+        callback.Acceptance.FormedBy.Shop = await _shopRepository.GetShopById(callback.Acceptance.FormedBy.ShopId);
+        callback.Acceptance.Shop = await _shopRepository.GetShopById(callback.Acceptance.ShopId);
+        callback.Product = await _productRepository.GetProductById(callback.ProductId);
 
         var result = _mapper.MapAcceptanceProductDtoToAcceptanceProduct(callback);
 
         return result;
     }
 
-    public Acceptance UpdateAcceptance(Acceptance acceptance)
+    public async Task<Acceptance> UpdateAcceptance(Acceptance acceptance)
     {
         if (!_acceptanceRepository.IsAcceptanceExist(acceptance.Id))
             throw new ObjectNotExistException("Acceptance", acceptance.Id);
@@ -115,18 +115,18 @@ public class AcceptanceManager : IAcceptanceManager
 
         callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
         callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
-        callback.SignedBy.Shop = _shopRepository.GetShopById(callback.SignedBy.ShopId);
+        callback.SignedBy.Shop =await _shopRepository.GetShopById(callback.SignedBy.ShopId);
         callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
         callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
-        callback.FormedBy.Shop = _shopRepository.GetShopById(callback.FormedBy.ShopId);
-        callback.Shop = _shopRepository.GetShopById(callback.ShopId);
+        callback.FormedBy.Shop =await _shopRepository.GetShopById(callback.FormedBy.ShopId);
+        callback.Shop =await _shopRepository.GetShopById(callback.ShopId);
 
         var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
 
         return result;
     }
 
-    public Acceptance GetAcceptanceById(int id)
+    public async Task<Acceptance> GetAcceptanceById(int id)
     {
         if (!_acceptanceRepository.IsAcceptanceExist(id))
             throw new ObjectNotExistException("Acceptance", id);
@@ -135,24 +135,24 @@ public class AcceptanceManager : IAcceptanceManager
 
         callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
         callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
-        callback.SignedBy.Shop = _shopRepository.GetShopById(callback.SignedBy.ShopId);
+        callback.SignedBy.Shop = await _shopRepository.GetShopById(callback.SignedBy.ShopId);
         callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
         callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
-        callback.FormedBy.Shop = _shopRepository.GetShopById(callback.FormedBy.ShopId);
-        callback.Shop = _shopRepository.GetShopById(callback.ShopId);
+        callback.FormedBy.Shop = await _shopRepository.GetShopById(callback.FormedBy.ShopId);
+        callback.Shop = await _shopRepository.GetShopById(callback.ShopId);
 
         var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
         
         return result;
     }
 
-    public IEnumerable<AcceptanceProduct> GetAllProductFromAcceptanceById(int id)
+    public async Task<IEnumerable<AcceptanceProduct>> GetAllProductFromAcceptanceById(int id)
     {
         var callback = _acceptanceRepository.GetAllProductFromAcceptanceById(id);
 
         foreach (var line in callback)
         {
-            line.Product = _productRepository.GetProductById(line.ProductId);
+            line.Product =await _productRepository.GetProductById(line.ProductId);
         }
 
         var result = _mapper.MapAcceptanceProductDtoListToAcceptanceProductList(callback);

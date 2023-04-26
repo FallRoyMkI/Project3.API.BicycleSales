@@ -43,8 +43,9 @@ public class AcceptanceRepository : IAcceptanceRepository
 
     public AcceptanceProductDto UpdateProductInAcceptance(AcceptanceProductDto acceptanceProduct)
     {
-        var update = _context.AcceptanceProducts.ToList().Find(x => x.ProductId == acceptanceProduct.ProductId && x.AcceptanceId == acceptanceProduct.AcceptanceId);
-        if (update is null) throw new ArgumentException("Cannot find acceptanceProduct with such Id");
+        var update = _context.AcceptanceProducts.ToList().
+            Find(x => x.ProductId == acceptanceProduct.ProductId 
+                      && x.AcceptanceId == acceptanceProduct.AcceptanceId)!;
 
         update.FactProductCount = acceptanceProduct.FactProductCount;
         _context.SaveChanges();

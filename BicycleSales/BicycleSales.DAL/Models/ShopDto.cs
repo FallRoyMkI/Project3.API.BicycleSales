@@ -10,15 +10,7 @@ public class ShopDto
     public string Name { get; set; }
     public string Location { get; set; }
 
-        public bool IsDeleted { get; set; }
-        public override bool Equals(object? obj)
-        {
-            return obj is ShopDto shop &&
-                   Id == shop.Id &&
-                   Name == shop.Name &&
-                   Location == shop.Location;
-        }
-    }
+    public override bool Equals(object? obj)
     {
         return obj is ShopDto shop &&
                Id == shop.Id &&

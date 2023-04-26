@@ -7,7 +7,7 @@ public interface IUserManager
     public Authorization CreateAnAccount(Authorization auth);
     public Authorization UpdateAccountInfo(Authorization auth);
 
-    public User AddUserInfo(User user);
+    public Task<User> AddUserInfo(User user);
     public User UpdateUserInfo(User user);
 
     public User GetUserById(int id);

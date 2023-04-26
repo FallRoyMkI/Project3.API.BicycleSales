@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using BicycleSales.BLL.Interfaces;
-using BicycleSales.BLL.Models;
-using BicycleSales.BLL;
-using Microsoft.AspNetCore.Mvc;
 using BicycleSales.API.Models.Shop.Request;
 using BicycleSales.API.Models.Shop.Response;
-using BicycleSales.API.Models.Product.Response;
+using BicycleSales.BLL;
+using BicycleSales.BLL.Interfaces;
+using BicycleSales.BLL.Models;
 using BicycleSales.Constants.CustomExceptions.Shop;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
 {
@@ -33,7 +32,7 @@ namespace BicycleSales.API.Controllers
                 _logger.Log(LogLevel.Information, "Received a request to create a shop");
 
                 var shop = _mapper.Map<Shop>(shopAddRequest);
-                var callback = await ((ShopManager)_shopManager).CreateNewShop(shop);
+                var callback = ((ShopManager)_shopManager).CreateNewShop(shop);
                 var result = _mapper.Map<ShopResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the shop when creating", result);
@@ -73,7 +72,7 @@ namespace BicycleSales.API.Controllers
         [HttpGet("get-shop-{id}", Name = "GetShopById")]
         public async Task<IActionResult> GetShopById([FromRoute] int id)
         {
-            try 
+            try
             {
                 _logger.Log(LogLevel.Information, "Received a request for the get of shop");
 
@@ -92,26 +91,5 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpDelete("delete-shop-{id}", Name = "DeleteShop")]
-        public async Task<IActionResult> DeleteShop(int id)
-        {
-            try
-            {
-                _logger.Log(LogLevel.Information, "Received a request to delete a shop");
-
-                var callback = await ((ShopManager)_shopManager).DeleteShop(id);
-                var result = _mapper.Map<ShopResponse>(callback);
-
-                _logger.Log(LogLevel.Information, "Received the shop when deleting", result);
-
-                return Ok(result);
-            }
-            catch (ShopException ex)
-            {
-                _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
-                return Ok(ex.Message);
-            }
-        }
     }
 }

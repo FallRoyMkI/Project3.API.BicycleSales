@@ -42,12 +42,12 @@ public class UserManager : IUserManager
         return result;
     }
 
-    public User AddUserInfo(User user)
+    public async Task<User> AddUserInfo(User user)
     {
         var dto = _mapper.MapUserToUserDto(user);
         var callback = _userRepository.AddUserInfo(dto);
         dto.Authorization = _userRepository.GetAuthorizationById(user.AuthorizationId);
-        dto.Shop = _shopRepository.GetShopById(user.ShopId);
+        dto.Shop = await _shopRepository.GetShopById(user.ShopId);
         var result = _mapper.MapUserDtoToUser(callback);
 
         return result;

@@ -20,7 +20,7 @@ namespace BicycleSales.BLL
         public async Task<Product> CreateProduct(Product prodcut)
         {
             var productDto = _mapper.MapProductToProductDto(prodcut);
-            var callback = await ((ProductRepository)_productRepository).CreateProduct(productDto);
+            var callback =await ((ProductRepository)_productRepository).CreateProduct(productDto);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
