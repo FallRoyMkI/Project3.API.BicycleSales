@@ -1,5 +1,6 @@
 using BicycleSales.API;
 using BicycleSales.API.MapperProfiles;
+using BicycleSales.API.Validation;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
@@ -19,6 +20,8 @@ builder.Services.AddSingleton<Context>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
+
+builder.Services.AddScoped<ProductValidator>();
 
 builder.Services.AddAutoMapper(typeof(MapperApiAuthorizationProfile), typeof(MapperApiUserProfile), typeof(MapperAPI), typeof(MapperApiShopProfile));
 

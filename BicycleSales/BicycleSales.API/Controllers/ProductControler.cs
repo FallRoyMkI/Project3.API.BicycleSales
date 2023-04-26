@@ -1,13 +1,15 @@
-﻿using AutoMapper;
-using BicycleSales.API.Models.Product.Request;
+﻿using BicycleSales.API.Models.Product.Request;
 using BicycleSales.API.Models.Product.Response;
 using BicycleSales.API.Models.ProductTag.Request;
 using BicycleSales.API.Models.Tag.Request;
 using BicycleSales.API.Models.Tag.Response;
-using BicycleSales.BLL;
+using BicycleSales.API.Validation;
 using BicycleSales.BLL.Interfaces;
-using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
+using BicycleSales.BLL.Models;
+using BicycleSales.BLL;
+using AutoMapper;
+using Azure.Core;
 
 
 namespace BicycleSales.API.Controllers
@@ -19,12 +21,14 @@ namespace BicycleSales.API.Controllers
         private readonly IMapper _mapper;
         private readonly IProductManager _productManager;
         private readonly ILogger<ProductControler> _logger;
+        private readonly ProductValidator _productValidator;
 
-        public ProductControler(IMapper mapper = null, IProductManager productManager = null, ILogger<ProductControler> logger = null)
+        public ProductControler(ProductValidator productValidator, IMapper mapper = null, IProductManager productManager = null, ILogger<ProductControler> logger = null)
         {
             _mapper = mapper; //?? new Mapper();
             _productManager = productManager ?? new ProductManager();
             _logger = logger;
+            _productValidator = productValidator;
         }
 
         [HttpPost("create-product", Name = "CreateProduct")]
@@ -32,6 +36,12 @@ namespace BicycleSales.API.Controllers
         {
             try
             {
+                var validationResult = _productValidator.Validate(productAddRequest);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.Errors);
+                }
+
                 _logger.Log(LogLevel.Information, "Received a request to create a product");
                 
                 var product = _mapper.Map<Product>(productAddRequest);
