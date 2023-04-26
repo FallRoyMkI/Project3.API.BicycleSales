@@ -10,7 +10,7 @@ using BicycleSales.BLL.Models;
 using BicycleSales.BLL;
 using AutoMapper;
 using Azure.Core;
-
+using BicycleSales.Constants.CustomExceptions.Product;
 
 namespace BicycleSales.API.Controllers
 {
@@ -52,7 +52,7 @@ namespace BicycleSales.API.Controllers
                 
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch(ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -74,7 +74,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -97,7 +97,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch(ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -119,7 +119,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(Exception ex) 
+            catch(ProductException ex) 
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -141,7 +141,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -164,7 +164,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch(ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -186,7 +186,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(Exception ex) 
+            catch(ProductException ex) 
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 

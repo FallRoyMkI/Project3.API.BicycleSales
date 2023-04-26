@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using BicycleSales.API.Models.Shop.Request;
 using BicycleSales.API.Models.Shop.Response;
 using BicycleSales.API.Models.Product.Response;
+using BicycleSales.Constants.CustomExceptions.Shop;
 
 namespace BicycleSales.API.Controllers
 {
@@ -39,7 +40,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ShopException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -61,7 +62,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ShopException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -83,7 +84,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ShopException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -105,7 +106,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ShopException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
