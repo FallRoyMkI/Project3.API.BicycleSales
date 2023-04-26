@@ -17,4 +17,5 @@ public interface IAcceptanceRepository
     public bool IsFactCountAlreadyAdded(int acceptanceId, int productId);
     public AcceptanceDto GetAcceptanceById(int id);
     public bool IsAcceptanceSigned(int id);
+    public IEnumerable<AcceptanceProductDto> GetAllProductFromAcceptanceById(int id);
 }

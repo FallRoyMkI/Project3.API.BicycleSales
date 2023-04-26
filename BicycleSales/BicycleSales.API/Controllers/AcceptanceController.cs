@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using BicycleSales.API.Models.Acceptance.Request;
-using BicycleSales.API.Models.Acceptance.Response;
+﻿using BicycleSales.API.Models.AcceptanceProduct.Response;
 using BicycleSales.API.Models.AcceptanceProduct.Request;
-using BicycleSales.API.Models.AcceptanceProduct.Response;
-using BicycleSales.BLL;
+using BicycleSales.API.Models.Acceptance.Response;
+using BicycleSales.API.Models.Acceptance.Request;
 using BicycleSales.BLL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using BicycleSales.BLL.Models;
 using BicycleSales.Constants;
-using Microsoft.AspNetCore.Mvc;
+using BicycleSales.BLL;
+using AutoMapper;
 
 namespace BicycleSales.API.Controllers;
 
@@ -130,6 +130,26 @@ public class AcceptanceController : ControllerBase
         catch (Exception ex)
         {
             return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+        }
+    }
+
+    [HttpGet("get-acceptance-{id}")]
+    public IActionResult GetAcceptanceById([FromRoute] int id)
+    {
+        try
+        {
+            var callback = _acceptanceManager.GetAcceptanceById(id);
+            var result = _mapper.Map<FullAcceptanceInfoResponse>(callback);
+
+            var productsCallback = _acceptanceManager.GetAllProductFromAcceptanceById(id);
+            var products = _mapper.Map<IEnumerable<AcceptanceProductLowInfoResponse>>(productsCallback);
+            result.Products = products.ToList(); 
+
+            return Ok(result);
+        }
+        catch (ObjectNotExistException ex)
+        {
+            return Ok($"{ex.Message}");
         }
     }
 }

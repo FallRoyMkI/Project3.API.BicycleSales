@@ -79,4 +79,9 @@ public class AcceptanceRepository : IAcceptanceRepository
     {
         return _context.Acceptances.ToList().Exists(x => x.Id == id && x.SignedById is not null);
     }
+
+    public IEnumerable<AcceptanceProductDto> GetAllProductFromAcceptanceById(int id)
+    {
+        return _context.AcceptanceProducts.ToList().FindAll(x => x.AcceptanceId == id);
+    }
 }

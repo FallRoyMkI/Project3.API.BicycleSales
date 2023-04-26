@@ -3,6 +3,7 @@ using BicycleSales.BLL.Models;
 using BicycleSales.Constants;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Interfaces;
+using BicycleSales.DAL.Models;
 
 namespace BicycleSales.BLL;
 
@@ -122,6 +123,39 @@ public class AcceptanceManager : IAcceptanceManager
 
         var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
 
+        return result;
+    }
+
+    public Acceptance GetAcceptanceById(int id)
+    {
+        if (!_acceptanceRepository.IsAcceptanceExist(id))
+            throw new ObjectNotExistException("Acceptance", id);
+
+        var callback = _acceptanceRepository.GetAcceptanceById(id);
+
+        callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
+        callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
+        callback.SignedBy.Shop = _shopRepository.GetShopById(callback.SignedBy.ShopId);
+        callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
+        callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
+        callback.FormedBy.Shop = _shopRepository.GetShopById(callback.FormedBy.ShopId);
+        callback.Shop = _shopRepository.GetShopById(callback.ShopId);
+
+        var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
+        
+        return result;
+    }
+
+    public IEnumerable<AcceptanceProduct> GetAllProductFromAcceptanceById(int id)
+    {
+        var callback = _acceptanceRepository.GetAllProductFromAcceptanceById(id);
+
+        foreach (var line in callback)
+        {
+            line.Product = _productRepository.GetProductById(line.ProductId);
+        }
+
+        var result = _mapper.MapAcceptanceProductDtoListToAcceptanceProductList(callback);
         return result;
     }
 }

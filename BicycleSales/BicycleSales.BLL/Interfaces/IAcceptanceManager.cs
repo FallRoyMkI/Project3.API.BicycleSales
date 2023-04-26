@@ -11,4 +11,7 @@ public interface IAcceptanceManager
     public AcceptanceProduct AddProductToAcceptance(AcceptanceProduct acceptanceProduct);
 
     public AcceptanceProduct UpdateProductInAcceptance(AcceptanceProduct acceptanceProduct);
+    
+    public Acceptance GetAcceptanceById(int id);
+    public IEnumerable<AcceptanceProduct> GetAllProductFromAcceptanceById(int id);
 }

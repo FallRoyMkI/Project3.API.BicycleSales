@@ -29,4 +29,7 @@ public interface IMapperBLL
 
     public ShopDto MapShopToShopDto(Shop shop);
     public Shop MapShopDtoToShop(ShopDto shopDto);
+
+    public IEnumerable<AcceptanceProduct> MapAcceptanceProductDtoListToAcceptanceProductList(
+        IEnumerable<AcceptanceProductDto> dtos);
 }
