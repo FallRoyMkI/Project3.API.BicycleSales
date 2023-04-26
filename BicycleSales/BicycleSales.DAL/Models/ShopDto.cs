@@ -1,18 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace BicycleSales.DAL.Models
+namespace BicycleSales.DAL.Models;
+
+public class ShopDto
 {
-    public class ShopDto
-    {
-        [Key]
-        public int Id { get; set; }
-        
-        [Required]
-        public string Name { get; set; }
+    [Key]
+    public int Id { get; set; }
 
-        [Required]
-        public string Location { get; set; }
+    public string Name { get; set; }
+    public string Location { get; set; }
 
         public bool IsDeleted { get; set; }
         public override bool Equals(object? obj)
@@ -23,21 +19,10 @@ namespace BicycleSales.DAL.Models
                    Location == shop.Location;
         }
     }
-
-    public class ShopProductDto
     {
-        [Key]
-        public int Id { get; set; }
-        public int ProductCount { get; set; }
-
-        public int ShopId { get; set; }
-
-        [ForeignKey(nameof(ShopId))]
-        public virtual ShopDto Shop { get; set; }
-
-        public int ProductId { get; set; }
-
-        [ForeignKey(nameof(ProductId))]
-        public virtual ProductDto Product { get; set; }
+        return obj is ShopDto shop &&
+               Id == shop.Id &&
+               Name == shop.Name &&
+               Location == shop.Location;
     }
 }

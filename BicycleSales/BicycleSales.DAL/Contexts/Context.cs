@@ -1,11 +1,5 @@
-﻿using BicycleSales.DAL.Models;
-using Microsoft.EntityFrameworkCore;
-//using System.Data.Entity.ModelConfiguration.Conventions;
-//// add a reference to System.ComponentModel.DataAnnotations DLL
-//using System.ComponentModel.DataAnnotations;
-//using System.Collections.Generic;
-//using System;
-//using Newtonsoft.Json.Serialization;
+﻿using Microsoft.EntityFrameworkCore;
+using BicycleSales.DAL.Models;
 
 namespace BicycleSales.DAL.Contexts;
 
@@ -30,9 +24,8 @@ public class Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        builder.UseSqlServer(@"Data Source=DESKTOP-MH87Q5L\SQLEXPRESS;
+        builder.UseSqlServer(@"Data Source=DESKTOP-62LIE27;
                                                 Initial Catalog = VELIKI; TrustServerCertificate=True;Integrated Security=SSPI",
                              builder => builder.EnableRetryOnFailure());
     }
-
 }

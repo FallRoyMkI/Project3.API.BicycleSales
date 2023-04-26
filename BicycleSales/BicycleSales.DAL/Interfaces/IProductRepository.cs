@@ -1,4 +1,4 @@
-﻿using BicycleSales.DAL.Models;
+using BicycleSales.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

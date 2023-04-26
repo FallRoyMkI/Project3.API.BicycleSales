@@ -1,6 +1,7 @@
 ﻿using BicycleSales.BLL.Interfaces;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.BLL.Models;
+using BicycleSales.Constants;
 using BicycleSales.DAL;
 
 
@@ -10,11 +11,14 @@ public class UserManager : IUserManager
 {
     private readonly IMapperBLL _mapper;
     private readonly IUserRepository _userRepository;
+    private readonly IShopRepository _shopRepository;
+    
 
-    public UserManager(IMapperBLL mapper = null, IUserRepository userRepository = null)
+    public UserManager(IMapperBLL mapper = null, IUserRepository userRepository = null, IShopRepository shopRepository = null)
     {
         _mapper = mapper ?? new MapperBLL();
         _userRepository = userRepository ?? new UserRepository();
+        _shopRepository = shopRepository ?? new ShopRepository();
     }
 
     public Authorization CreateAnAccount(Authorization auth)
@@ -42,6 +46,8 @@ public class UserManager : IUserManager
     {
         var dto = _mapper.MapUserToUserDto(user);
         var callback = _userRepository.AddUserInfo(dto);
+        dto.Authorization = _userRepository.GetAuthorizationById(user.AuthorizationId);
+        dto.Shop = _shopRepository.GetShopById(user.ShopId);
         var result = _mapper.MapUserDtoToUser(callback);
 
         return result;
@@ -54,8 +60,11 @@ public class UserManager : IUserManager
 
         return result;
     }
+
     public User GetUserById(int id)
     {
+        if (!_userRepository.IsUserExist(id)) throw new ObjectNotExistException("User",id);
+
         var callback = _userRepository.GetUserById(id);
         var result = _mapper.MapUserDtoToUser(callback);
 

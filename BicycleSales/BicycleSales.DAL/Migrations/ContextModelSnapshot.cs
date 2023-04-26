@@ -30,7 +30,7 @@ namespace BicycleSales.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("FactTime")
+                    b.Property<DateTime?>("FactTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("FormedById")
@@ -42,7 +42,8 @@ namespace BicycleSales.DAL.Migrations
                     b.Property<int>("ShopId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SignedById")
+                    b.Property<int?>("SignedById")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -94,14 +95,12 @@ namespace BicycleSales.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Login")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -438,19 +437,19 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.UserDto", "FormedBy")
                         .WithMany()
                         .HasForeignKey("FormedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ShopDto", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.UserDto", "SignedBy")
                         .WithMany()
                         .HasForeignKey("SignedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("FormedBy");
@@ -465,13 +464,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.AcceptanceDto", "Acceptance")
                         .WithMany()
                         .HasForeignKey("AcceptanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ProductDto", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Acceptance");
@@ -484,13 +483,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.ShopDto", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.UserDto", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Shop");
@@ -503,13 +502,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.OrderDto", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ProductDto", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -522,13 +521,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.ProductDto", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.TagDto", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -541,19 +540,19 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.AcceptanceDto", "Acceptance")
                         .WithMany()
                         .HasForeignKey("AcceptanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.FactoryDto", "Factory")
                         .WithMany()
                         .HasForeignKey("FactoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ShipmentDto", "Shipment")
                         .WithMany()
                         .HasForeignKey("ShipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Acceptance");
@@ -568,19 +567,19 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.UserDto", "FormedBy")
                         .WithMany()
                         .HasForeignKey("FormedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ShopDto", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.UserDto", "SignedBy")
                         .WithMany()
                         .HasForeignKey("SignedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("FormedBy");
@@ -595,13 +594,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.ProductDto", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ShipmentDto", "Shipment")
                         .WithMany()
                         .HasForeignKey("ShipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -614,13 +613,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.ProductDto", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ShopDto", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -633,13 +632,13 @@ namespace BicycleSales.DAL.Migrations
                     b.HasOne("BicycleSales.DAL.Models.AuthorizationDto", "Authorization")
                         .WithMany()
                         .HasForeignKey("AuthorizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BicycleSales.DAL.Models.ShopDto", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Authorization");

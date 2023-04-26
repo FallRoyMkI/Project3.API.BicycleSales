@@ -1,4 +1,4 @@
-﻿using BicycleSales.DAL.Models;
+using BicycleSales.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +13,6 @@ namespace BicycleSales.DAL.Interfaces
         public Task<IEnumerable<ShopDto>> GetAllShops();
         public Task<ShopDto> GetShopById(int id);
         public Task<ShopDto> DeleteShop(int id);
+        public bool IsShopExist(int id);
     }
 }

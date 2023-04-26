@@ -1,22 +1,17 @@
-﻿
-namespace BicycleSales.BLL.Models
+﻿namespace BicycleSales.BLL.Models;
+
+public class Product
 {
-    public class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Cost { get; set; }
-    }
+    public int Id { get; set; }
 
-    public class ProductTag
-    {
-        public Product Product { get; set; }
-        public Tag Tag { get; set; }
-    }
+    public string Name { get; set; }
+    public int Cost { get; set; }
 
-    public class Tag
+    public override bool Equals(object? obj)
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        return obj is Product product &&
+               Id == product.Id &&
+               Name == product.Name &&
+               Cost == product.Cost;
     }
 }

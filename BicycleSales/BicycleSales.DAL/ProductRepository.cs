@@ -1,4 +1,4 @@
-﻿using BicycleSales.Constants.CustomExceptions;
+using BicycleSales.Constants.CustomExceptions;
 using BicycleSales.Constants.CustomExceptions.Product;
 using BicycleSales.Constants.CustomExceptions.ProductTag;
 using BicycleSales.Constants.CustomExceptions.Tag;
@@ -31,6 +31,7 @@ namespace BicycleSales.DAL
             }
             else
             {
+                product.IsDeleted = false;
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 return _context.Products.Single(p => p.Id == product.Id);
@@ -169,6 +170,11 @@ namespace BicycleSales.DAL
                 else if (existingTag is null) { throw new TagException($"Тэга с existingTag:{existingTag} не существует"); }
                 else { throw new ProductTagException($"Продукта с productId:{productId} не существует и Тэга с existingTag:{existingTag} не существует"); }
             }
+        }
+
+        public bool IsProductExist(int id)
+        {
+            return _context.Products.ToList().Exists(x => x.Id == id && x.IsDeleted == false);
         }
     }
 }

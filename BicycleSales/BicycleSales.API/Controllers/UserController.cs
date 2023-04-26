@@ -133,9 +133,13 @@ public class UserController : ControllerBase
             var result = _mapper.Map<UserResponse>(user);
             return Ok(result);
         }
+        catch (ObjectNotExistException ex)
+        {
+            return Ok($"{ex.Message}");
+        }
         catch (Exception ex)
         {
-            return Ok();
+            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
         }
     }
 }
