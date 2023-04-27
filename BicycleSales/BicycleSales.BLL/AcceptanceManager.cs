@@ -67,7 +67,7 @@ public class AcceptanceManager : IAcceptanceManager
         callback.Acceptance.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.Acceptance.FormedBy.AuthorizationId);
         callback.Acceptance.FormedBy.Shop = await _shopRepository.GetShopById(callback.Acceptance.FormedBy.ShopId);
         callback.Acceptance.Shop = await _shopRepository.GetShopById(callback.Acceptance.ShopId);
-        callback.Product = await _productRepository.GetProductById(callback.ProductId);
+        callback.Product = await _productRepository.GetProductByIdAsync(callback.ProductId);
 
         var result = _mapper.MapAcceptanceProductDtoToAcceptanceProduct(callback);
 
@@ -93,7 +93,7 @@ public class AcceptanceManager : IAcceptanceManager
         callback.Acceptance.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.Acceptance.FormedBy.AuthorizationId);
         callback.Acceptance.FormedBy.Shop = await _shopRepository.GetShopById(callback.Acceptance.FormedBy.ShopId);
         callback.Acceptance.Shop = await _shopRepository.GetShopById(callback.Acceptance.ShopId);
-        callback.Product = await _productRepository.GetProductById(callback.ProductId);
+        callback.Product = await _productRepository.GetProductByIdAsync(callback.ProductId);
 
         var result = _mapper.MapAcceptanceProductDtoToAcceptanceProduct(callback);
 
@@ -152,7 +152,7 @@ public class AcceptanceManager : IAcceptanceManager
 
         foreach (var line in callback)
         {
-            line.Product =await _productRepository.GetProductById(line.ProductId);
+            line.Product =await _productRepository.GetProductByIdAsync(line.ProductId);
         }
 
         var result = _mapper.MapAcceptanceProductDtoListToAcceptanceProductList(callback);

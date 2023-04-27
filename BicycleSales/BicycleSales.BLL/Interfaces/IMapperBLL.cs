@@ -56,8 +56,15 @@ public interface IMapperBLL
 
     public Shop MapShopDtoToShop(ShopDto shopDto);
 
-    public IEnumerable<Shop> MapListShopDtoToListShop(IEnumerable<ShopDto> shopsDto);
+    public IEnumerable<ShopProduct> MapListShopProductDtoToListShopProduct(IEnumerable<ShopProductDto> shopProductsDto);
 
     public IEnumerable<AcceptanceProduct> MapAcceptanceProductDtoListToAcceptanceProductList(
         IEnumerable<AcceptanceProductDto> dtos);
+    public IEnumerable<Tag> MapListTagDtoToListTag(IEnumerable<TagDto> tagsDto);
+
+
+    public ShopProduct MapShopProductDtoToShopProduct(ShopProductDto shopProductDto);
+    public ShopProductDto MapShopProductToShopProductDto(ShopProduct shopProductDto);
+    public IEnumerable<Shop> MapListShopDtoToListShop(IEnumerable<ShopDto> shopsDto);
+
 }

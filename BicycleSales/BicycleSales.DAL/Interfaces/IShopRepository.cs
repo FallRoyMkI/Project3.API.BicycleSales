@@ -13,5 +13,7 @@ namespace BicycleSales.DAL.Interfaces
         public Task<IEnumerable<ShopDto>> GetAllShops();
         public Task<ShopDto> GetShopById(int id);
         public bool IsShopExist(int id);
+        public Task<IEnumerable<ShopProductDto>> GetAllProductsByShopId(int id);
+        public Task<ShopProductDto> AddProductInShopAsync(ShopProductDto shop);
     }
 }

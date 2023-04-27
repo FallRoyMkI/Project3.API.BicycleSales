@@ -12,6 +12,10 @@ using BicycleSales.BLL;
 using AutoMapper;
 using Azure.Core;
 using BicycleSales.Constants.CustomExceptions.Product;
+using BicycleSales.Constants.CustomExceptions.ProductTag;
+using BicycleSales.Constants.CustomExceptions.Tag;
+using FluentValidation;
+using System.Net.WebSockets;
 
 namespace BicycleSales.API.Controllers
 {
@@ -26,14 +30,14 @@ namespace BicycleSales.API.Controllers
 
         public ProductController(ProductValidator productValidator, IMapper mapper = null, IProductManager productManager = null, ILogger<ProductController> logger = null)
         {
-            _mapper = mapper; //?? new Mapper();
+            _mapper = mapper; 
             _productManager = productManager ?? new ProductManager();
             _logger = logger;
             _productValidator = productValidator;
         }
 
         [HttpPost("create-product", Name = "CreateProduct")]
-        public async Task<IActionResult> CreateProduct(ProductAddRequest productAddRequest)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductAddRequest productAddRequest)
         {
             try
             {
@@ -46,7 +50,7 @@ namespace BicycleSales.API.Controllers
                 _logger.Log(LogLevel.Information, "Received a request to create a product");
                 
                 var product = _mapper.Map<Product>(productAddRequest);
-                var callback = await ((ProductManager)_productManager).CreateProduct(product);
+                var callback = await ((ProductManager)_productManager).CreateProductAsync(product);
                 var result = _mapper.Map<ProductResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the product when creating", result);
@@ -84,14 +88,21 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpPut("update-product", Name = "UpdateProduct")]
-        public async Task<IActionResult> UpdateProduct(ProductUpdateRequest productUpdateRequest)
+        public async Task<IActionResult> UpdateProductAsync([FromQuery] ProductUpdateRequest productUpdateRequest)
         {
             try
             {
+                ProductAddRequest productValidate = new ProductAddRequest() { Name = productUpdateRequest.Name, Cost = productUpdateRequest.Cost };
+                var validationResult = _productValidator.Validate(productValidate);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.Errors);
+                }
+
                 _logger.Log(LogLevel.Information, "Received a request to update a product");
 
                 var product = _mapper.Map<Product>(productUpdateRequest);
-                var callback = await ((ProductManager)_productManager).UpdateProduct(product);
+                var callback = await ((ProductManager)_productManager).UpdateProductAsync(product);
                 var result = _mapper.Map<ProductResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the product when updating", result);
@@ -107,13 +118,13 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpDelete("{id}", Name = "DeleteProduct")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProductAsync([FromQuery] int id)
         {
             try
             {
                 _logger.Log(LogLevel.Information, "Received a request to delete a product");
 
-                var callback = await ((ProductManager)_productManager).DeleteProduct(id);
+                var callback = await ((ProductManager)_productManager).DeleteProductAsync(id);
                 var result = _mapper.Map<ProductResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the product when deleting", result);
@@ -129,13 +140,13 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpGet("get-product-{id}", Name = "GetProductById")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductByIdAsync([FromRoute] int id)
         {
             try
             {
                 _logger.Log(LogLevel.Information, "Received a request for the get of product");
 
-                var product = await ((ProductManager)_productManager).GetProductById(id);
+                var product = await ((ProductManager)_productManager).GetProductByIdAsync(id);
                 var result = _mapper.Map<ProductResponse>(product);
 
                 _logger.Log(LogLevel.Information, "Received the product upon request of get", result);
@@ -151,21 +162,21 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpPost("create-tag",Name = "CreateTag")]
-        public async Task<IActionResult> CreateTag(TagAddRequest tagAddRequest)
+        public async Task<IActionResult> CreateTagAsync([FromBody] TagAddRequest tagAddRequest)
         {
             try
             {
                 _logger.Log(LogLevel.Information, "Received a request to create a tag");
 
                 var tag = _mapper.Map<Tag>(tagAddRequest);
-                var callback = await ((ProductManager)_productManager).CreateTag(tag);
+                var callback = await ((ProductManager)_productManager).CreateTagAsync(tag);
                 var result = _mapper.Map<TagResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the tag when creating", result);
 
                 return Ok(result);
             }
-            catch(ProductException ex)
+            catch(TagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -174,20 +185,94 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpPost("add-productTag-{productId}-{tagId}", Name = "AddProductTag")]
-        public async Task<IActionResult> AddProductTag(int productId, int tagId)
+        public async Task<IActionResult> AddProductTagAsync(int productId, int tagId)
         {
             try
             {
                 _logger.Log(LogLevel.Information, "Received a request to add a productTag");
 
-                var callback = await ((ProductManager)_productManager).AddProductTag(productId, tagId);
+                var callback = await ((ProductManager)_productManager).AddProductTagAsync(productId, tagId);
                 var result = _mapper.Map<ProductTagResponse>(callback);
 
-                _logger.Log(LogLevel.Information, "Received the productTag when adding", result);
+                _logger.Log(LogLevel.Information, "Received the productTag when AddProductTagAsync", result);
 
                 return Ok(result);
             }
             catch(ProductException ex) 
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (ProductTagException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (TagException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpGet("get-all-tags-by-product-id", Name = "GetAllTagsByProductId")]
+        public async Task<IActionResult> GetAllTagsByProductIdAsync( int? productId)
+        {
+            try
+            {
+                _logger.Log(LogLevel.Information, "Received a request for the get of tags");
+
+                var listTags = await ((ProductManager)_productManager).GetAllTagsAsync(productId);
+                var result = _mapper.Map<IEnumerable<TagResponse>>(listTags);
+
+                _logger.Log(LogLevel.Information, "Received the tags upon request of GetAllTagsByProductIdAsync", result);
+
+                return Ok(result);
+            }
+            catch (ProductException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (ProductTagException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (TagException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpGet("get-all-products-by-{tagId}", Name = "GetAllProductsByTagIdAsync")]
+        public async Task<IActionResult> GetAllProductsByTagIdAsync(int tagId)
+        {
+            try
+            {
+                _logger.Log(LogLevel.Information, "Received a request for the get of products");
+
+                var listProducts = await ((ProductManager)_productManager).GetAllProductsByTagIdAsync(tagId);
+                var result = _mapper.Map<IEnumerable<ProductResponse>>(listProducts);
+
+                _logger.Log(LogLevel.Information, "Received the products upon request of GetAllProductsByTagIdAsync", result);
+
+                return Ok(result);
+            }
+            catch (ProductTagException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (TagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 

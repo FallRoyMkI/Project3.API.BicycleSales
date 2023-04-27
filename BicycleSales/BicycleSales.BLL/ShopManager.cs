@@ -1,7 +1,7 @@
 ﻿using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
-using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL;
+using BicycleSales.DAL.Interfaces;
 
 namespace BicycleSales.BLL
 {
@@ -40,6 +40,20 @@ namespace BicycleSales.BLL
 
             return result;
         }
+        public async Task<IEnumerable<ShopProduct>> GetAllProductsByShopId(int id)
+        {
+            var shopsDto = await ((ShopRepository)_shopRepository).GetAllProductsByShopId(id);
+            var result = _mapper.MapListShopProductDtoToListShopProduct(shopsDto);
 
+            return result;
+        }
+        public async Task<ShopProduct> AddProductInShopAsync(ShopProduct shopProduct)
+        {
+            var shopProductDto = _mapper.MapShopProductToShopProductDto(shopProduct);
+            var callback = await ((ShopRepository)_shopRepository).AddProductInShopAsync(shopProductDto);
+            var result = _mapper.MapShopProductDtoToShopProduct(callback);
+
+            return result;
+        }
     }
 }

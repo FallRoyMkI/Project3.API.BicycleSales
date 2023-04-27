@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using BicycleSales.API.Models.Product.Response;
 using BicycleSales.API.Models.Shop.Request;
 using BicycleSales.API.Models.Shop.Response;
+using BicycleSales.API.Models.ShopProduct.Request;
+using BicycleSales.API.Models.ShopProduct.Response;
 using BicycleSales.BLL;
 using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
+using BicycleSales.Constants.CustomExceptions.Product;
 using BicycleSales.Constants.CustomExceptions.Shop;
+using BicycleSales.Constants.CustomExceptions.ShopProduct;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
@@ -91,5 +96,67 @@ namespace BicycleSales.API.Controllers
             }
         }
 
+        [HttpGet("get-all-products-by-{shopId}", Name = "GetAllProductsByShopId")]
+        public async Task<IActionResult> GetAllProductsByShopId([FromRoute] int shopId)
+        {
+            try
+            {
+                _logger.Log(LogLevel.Information, "Received a request for the get of products by shopId");
+
+                var products = await ((ShopManager)_shopManager).GetAllProductsByShopId(shopId);
+                var result = _mapper.Map<IEnumerable<ShopProductResponse>>(products);
+
+                _logger.Log(LogLevel.Information, "Received the products upon request of GetAllProductsByShopId ", result);
+
+                return Ok(result);
+            }
+            catch (ShopException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (ShopProductException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpPost("add-product-in-shop", Name = "AddProductInShopAsync")]
+        public async Task<IActionResult> AddProductInShopAsync([FromBody] ShopProductAddRequest shopProduct)
+        {
+            try
+            {
+                _logger.Log(LogLevel.Information, "Received a request to add a product in shop");
+
+                var shopProducts = _mapper.Map<ShopProduct>(shopProduct);
+                var callback = await ((ShopManager)_shopManager).AddProductInShopAsync(shopProducts);
+                var result = _mapper.Map<ShopProductResponse>(callback);
+
+                _logger.Log(LogLevel.Information, "Received the product in shop when adding", result);
+
+                return Ok(result);
+            }
+            catch (ShopProductException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (ShopException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+            catch (ProductException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return Ok(ex.Message);
+            }
+        }
     }
 }

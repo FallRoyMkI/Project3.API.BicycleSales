@@ -36,7 +36,9 @@ public class MapperBLL : IMapperBLL
 
                 cfg.CreateMap<ProductTagDto, ProductTag>().ReverseMap();
 
-                cfg.CreateMap<Shop, ShopDto>().ReverseMap(); 
+                cfg.CreateMap<Shop, ShopDto>().ReverseMap();
+
+                cfg.CreateMap<ShopProduct, ShopProductDto>().ReverseMap();
 
             });
     }
@@ -127,9 +129,9 @@ public class MapperBLL : IMapperBLL
         return _cfg.CreateMapper().Map<Product>(productDto);
     }
 
-    public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto)
+    public IEnumerable<ShopProduct> MapListShopProductDtoToListShopProduct(IEnumerable<ShopProductDto> listShopProductsDto)
     {
-        return _cfg.CreateMapper().Map<IEnumerable<Product>>(listProductsDto);
+        return _cfg.CreateMapper().Map<IEnumerable<ShopProduct>>(listShopProductsDto);
     }
 
     public TagDto MapTagToTagDto(Tag tagBll)
@@ -168,5 +170,29 @@ public class MapperBLL : IMapperBLL
     public IEnumerable<AcceptanceProduct> MapAcceptanceProductDtoListToAcceptanceProductList(IEnumerable<AcceptanceProductDto> dtos)
     {
         return _cfg.CreateMapper().Map<IEnumerable<AcceptanceProduct>>(dtos);
+    }
+
+    public IEnumerable<Tag> MapListTagDtoToListTag(IEnumerable<TagDto> tagsDto)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<Tag>>(tagsDto);
+    }
+
+    public ShopProductDto MapShopProductToShopProductDto(ShopProduct shopProduct)
+    {
+        return _cfg.CreateMapper().Map<ShopProductDto>(shopProduct);
+    }
+    public ShopProduct MapShopProductDtoToShopProduct(ShopProductDto shopProductDto)
+    {
+        return _cfg.CreateMapper().Map<ShopProduct>(shopProductDto);
+    }
+
+    public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<Product>>(listProductsDto);
+    }
+
+    public IEnumerable<Shop> MapListShopProductDtoToListShopProduct(IEnumerable<ShopDto> shopsDto)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<Shop>>(shopsDto);
     }
 }

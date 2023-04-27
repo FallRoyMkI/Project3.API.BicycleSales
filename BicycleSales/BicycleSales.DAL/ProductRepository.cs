@@ -5,6 +5,8 @@ using BicycleSales.Constants.CustomExceptions.Tag;
 using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System.Data;
 
 namespace BicycleSales.DAL
@@ -18,7 +20,7 @@ namespace BicycleSales.DAL
             _context = context ?? new Context();
         }
 
-        public async Task<ProductDto> CreateProduct(ProductDto product)
+        public async Task<ProductDto> CreateProductAsync(ProductDto product)
         {
             if(_context.Products
                 .ToList().Find(p => p.Name == product.Name) is not null) 
@@ -53,7 +55,7 @@ namespace BicycleSales.DAL
             }
         }
 
-        public async Task<ProductDto> UpdateProduct(ProductDto product)
+        public async Task<ProductDto> UpdateProductAsync(ProductDto product)
         {
             var existingModel = _context.Products
                  .ToList().Find(p => p.Id == product.Id);
@@ -72,7 +74,7 @@ namespace BicycleSales.DAL
             }
         }
 
-        public async Task<ProductDto> DeleteProduct(int id)
+        public async Task<ProductDto> DeleteProductAsync(int id)
         {
             var existingModel = _context.Products
                 .ToList().Find(p => p.Id == id);
@@ -97,7 +99,7 @@ namespace BicycleSales.DAL
             }
         }
 
-        public async Task<ProductDto> GetProductById(int id)
+        public async Task<ProductDto> GetProductByIdAsync(int id)
         {
             var existingModel = _context.Products
                 .ToList().Find(p => p.Id == id);
@@ -119,7 +121,7 @@ namespace BicycleSales.DAL
             }
         }
 
-        public async Task<TagDto> CreateTag(TagDto tag)
+        public async Task<TagDto> CreateTagAsync(TagDto tag)
         {
             var _existingTag = _context.Tags
                 .ToList().Find(t => t.Name == tag.Name);
@@ -135,7 +137,7 @@ namespace BicycleSales.DAL
                 return _context.Tags.Single(t => t.Id == tag.Id);
             }
         }
-        public async Task<ProductTagDto> AddProductTag(int productId, int tagId)
+        public async Task<ProductTagDto> AddProductTagAsync(int productId, int tagId)
         {
             var existingProduct = _context.Products
                 .Where(p => p.IsDeleted == false).ToList().Find(p => p.Id == productId);
@@ -153,7 +155,7 @@ namespace BicycleSales.DAL
                     TagId = tagId
                 };
 
-                if (_context.ProductTags.Any(p => p == productTagDto))
+                if (_context.ProductTags.Any(p => p.Id == productTagDto.TagId && p.Id == productTagDto.ProductId))
                 {
                     throw new ProductTagException($"ProductTag с productId:{productId} и с tagId:{tagId} уже существует");;
                 }
@@ -172,6 +174,77 @@ namespace BicycleSales.DAL
             }
         }
 
+        public async Task<IEnumerable<TagDto>> GetAllTagsAsync(int? id)
+        {
+            if (id is not null)
+            {
+                if(!IsProductExist((int)id))
+                {
+                    throw new ProductException($"Продукта с id:{id} не существует или он удалён");
+                }
+
+                List<ProductTagDto> existingProductTags = _context.ProductTags
+                    .Include(t => t.Tag)
+                    .Where(p => p.ProductId == id)
+                    .ToList(); 
+
+                if (existingProductTags.Count() == 0)
+                {
+                    throw new ProductTagException($"Список тэгов с productId:{id} пуст");
+                }
+
+                List<TagDto> existingTags = new List<TagDto>();
+
+                foreach (var i in existingProductTags)
+                {
+                    existingTags.Add(i.Tag);
+                }
+
+                return existingTags;
+            }
+            else
+            {
+                var existingTags = _context.Tags.ToList();
+
+                if(existingTags.Count() == 0)
+                {
+                    throw new TagException("Список тэгов пуст");
+                }
+
+                return existingTags;
+            }
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetAllProductsByTagIdAsync(int id)
+        {
+            if(!IsTagtExist(id))
+            {
+                throw new TagException($"Тэга с id:{id} не существует");
+            }
+
+            List<ProductTagDto> existingProductTags = _context.ProductTags
+                .Include(t => t.Product)
+                .Where(p => p.TagId == id)
+                .ToList();
+
+            if (existingProductTags.Count() == 0)
+            {
+                throw new ProductTagException($"Список продуктов с tagId:{id} пуст");
+            }
+
+            List<ProductDto> existingProducts = new List<ProductDto>();
+
+            foreach (var i in existingProductTags)
+            {
+                existingProducts.Add(i.Product);
+            }
+
+            return existingProducts;
+        }
+        public bool IsTagtExist(int id)
+        {
+            return _context.Tags.ToList().Exists(x => x.Id == id);
+        }
         public bool IsProductExist(int id)
         {
             return _context.Products.ToList().Exists(x => x.Id == id && x.IsDeleted == false);

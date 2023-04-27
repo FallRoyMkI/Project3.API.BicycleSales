@@ -4,6 +4,7 @@ using BicycleSales.BLL.Models;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore.InMemory.Storage.Internal;
 
 namespace BicycleSales.BLL
 {
@@ -17,10 +18,10 @@ namespace BicycleSales.BLL
             _mapper = mapper ?? new MapperBLL();
             _productRepository = productRepository ?? new ProductRepository();
         }
-        public async Task<Product> CreateProduct(Product prodcut)
+        public async Task<Product> CreateProductAsync(Product prodcut)
         {
             var productDto = _mapper.MapProductToProductDto(prodcut);
-            var callback =await ((ProductRepository)_productRepository).CreateProduct(productDto);
+            var callback =await ((ProductRepository)_productRepository).CreateProductAsync(productDto);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
@@ -33,47 +34,61 @@ namespace BicycleSales.BLL
             
             return result;
         }
-
-        public async Task<Product> UpdateProduct(Product prodcut)
+        
+        public async Task<Product> UpdateProductAsync(Product prodcut)
         {
             var productDto = _mapper.MapProductToProductDto(prodcut);
-            var callback = await ((ProductRepository)_productRepository).UpdateProduct(productDto);
+            var callback = await ((ProductRepository)_productRepository).UpdateProductAsync(productDto);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
         }
 
-        public async Task<Product> DeleteProduct(int id)
+        public async Task<Product> DeleteProductAsync(int id)
         {
-            var callback = await ((ProductRepository)_productRepository).DeleteProduct(id);
+            var callback = await ((ProductRepository)_productRepository).DeleteProductAsync(id);
             var result = _mapper.MapProductDtoToProduct(callback);
 
             return result;
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            var productsDto = await ((ProductRepository)_productRepository).GetProductById(id);
+            var productsDto = await ((ProductRepository)_productRepository).GetProductByIdAsync(id);
             var result = _mapper.MapProductDtoToProduct(productsDto);
 
             return result;
         }
 
-        public async Task<Tag> CreateTag(Tag tag)
+        public async Task<Tag> CreateTagAsync(Tag tag)
         {
             var tagDto = _mapper.MapTagToTagDto(tag);
-            var callback = await ((ProductRepository)_productRepository).CreateTag(tagDto);
+            var callback = await ((ProductRepository)_productRepository).CreateTagAsync(tagDto);
             var result = _mapper.MapTagDtoToTag(callback);
 
             return result;
         }
-        public async Task<ProductTag> AddProductTag(int productId, int tagId)
+        public async Task<ProductTag> AddProductTagAsync(int productId, int tagId)
         {
-            var callback = await ((ProductRepository)_productRepository).AddProductTag(productId, tagId);
+            var callback = await ((ProductRepository)_productRepository).AddProductTagAsync(productId, tagId);
             var result = _mapper.MapProductTagDtoToProductTag(callback);
 
             return result;
         }
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync(int? id)
+        {
+            var tagsDto = await ((ProductRepository)_productRepository).GetAllTagsAsync(id);
+            var result = _mapper.MapListTagDtoToListTag(tagsDto);
 
+            return result;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsByTagIdAsync(int id)
+        {
+            var productsDto = await ((ProductRepository)_productRepository).GetAllProductsByTagIdAsync(id);
+            var result = _mapper.MapListProductDtoToListProduct(productsDto);
+
+            return result;
+        }
     }
 }
