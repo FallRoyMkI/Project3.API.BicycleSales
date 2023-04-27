@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BicycleSales.DAL.Models;
+﻿using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BicycleSales.DAL.Contexts;
 
@@ -20,12 +20,12 @@ public class Context : DbContext
     public DbSet<ShopProductDto> ShopProducts { get; set; }
     public DbSet<ShipmentAcceptanceDto> ShipmentAcceptances { get; set; }
     public DbSet<FactoryDto> Factory { get; set; }
-    
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        builder.UseSqlServer(@"Data Source=DESKTOP-62LIE27;
-                                                Initial Catalog = VELIKI; TrustServerCertificate=True;Integrated Security=SSPI",
-                             builder => builder.EnableRetryOnFailure());
+        builder.UseSqlServer(@"Data Source= 194.87.210.5;Initial Catalog = VELIKI;
+                                TrustServerCertificate=True;User ID = student;Password=qwe!23;", builder => builder.EnableRetryOnFailure());
+
     }
 }

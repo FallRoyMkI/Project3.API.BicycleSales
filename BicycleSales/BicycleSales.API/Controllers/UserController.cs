@@ -97,10 +97,10 @@ public class UserController : ControllerBase
 
 
     [HttpPost("add-user-info")]
-    public IActionResult AddUserInfo([FromBody] UserAddRequest userRequest)
+    public async Task<IActionResult> AddUserInfo([FromBody] UserAddRequest userRequest)
     {
         var user = _mapper.Map<User>(userRequest);
-        var callback = _userManager.AddUserInfo(user);
+        var callback = await _userManager.AddUserInfo(user);
         var result = _mapper.Map<UserResponse>(callback);
         return Ok(result);
     }

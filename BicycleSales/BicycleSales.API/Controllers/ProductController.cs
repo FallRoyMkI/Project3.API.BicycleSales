@@ -17,14 +17,14 @@ namespace BicycleSales.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductControler : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IProductManager _productManager;
-        private readonly ILogger<ProductControler> _logger;
+        private readonly ILogger<ProductController> _logger;
         private readonly ProductValidator _productValidator;
 
-        public ProductControler(ProductValidator productValidator, IMapper mapper = null, IProductManager productManager = null, ILogger<ProductControler> logger = null)
+        public ProductController(ProductValidator productValidator, IMapper mapper = null, IProductManager productManager = null, ILogger<ProductController> logger = null)
         {
             _mapper = mapper; //?? new Mapper();
             _productManager = productManager ?? new ProductManager();

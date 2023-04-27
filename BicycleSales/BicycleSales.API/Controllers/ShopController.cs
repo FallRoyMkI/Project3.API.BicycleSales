@@ -32,7 +32,7 @@ namespace BicycleSales.API.Controllers
                 _logger.Log(LogLevel.Information, "Received a request to create a shop");
 
                 var shop = _mapper.Map<Shop>(shopAddRequest);
-                var callback = ((ShopManager)_shopManager).CreateNewShop(shop);
+                var callback = await ((ShopManager)_shopManager).CreateNewShop(shop);
                 var result = _mapper.Map<ShopResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the shop when creating", result);
