@@ -20,7 +20,7 @@ public class UserController : ControllerBase
 
     public UserController(IMapper mapper = null, IUserManager userManager = null)
     {
-        _mapper = mapper; //?? new Mapper();
+        _mapper = mapper; 
         _userManager = userManager ?? new UserManager();
     }
 

@@ -20,7 +20,7 @@ public class AcceptanceController : ControllerBase
 
     public AcceptanceController(IMapper mapper = null, IAcceptanceManager acceptanceManager = null)
     {
-        _mapper = mapper; //?? new Mapper();
+        _mapper = mapper;
         _acceptanceManager = acceptanceManager ?? new AcceptanceManager();
     }
 

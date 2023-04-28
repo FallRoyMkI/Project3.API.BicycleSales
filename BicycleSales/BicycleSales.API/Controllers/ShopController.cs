@@ -24,7 +24,7 @@ namespace BicycleSales.API.Controllers
 
         public ShopController(IMapper mapper = null, IShopManager shopManager = null, ILogger<ShopController> logger = null)
         {
-            _mapper = mapper; //?? new Mapper();
+            _mapper = mapper; 
             _shopManager = shopManager ?? new ShopManager();
             _logger = logger;
         }

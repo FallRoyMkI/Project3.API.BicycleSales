@@ -19,7 +19,7 @@ public class OrderController : ControllerBase
 
     public OrderController(IMapper mapper = null, IOrderManager orderManager = null)
     {
-        _mapper = mapper; //?? new Mapper();
+        _mapper = mapper;
         _orderManager = orderManager ?? new OrderManager();
     }
 

@@ -19,7 +19,7 @@ public class ShipmentController : ControllerBase
 
     public ShipmentController(IMapper mapper = null, IShipmentManager shipmentManager = null)
     {
-        _mapper = mapper; //?? new Mapper();
+        _mapper = mapper;
         _shipmentManager = shipmentManager ?? new ShipmentManager();
     }
 
