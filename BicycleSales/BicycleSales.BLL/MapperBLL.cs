@@ -171,7 +171,11 @@ public class MapperBLL : IMapperBLL
     {
         return _cfg.CreateMapper().Map<IEnumerable<AcceptanceProduct>>(dtos);
     }
-
+    
+    public IEnumerable<ShipmentProduct> MapShipmentProductDtoListToShipmentProductList(IEnumerable<ShipmentProductDto> dtos)
+    {
+        return _cfg.CreateMapper().Map<IEnumerable<ShipmentProduct>>(dtos);
+    }
     public IEnumerable<Tag> MapListTagDtoToListTag(IEnumerable<TagDto> tagsDto)
     {
         return _cfg.CreateMapper().Map<IEnumerable<Tag>>(tagsDto);
@@ -195,4 +199,6 @@ public class MapperBLL : IMapperBLL
     {
         return _cfg.CreateMapper().Map<IEnumerable<Shop>>(shopsDto);
     }
+
+
 }

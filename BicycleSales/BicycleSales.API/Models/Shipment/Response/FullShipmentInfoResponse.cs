@@ -3,9 +3,9 @@ using BicycleSales.API.Models.ShipmentProduct.Response;
 using BicycleSales.API.Models.Shop.Response;
 using BicycleSales.API.Models.User.Response;
 
-namespace BicycleSales.API.Models.Acceptance.Response;
+namespace BicycleSales.API.Models.Shipment.Response;
 
-public class FullAcceptanceInfoResponse
+public class FullShipmentInfoResponse
 {
     public int Id { get; set; }
     public DateTime PlanedTime { get; set; }
@@ -14,5 +14,5 @@ public class FullAcceptanceInfoResponse
     public UserResponse SignedBy { get; set; }
     public ShopResponse Shop { get; set; }
 
-    public List<AcceptanceProductLowInfoResponse> Products { get; set; }
+    public List<ShipmentProductLowInfoResponse> Products { get; set; }
 }

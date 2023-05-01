@@ -1,14 +1,17 @@
 ﻿using BicycleSales.BLL.Models;
+using BicycleSales.Constants;
 
 namespace BicycleSales.BLL.Interfaces;
 
 public interface IShipmentManager
 {
-    public Shipment CreateNewShipment(Shipment shipment);
+    public Task<Shipment> CreateNewShipment(Shipment shipment);
+    public Task<ShipmentProduct> AddProductToShipment(ShipmentProduct shipmentProduct);
+    public Task<ShipmentProduct> UpdateProductInShipment(ShipmentProduct shipmentProduct);
 
-    public Shipment UpdateShipment(Shipment shipment);
+    public Task<Shipment> UpdateShipment(Shipment shipment);
 
-    public ShipmentProduct AddProductToShipment(ShipmentProduct shipmentProduct);
+    public Task<Shipment> GetShipmentById(int id);
 
-    public ShipmentProduct UpdateProductInShipment(ShipmentProduct shipmentProduct);
+    public Task<IEnumerable<ShipmentProduct>> GetAllProductFromShipmentById(int id);
 }

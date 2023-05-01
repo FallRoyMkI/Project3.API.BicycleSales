@@ -15,9 +15,9 @@ public class ShipmentDto
     [ForeignKey(nameof(FormedById))]
     public UserDto FormedBy { get; set; }
 
-    public int SignedById { get; set; }
+    public int? SignedById { get; set; }
     [ForeignKey(nameof(SignedById))]
-    public UserDto SignedBy { get; set; }
+    public UserDto? SignedBy { get; set; }
 
     public int ShopId { get; set; }
     [ForeignKey(nameof(ShopId))]

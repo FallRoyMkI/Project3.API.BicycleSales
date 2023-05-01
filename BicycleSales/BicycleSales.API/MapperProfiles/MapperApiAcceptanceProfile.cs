@@ -1,9 +1,9 @@
-﻿using BicycleSales.BLL.Models;
-using AutoMapper;
+﻿using AutoMapper;
 using BicycleSales.API.Models.Acceptance.Request;
 using BicycleSales.API.Models.Acceptance.Response;
 using BicycleSales.API.Models.AcceptanceProduct.Request;
 using BicycleSales.API.Models.AcceptanceProduct.Response;
+using BicycleSales.BLL.Models;
 
 namespace BicycleSales.API.MapperProfiles;
 
@@ -20,6 +20,5 @@ public class MapperApiAcceptanceProfile : Profile
         CreateMap<AcceptanceProduct, AcceptanceProductResponse>();
         CreateMap<Acceptance, FullAcceptanceInfoResponse>();
         CreateMap<AcceptanceProduct, AcceptanceProductLowInfoResponse>();
-
     }
 }
