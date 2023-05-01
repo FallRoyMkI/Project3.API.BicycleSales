@@ -1,6 +1,7 @@
 ﻿using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BicycleSales.DAL;
 
@@ -17,7 +18,11 @@ public class OrderRepository : IOrderRepository
     {
         _context.Orders.Add(order);
         _context.SaveChanges();
-        return order;
+
+        return _context.Orders
+            .Include(p => p.User)
+            .Include(p => p.Shop)
+            .Single(p => p.Id == order.Id);
     }
     public OrderDto EditOrderInfo(OrderDto order)
     {

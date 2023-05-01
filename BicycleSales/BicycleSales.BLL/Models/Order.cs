@@ -5,10 +5,9 @@ namespace BicycleSales.BLL.Models;
 public class Order
 {
     public int Id { get; set; }
-
     public string Name { get; set; }
     public DateTime DateOfCompilation { get; set; }
-    public DateTime DateOfCompletion { get; set; }
+    public DateTime? DateOfCompletion { get; set; }
     public OrderStatus Status { get; set; }
 
     public int UserId { get; set; }

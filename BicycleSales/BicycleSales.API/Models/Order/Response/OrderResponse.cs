@@ -11,7 +11,7 @@ namespace BicycleSales.API.Models.Order.Response
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime DateOfCompilation { get; set; }
-        public DateTime DateOfCompletion { get; set; }
+        public DateTime? DateOfCompletion { get; set; }
         public UserResponse User { get; set; }
         public ShopResponse Shop { get; set; }
         public OrderStatus Status { get; set; }
