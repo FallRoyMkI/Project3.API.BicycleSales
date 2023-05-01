@@ -7,7 +7,6 @@ namespace BicycleSales.API.Models.ShopProduct.Response
     public class ShopProductResponse
     {
         public int ProductCount { get; set; }
-        public ShopResponse Shop { get; set; }
         public ProductResponse Product { get; set; }
     }
 }
