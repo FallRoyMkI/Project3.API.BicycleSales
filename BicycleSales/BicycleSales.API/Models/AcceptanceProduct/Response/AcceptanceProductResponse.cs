@@ -1,16 +1,12 @@
 ﻿using BicycleSales.API.Models.Acceptance.Response;
 using BicycleSales.API.Models.Product.Response;
 
-namespace BicycleSales.API.Models.AcceptanceProduct.Response
+namespace BicycleSales.API.Models.AcceptanceProduct.Response;
+
+public class AcceptanceProductResponse
 {
-    public class AcceptanceProductResponse
-    {
-        public int Id { get; set; }
-        public int ProductCount { get; set; }
-        public int? FactProductCount { get; set; }
-        public ProductResponse Product { get; set; }
-        public AcceptanceResponse Acceptance { get; set; }
-        public int ProductId { get; set; }
-        public int AcceptanceId { get; set; }
-    }
+    public int Id { get; set; }
+    public ProductResponse Product { get; set; }
+    public int ProductCount { get; set; }
+    public int? FactProductCount { get; set; }
 }

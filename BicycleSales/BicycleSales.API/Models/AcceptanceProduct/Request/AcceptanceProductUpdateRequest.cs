@@ -2,7 +2,6 @@
 
 public class AcceptanceProductUpdateRequest
 {
-    public int AcceptanceId { get; set; }
     public int ProductId { get; set; }
     public int FactProductCount { get; set; }
 }

@@ -6,7 +6,7 @@ namespace BicycleSales.DAL;
 
 public class AcceptanceRepository : IAcceptanceRepository
 {
-    private readonly Context _context;
+    private readonly Context _context = new Context();
 
     public AcceptanceRepository(Context context = null)
     {

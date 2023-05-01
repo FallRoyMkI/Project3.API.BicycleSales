@@ -11,7 +11,7 @@ public interface IAcceptanceRepository
     public AcceptanceProductDto AddProductToAcceptance(AcceptanceProductDto acceptanceProduct);
 
     public AcceptanceProductDto UpdateProductInAcceptance(AcceptanceProductDto acceptanceProduct);
-    
+
     public bool IsAcceptanceExist(int id);
     public bool IsProductExistInAcceptance(int acceptanceId, int productId);
     public bool IsFactCountAlreadyAdded(int acceptanceId, int productId);

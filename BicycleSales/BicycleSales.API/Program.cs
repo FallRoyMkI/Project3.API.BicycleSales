@@ -1,6 +1,8 @@
 using BicycleSales.API;
 using BicycleSales.API.MapperProfiles;
 using BicycleSales.API.Validation;
+using BicycleSales.BLL;
+using BicycleSales.BLL.Interfaces;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
@@ -20,6 +22,7 @@ builder.Services.AddSingleton<Context>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
+builder.Services.AddScoped<IAcceptanceManager, AcceptanceManager>();
 
 builder.Services.AddScoped<ProductValidator>();
 

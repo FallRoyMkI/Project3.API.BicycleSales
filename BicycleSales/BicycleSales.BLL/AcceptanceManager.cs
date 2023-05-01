@@ -58,6 +58,8 @@ public class AcceptanceManager : IAcceptanceManager
             throw new ArgumentOutOfRangeException("", "Product count must be positive");
         if (_acceptanceRepository.IsProductExistInAcceptance(acceptanceProduct.AcceptanceId, acceptanceProduct.ProductId))
             throw new RepetativeActionException("Adding", "Product");
+        if (_acceptanceRepository.IsAcceptanceSigned(acceptanceProduct.AcceptanceId))
+            throw new WorkWithForribenResourceException("Acceptance",acceptanceProduct.Id);
 
         var dto = _mapper.MapAcceptanceProductToAcceptanceProductDto(acceptanceProduct);
         var callback = _acceptanceRepository.AddProductToAcceptance(dto);
@@ -133,9 +135,13 @@ public class AcceptanceManager : IAcceptanceManager
 
         var callback = _acceptanceRepository.GetAcceptanceById(id);
 
-        callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
-        callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
-        callback.SignedBy.Shop = await _shopRepository.GetShopById(callback.SignedBy.ShopId);
+        if (_acceptanceRepository.IsAcceptanceSigned(id))
+        {
+            callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
+            callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
+            callback.SignedBy.Shop = await _shopRepository.GetShopById(callback.SignedBy.ShopId);
+        }
+
         callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
         callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
         callback.FormedBy.Shop = await _shopRepository.GetShopById(callback.FormedBy.ShopId);

@@ -14,5 +14,5 @@ public class FullAcceptanceInfoResponse
     public UserResponse SignedBy { get; set; }
     public ShopResponse Shop { get; set; }
 
-    public List<AcceptanceProductLowInfoResponse> Products { get; set; }
+    public List<AcceptanceProductResponse> Products { get; set; }
 }

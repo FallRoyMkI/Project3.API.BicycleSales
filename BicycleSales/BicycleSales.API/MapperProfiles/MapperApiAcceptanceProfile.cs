@@ -19,6 +19,5 @@ public class MapperApiAcceptanceProfile : Profile
         CreateMap<AcceptanceProductUpdateRequest, AcceptanceProduct>();
         CreateMap<AcceptanceProduct, AcceptanceProductResponse>();
         CreateMap<Acceptance, FullAcceptanceInfoResponse>();
-        CreateMap<AcceptanceProduct, AcceptanceProductLowInfoResponse>();
     }
 }

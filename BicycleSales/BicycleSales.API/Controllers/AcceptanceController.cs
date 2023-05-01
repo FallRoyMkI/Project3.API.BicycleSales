@@ -1,31 +1,28 @@
-﻿using BicycleSales.API.Models.AcceptanceProduct.Response;
-using BicycleSales.API.Models.AcceptanceProduct.Request;
-using BicycleSales.API.Models.Acceptance.Response;
+﻿using AutoMapper;
 using BicycleSales.API.Models.Acceptance.Request;
+using BicycleSales.API.Models.Acceptance.Response;
+using BicycleSales.API.Models.AcceptanceProduct.Request;
+using BicycleSales.API.Models.AcceptanceProduct.Response;
 using BicycleSales.BLL.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using BicycleSales.BLL.Models;
-using BicycleSales.Constants;
-using BicycleSales.BLL;
-using AutoMapper;
-using BicycleSales.API.Models.ShipmentProduct.Response;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("/[controller]/")]
 [ApiController]
 public class AcceptanceController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IAcceptanceManager _acceptanceManager;
 
-    public AcceptanceController(IMapper mapper = null, IAcceptanceManager acceptanceManager = null)
+    public AcceptanceController(IMapper mapper, IAcceptanceManager acceptanceManager)
     {
         _mapper = mapper;
-        _acceptanceManager = acceptanceManager ?? new AcceptanceManager();
+        _acceptanceManager = acceptanceManager;
     }
 
-    [HttpPost("create-new-acceptance")]
+    [HttpPost("")]
     public async Task<IActionResult> CreateNewAcceptance([FromBody] AcceptanceAddRequest acceptanceRequest)
     {
         try
@@ -36,105 +33,71 @@ public class AcceptanceController : ControllerBase
 
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (InvalidTimeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpPost("add-products-to-acceptance")]
-    public async Task<IActionResult> AddProductToAcceptance([FromBody] AcceptanceProductAddRequest acceptanceProductRequest)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> AddProductToAcceptance([FromRoute] int id,
+        [FromBody] AcceptanceProductAddRequest acceptanceProductRequest)
     {
         try
         {
             var acceptanceProduct = _mapper.Map<AcceptanceProduct>(acceptanceProductRequest);
+            acceptanceProduct.AcceptanceId = id;
             var callback = await _acceptanceManager.AddProductToAcceptance(acceptanceProduct);
             var result = _mapper.Map<AcceptanceProductResponse>(callback);
 
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (RepetativeActionException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
 
-    [HttpPut("update-products-in-acceptance")]
-    public async Task<IActionResult> UpdateProductInAcceptance([FromQuery] AcceptanceProductUpdateRequest acceptanceProductRequest)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProductInAcceptance([FromRoute] int id,
+        [FromQuery] AcceptanceProductUpdateRequest acceptanceProductRequest)
     {
         try
         {
             var acceptanceProduct = _mapper.Map<AcceptanceProduct>(acceptanceProductRequest);
+            acceptanceProduct.AcceptanceId = id;
             var callback = await _acceptanceManager.UpdateProductInAcceptance(acceptanceProduct);
             var result = _mapper.Map<AcceptanceProductResponse>(callback);
 
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (RepetativeActionException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpPut("update-acceptance")]
-    public async Task<IActionResult> UpdateAcceptance([FromQuery] AcceptanceUpdateRequest acceptanceRequest)
+    [HttpPut("accept/{id}")]
+    public async Task<IActionResult> UpdateAcceptance([FromRoute] int id, 
+        [FromQuery] AcceptanceUpdateRequest acceptanceRequest)
     {
         try
         {
             var acceptance = _mapper.Map<Acceptance>(acceptanceRequest);
+            acceptance.Id = id;
             var callback = await _acceptanceManager.UpdateAcceptance(acceptance);
             var result = _mapper.Map<AcceptanceResponse>(callback);
 
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (RepetativeActionException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpGet("get-acceptance-{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetAcceptanceById([FromRoute] int id)
     {
         try
@@ -143,14 +106,14 @@ public class AcceptanceController : ControllerBase
             var result = _mapper.Map<FullAcceptanceInfoResponse>(callback);
 
             var productsCallback = await _acceptanceManager.GetAllProductFromAcceptanceById(id);
-            var products = _mapper.Map<IEnumerable<AcceptanceProductLowInfoResponse>>(productsCallback);
-            result.Products = products.ToList(); 
+            var products = _mapper.Map<IEnumerable<AcceptanceProductResponse>>(productsCallback);
+            result.Products = products.ToList();
 
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
+        catch (Exception ex)
         {
-            return Ok($"{ex.Message}");
+            return BadRequest(ex.Message);
         }
     }
 }
