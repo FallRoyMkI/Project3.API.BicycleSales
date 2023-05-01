@@ -8,5 +8,6 @@ public interface IShopManager
     public Task<Shop> GetShopById(int id);
     public Task<IEnumerable<ShopProduct>> GetAllProductsByShopId(int id);
     public Task<ShopProduct> AddProductInShopAsync(ShopProduct shopProduct);
+    public Task<ShopProduct> DeleteProductCountInShopAsync(ShopProduct shopProduct);
 }
 

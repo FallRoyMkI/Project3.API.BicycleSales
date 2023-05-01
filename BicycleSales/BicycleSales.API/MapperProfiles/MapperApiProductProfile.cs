@@ -19,7 +19,9 @@ namespace BicycleSales.API.MapperProfiles
             CreateMap<ProductUpdateRequest, Product>();
             
             CreateMap<ShopProductAddRequest, ShopProduct>();
+            CreateMap<ShopProductUpdateRequest, ShopProduct>();
             CreateMap<ShopProduct, ShopProductResponse>(); 
+
             
             CreateMap<TagAddRequest, Tag>();
             CreateMap<Tag, TagResponse>();

@@ -112,7 +112,54 @@ public class ShopRepository : IShopRepository
             }
         }
     }
+    public async Task<ShopProductDto> DeleteProductCountInShopAsync(ShopProductDto shopProductDto)
+    {
+        if (IsShopProductExist(shopProductDto))
+        {
+            if (!IsShopExist(shopProductDto.ShopId))
+            {
+                throw new ShopProductException($"Магазина с id:{shopProductDto.ShopId} не существует"); 
+            }
+            else if (!IsProductExist(shopProductDto.ProductId))
+            {
+                throw new ProductException($"Продукта с id:{shopProductDto.ProductId} не существует");
+            }
 
+            var existingModel = _context.ShopProducts
+                .ToList()
+                .Find(s => s.ProductId == shopProductDto.ProductId && s.ShopId == shopProductDto.ShopId);
+            
+            var difference = existingModel.ProductCount - shopProductDto.ProductCount;
+            if (difference >= 0) 
+            {
+                existingModel.ProductCount = difference;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new ProductException($"На удаление не хватает {difference*(-1)} продукта!");;
+            } 
+
+            var existingShopProducts = _context.ShopProducts.
+                Include(s => s.Shop).
+                Include(p => p.Product).
+                Single(x => x.Id == existingModel.Id);
+
+            return existingShopProducts;
+        }
+        else if (!IsShopExist(shopProductDto.ShopId) && IsProductExist(shopProductDto.ProductId))
+        {
+            throw new ShopProductException($"Магазина с id:{shopProductDto.ShopId} не существует");
+        }
+        else if (!IsProductExist(shopProductDto.ProductId) && IsShopExist(shopProductDto.ShopId))
+        {
+            throw new ProductException($"Продукта с id:{shopProductDto.ProductId} не существует");
+        }
+        else
+        {
+            throw new ShopException($"Нет магазина с id:{shopProductDto.ShopId} и продукта с id:{shopProductDto.ProductId}");
+        }
+    }
     public bool IsShopExist(int id)
     {
         return _context.Shops.ToList().Exists(x => x.Id == id);

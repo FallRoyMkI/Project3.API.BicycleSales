@@ -10,6 +10,7 @@ using BicycleSales.BLL.Models;
 using BicycleSales.Constants.CustomExceptions.Product;
 using BicycleSales.Constants.CustomExceptions.Shop;
 using BicycleSales.Constants.CustomExceptions.ShopProduct;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
@@ -48,7 +49,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -70,7 +71,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -92,7 +93,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -114,17 +115,17 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ShopProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost("add-product-in-shop", Name = "AddProductInShopAsync")]
+        [HttpPut("add-product-in-shop", Name = "AddProductInShopAsync")]
         public async Task<IActionResult> AddProductInShopAsync([FromBody] ShopProductAddRequest shopProduct)
         {
             try
@@ -143,19 +144,54 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ShopException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("delete-product-in-shop", Name = "DeleteProductCountInShopAsync")]
+        public async Task<IActionResult> DeleteProductCountInShopAsync([FromBody] ShopProductUpdateRequest shopProduct)
+        {
+            try
+            {
+                _logger.Log(LogLevel.Information, "Received a request to delete a product count in shop");
+
+                var shopProducts = _mapper.Map<ShopProduct>(shopProduct);
+                var callback = await ((ShopManager)_shopManager).DeleteProductCountInShopAsync(shopProducts);
+                var result = _mapper.Map<ShopProductResponse>(callback);
+
+                _logger.Log(LogLevel.Information, "Received the product in shop when deleting", result);
+
+                return Ok(result);
+            }
+            catch (ShopProductException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return BadRequest(ex.Message);
+            }
+            catch (ShopException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return BadRequest(ex.Message);
+            }
+            catch (ProductException ex)
+            {
+                _logger.Log(LogLevel.Error, "Exception", ex.Message);
+
+                return BadRequest(ex.Message);
             }
         }
     }

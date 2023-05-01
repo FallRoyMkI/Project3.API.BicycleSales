@@ -55,5 +55,13 @@ namespace BicycleSales.BLL
 
             return result;
         }
+        public async Task<ShopProduct> DeleteProductCountInShopAsync(ShopProduct shopProduct)
+        {
+            var shopProductDto = _mapper.MapShopProductToShopProductDto(shopProduct);
+            var callback = await ((ShopRepository)_shopRepository).DeleteProductCountInShopAsync(shopProductDto);
+            var result = _mapper.MapShopProductDtoToShopProduct(callback);
+
+            return result;
+        }
     }
 }

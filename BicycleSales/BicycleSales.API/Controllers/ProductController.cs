@@ -61,7 +61,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -113,7 +113,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -135,7 +135,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -157,7 +157,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -180,7 +180,7 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -202,19 +202,19 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ProductTagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (TagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -236,19 +236,19 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ProductTagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (TagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -270,13 +270,13 @@ namespace BicycleSales.API.Controllers
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (TagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
-                return Ok(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }
