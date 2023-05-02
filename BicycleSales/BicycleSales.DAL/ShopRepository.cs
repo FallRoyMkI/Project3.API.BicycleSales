@@ -74,9 +74,17 @@ public class ShopRepository : IShopRepository
         if (IsShopProductExist(shopProductDto))
         {
             var existingModel = _context.ShopProducts
+                .Include(x => x.Product)
+                .Include(x => x.Shop)
                 .ToList()
                 .Find(s => s.ProductId == shopProductDto.ProductId && s.ShopId == shopProductDto.ShopId);
 
+            if (existingModel.Product.IsDeleted)
+            {
+                throw new ProductException($"Продукт с id:{shopProductDto.ProductId} удалён");
+            }
+        
+            
             existingModel.ProductCount += shopProductDto.ProductCount;
             _context.SaveChanges();
 
