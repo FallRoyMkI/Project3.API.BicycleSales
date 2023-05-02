@@ -7,8 +7,10 @@ public interface IOrderManager
     public Order CreateAnOrder(Order order);
     public Order EditOrderInfo(Order order);
 
-    public OrderProduct AddProductToOrder(OrderProduct orderProduct);
-    public OrderProduct EditProductInOrder(OrderProduct orderProduct);
+
+    public Task<OrderProduct> AddProductToOrder(OrderProduct orderProduct);
+
+    public Task<OrderProduct> EditProductInOrder(OrderProduct orderProduct);
 
     public bool DeleteAnOrder(int orderId);
 

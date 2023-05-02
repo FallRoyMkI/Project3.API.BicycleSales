@@ -1,6 +1,8 @@
 ﻿using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BicycleSales.DAL;
 
@@ -18,7 +20,8 @@ public class AcceptanceRepository : IAcceptanceRepository
         _context.Acceptances.Add(acceptance);
         _context.SaveChanges();
 
-        return acceptance;
+        return _context.Acceptances
+            .Single(p => p.Id == acceptance.Id);
     }
 
     public AcceptanceDto UpdateAcceptance(AcceptanceDto acceptance)
@@ -30,7 +33,8 @@ public class AcceptanceRepository : IAcceptanceRepository
 
         _context.SaveChanges();
 
-        return update;
+        return _context.Acceptances
+            .Single(p => p.Id == update.Id);
     }
 
     public AcceptanceProductDto AddProductToAcceptance(AcceptanceProductDto acceptanceProduct)
@@ -38,7 +42,8 @@ public class AcceptanceRepository : IAcceptanceRepository
         _context.AcceptanceProducts.Add(acceptanceProduct);
         _context.SaveChanges();
 
-        return acceptanceProduct;
+        return _context.AcceptanceProducts
+            .Single(p => p.Id == acceptanceProduct.Id);
     }
 
     public AcceptanceProductDto UpdateProductInAcceptance(AcceptanceProductDto acceptanceProduct)
@@ -50,12 +55,14 @@ public class AcceptanceRepository : IAcceptanceRepository
         update.FactProductCount = acceptanceProduct.FactProductCount;
         _context.SaveChanges();
 
-        return update;
+        return _context.AcceptanceProducts
+            .Single(p => p.Id == update.Id);
     }
 
     public AcceptanceDto GetAcceptanceById(int id)
     {
-        return _context.Acceptances.ToList().Find(x => x.Id == id)!;
+        return _context.Acceptances
+            .Single(x => x.Id == id)!;
     }
 
     public bool IsAcceptanceExist(int id)

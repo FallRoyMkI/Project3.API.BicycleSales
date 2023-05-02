@@ -1,7 +1,7 @@
 ﻿namespace BicycleSales.Constants;
 
-public class WorkWithForribenResourceException : Exception
+public class WorkWithForbiddenResourceException : Exception
 {
-    public WorkWithForribenResourceException(string objectName, int id)
+    public WorkWithForbiddenResourceException(string objectName, int id)
         : base($"{objectName} with {id} was already completed") { }
 }

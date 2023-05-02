@@ -59,9 +59,7 @@ public class ShopRepository : IShopRepository
 
         var existingShopProducts = _context.ShopProducts
             .Include(p => p.Product)
-            .Where(p => p.ShopId == id)
-            .Where(p => p.Product.IsDeleted == false)
-            .ToList();
+            .Where(p => p.ShopId == id && p.Product.IsDeleted == false).ToList();
 
         if(existingShopProducts.Count == 0)
         {

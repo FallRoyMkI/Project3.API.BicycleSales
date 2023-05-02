@@ -20,37 +20,34 @@ public class OrderRepository : IOrderRepository
         _context.SaveChanges();
 
         return _context.Orders
-            .Include(p => p.User)
-            .Include(p => p.Shop)
             .Single(p => p.Id == order.Id);
     }
+
     public OrderDto EditOrderInfo(OrderDto order)
     {
-        var update = _context.Orders.ToList().Find(x => x.Id == order.Id);
-        if (update is not null)
-        {
-            update.DateOfCompletion = order.DateOfCompletion;
-            update.Status = order.Status;
-        }
-        else
-        {
-            throw new ArgumentException("Cannot find order with such Id");
-        }
+        var update = _context.Orders.ToList().Find(x => x.Id == order.Id)!;
+
+        update.DateOfCompletion = order.DateOfCompletion;
+        update.Status = order.Status;
 
         _context.SaveChanges();
-        return update;
+        return _context.Orders
+            .Single(p => p.Id == order.Id); ;
     }
 
     public OrderProductDto AddProductToOrder(OrderProductDto orderProduct)
     {
         _context.OrdersProducts.Add(orderProduct);
         _context.SaveChanges();
-        return orderProduct;
+
+        return _context.OrdersProducts
+            .Single(p => p.Id == orderProduct.Id);
     }
     public OrderProductDto EditProductInOrder(OrderProductDto orderProduct)
     {
-        var update = _context.OrdersProducts.ToList().Find(x => x.Order.Id == orderProduct.Order.Id &&
-                                                                x.Product.Id == orderProduct.Product.Id);
+        var update = _context.OrdersProducts
+            .Single(x => x.OrderId == orderProduct.OrderId &&
+                         x.ProductId == orderProduct.ProductId);
         if (update is not null)
         {
             update.ProductCount = orderProduct.ProductCount;
@@ -63,6 +60,17 @@ public class OrderRepository : IOrderRepository
 
         _context.SaveChanges();
         return update;
+    }
+
+    public OrderDto GetOrderById(int id)
+    {
+        return _context.Orders
+            .Single(p => p.Id == id); ;
+    }
+    public OrderProductDto GetOrderProductByOrderAndProductId(int orderId, int productId)
+    {
+        return _context.OrdersProducts
+            .Single(x => x.OrderId == orderId && x.ProductId == productId);
     }
 
     public bool DeleteAnOrder(int orderId)
@@ -96,4 +104,22 @@ public class OrderRepository : IOrderRepository
         }
         return result;
     }
+
+    public bool IsOrderExist(int id)
+    {
+        return _context.Orders.ToList().Exists(x => x.Id == id);
+    }
+
+    public bool IsProductExistInOrder(int orderId, int productId)
+    {
+        return _context.OrdersProducts.ToList().
+            Exists(x => x.ProductId == productId && x.OrderId == orderId);
+    }
+
+    public bool IsOrderFinished(int id)
+    {
+        return _context.Orders.ToList().
+            Exists(x => x.Id == id && (int)x.Status == 3);
+    }
+
 }

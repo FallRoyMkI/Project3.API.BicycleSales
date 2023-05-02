@@ -15,5 +15,6 @@ namespace BicycleSales.DAL.Interfaces
         public bool IsShopExist(int id);
         public Task<IEnumerable<ShopProductDto>> GetAllProductsByShopId(int id);
         public Task<ShopProductDto> AddProductInShopAsync(ShopProductDto shop);
+        public Task<ShopProductDto> DeleteProductCountInShopAsync(ShopProductDto shopProductDto);
     }
 }

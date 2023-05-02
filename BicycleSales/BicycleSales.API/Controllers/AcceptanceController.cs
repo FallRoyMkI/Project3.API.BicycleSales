@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers;
 
-[Route("/[controller]/")]
+[Route("[controller]/")]
 [ApiController]
 public class AcceptanceController : ControllerBase
 {

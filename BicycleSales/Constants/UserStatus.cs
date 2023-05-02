@@ -2,8 +2,8 @@
 
 public enum UserStatus
 {
-    CommonUser,
-    ShopAdministrator,
-    WebManager,
-    MainAdministrator
+    CommonUser = 0,
+    ShopAdministrator = 1,
+    WebManager = 2,
+    MainAdministrator = 3
 }

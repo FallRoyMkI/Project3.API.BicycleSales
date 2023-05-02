@@ -36,17 +36,9 @@ public class ShipmentController : ControllerBase
             var result = _mapper.Map<ShipmentResponse>(callback);
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (InvalidTimeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
     [HttpPost("add-products-to-shipment")]

@@ -20,9 +20,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<Context>();
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IAcceptanceManager, AcceptanceManager>();
+builder.Services.AddScoped<IOrderManager, OrderManager>();
+
+builder.Services.AddScoped<IMapperBLL, MapperBLL>();
+builder.Services.AddScoped<IAcceptanceRepository, AcceptanceRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IShopRepository, ShopRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddScoped<ProductValidator>();
 

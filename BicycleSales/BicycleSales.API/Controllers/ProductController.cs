@@ -118,7 +118,7 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpDelete("{id}", Name = "DeleteProduct")]
-        public async Task<IActionResult> DeleteProductAsync([FromQuery] int id)
+        public async Task<IActionResult> DeleteProductAsync([FromRoute] int id)
         {
             try
             {

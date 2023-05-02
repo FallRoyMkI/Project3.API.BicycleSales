@@ -10,20 +10,20 @@ using BicycleSales.API.Models.OrderProduct.Response;
 
 namespace BicycleSales.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]/")]
 [ApiController]
 public class OrderController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IOrderManager _orderManager;
 
-    public OrderController(IMapper mapper = null, IOrderManager orderManager = null)
+    public OrderController(IMapper mapper, IOrderManager orderManager)
     {
         _mapper = mapper;
-        _orderManager = orderManager ?? new OrderManager();
+        _orderManager = orderManager;
     }
 
-    [HttpPost("create-new-order")]
+    [HttpPost("")]
     public IActionResult CreateAnOrder([FromBody] OrderAddRequest orderRequest)
     {
         try
@@ -35,59 +35,65 @@ public class OrderController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
-    [HttpPut("update-an-order")]
-    public IActionResult EditOrderInfo([FromQuery] OrderUpdateRequest orderRequest)
+    [HttpPut("{id}/status")]
+    public IActionResult EditOrderInfo([FromRoute] int id,
+        [FromQuery] OrderUpdateRequest orderRequest)
     {
         try
         {
             var order = _mapper.Map<Order>(orderRequest);
+            order.Id = id;
             var callback = _orderManager.EditOrderInfo(order);
             var result = _mapper.Map<OrderResponse>(callback);
             return Ok(result);
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpPost("add-products-to-order")]
-    public IActionResult AddProductToOrder([FromBody] OrderProductAddRequest orderProductRequest)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> AddProductToOrder([FromRoute] int id, 
+        [FromBody] OrderProductAddRequest orderProductRequest)
     {
         try
         {
             var orderProduct = _mapper.Map<OrderProduct>(orderProductRequest);
-            var callback = _orderManager.AddProductToOrder(orderProduct);
+            orderProduct.OrderId = id;
+            var callback = await _orderManager.AddProductToOrder(orderProduct);
             var result = _mapper.Map<OrderProductResponse>(callback);
             return Ok(result);
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpPut("update-products-in-order")]
-    public IActionResult EditProductInOrder([FromQuery] OrderProductUpdateRequest orderProductRequest)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> EditProductInOrder([FromRoute] int id, 
+        [FromQuery] OrderProductUpdateRequest orderProductRequest)
     {
         try
         {
             var orderProduct = _mapper.Map<OrderProduct>(orderProductRequest);
-            var callback = _orderManager.EditProductInOrder(orderProduct);
+            orderProduct.OrderId = id;
+            var callback = await _orderManager.EditProductInOrder(orderProduct);
             var result = _mapper.Map<OrderProductResponse>(callback);
             return Ok(result);
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpDelete("delete-an-order")]
-    public IActionResult DeleteAnOrder([FromQuery] int orderId)
+    [HttpDelete("{id}")]
+    public IActionResult DeleteAnOrder([FromRoute] int orderId)
     {
         try
         {
@@ -96,11 +102,11 @@ public class OrderController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpGet("get-all-orders-in-shop-{id}")]
+    [HttpGet("{id}/orders")]
     public IActionResult GetAllOrdersByShopId([FromRoute] int shopId)
     {
         try
@@ -111,11 +117,11 @@ public class OrderController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpGet("get-all-orders-with-problems")]
+    [HttpGet("problems")]
     public IActionResult GetAllOrdersWithProblems()
     {
         try
@@ -126,7 +132,7 @@ public class OrderController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok();
+            return BadRequest(ex.Message);
         }
     }
 }
