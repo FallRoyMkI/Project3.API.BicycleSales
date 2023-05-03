@@ -17,10 +17,14 @@ public interface IShipmentRepository
     public ShipmentDto GetShipmentById(int id);
 
     public bool IsShipmentExist(int id);
+
     public bool IsProductExistInShipment(int shipmentId, int productId);
 
     public bool IsFactCountAlreadyAdded(int shipmentId, int productId);
 
     public bool IsShipmentSigned(int id);
+
     public IEnumerable<ShipmentProductDto> GetAllProductFromShipmentById(int id);
+
+    public Task<ShipmentAcceptanceDto> CreateShipmentAcceptanceAsync(ShipmentAcceptanceDto shipmentAcceptanceDto);
 }

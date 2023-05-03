@@ -9,7 +9,7 @@ public class ShipmentDto
     public int Id { get; set; }
 
     public DateTime PlanedTime { get; set; }
-    public DateTime FactTime { get; set; }
+    public DateTime? FactTime { get; set; }
 
     public int FormedById { get; set; }
     [ForeignKey(nameof(FormedById))]

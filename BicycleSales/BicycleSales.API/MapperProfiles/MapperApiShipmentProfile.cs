@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BicycleSales.API.Models.Shipment.Request;
 using BicycleSales.API.Models.Shipment.Response;
+using BicycleSales.API.Models.ShipmentAcceptance.Request;
+using BicycleSales.API.Models.ShipmentAcceptance.Response;
 using BicycleSales.API.Models.ShipmentProduct.Request;
 using BicycleSales.API.Models.ShipmentProduct.Response;
 using BicycleSales.BLL.Models;
@@ -20,5 +22,7 @@ public class MapperApiShipmentProfile : Profile
         CreateMap<ShipmentProduct, ShipmentProductResponse>();
         CreateMap<Shipment, FullShipmentInfoResponse>();
         CreateMap<ShipmentProduct, ShipmentProductLowInfoResponse>();
+        CreateMap<ShipmentAcceptanceAddRequest, ShipmentAcceptance>();
+        CreateMap<ShipmentAcceptance, ShipmentAcceptanceResponse>();
     }
 }

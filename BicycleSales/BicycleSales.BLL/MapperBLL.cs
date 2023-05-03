@@ -40,6 +40,7 @@ public class MapperBLL : IMapperBLL
 
                 cfg.CreateMap<ShopProduct, ShopProductDto>().ReverseMap();
 
+                cfg.CreateMap<ShipmentAcceptance, ShipmentAcceptanceDto>().ReverseMap(); 
             });
     }
 
@@ -200,5 +201,13 @@ public class MapperBLL : IMapperBLL
         return _cfg.CreateMapper().Map<IEnumerable<Shop>>(shopsDto);
     }
 
+    public ShipmentAcceptanceDto MapShipmentAcceptanceToShipmentAcceptanceDto(ShipmentAcceptance shipmentAcceptance)
+    {
+        return _cfg.CreateMapper().Map<ShipmentAcceptanceDto>(shipmentAcceptance);
+    }
 
+    public ShipmentAcceptance MapShipmentAcceptanceDtoToShipmentAcceptance(ShipmentAcceptanceDto shipmentAcceptanceDto)
+    {
+        return _cfg.CreateMapper().Map<ShipmentAcceptance>(shipmentAcceptanceDto);
+    }
 }

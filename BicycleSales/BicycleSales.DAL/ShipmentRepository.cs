@@ -18,7 +18,8 @@ public class ShipmentRepository : IShipmentRepository
         _context.Shipments.Add(shipment);
         _context.SaveChanges();
 
-        return shipment;
+        return _context.Shipments
+            .Single(p => p.Id == shipment.Id);
     }
 
     public ShipmentDto UpdateShipment(ShipmentDto shipment)
@@ -26,11 +27,12 @@ public class ShipmentRepository : IShipmentRepository
         var update = _context.Shipments.ToList().Find(x => x.Id == shipment.Id)!;
 
         update.FactTime = shipment.FactTime;
-        update.SignedBy = shipment.SignedBy;
+        update.SignedById = shipment.SignedById;
 
         _context.SaveChanges();
 
-        return update;
+        return _context.Shipments
+            .Single(p => p.Id == update.Id);
     }
 
     public ShipmentProductDto AddProductToShipment(ShipmentProductDto shipmentProduct)
@@ -55,7 +57,8 @@ public class ShipmentRepository : IShipmentRepository
 
     public ShipmentDto GetShipmentById(int id)
     {
-        return _context.Shipments.ToList().Find(x => x.Id == id)!;
+        return _context.Shipments
+            .Single(x => x.Id == id)!;
     }
 
     public bool IsShipmentExist(int id)
@@ -83,6 +86,17 @@ public class ShipmentRepository : IShipmentRepository
 
     public IEnumerable<ShipmentProductDto> GetAllProductFromShipmentById(int id)
     {
-        return _context.ShipmentProducts.ToList().FindAll(x => x.ShipmentId == id);
+        return _context.ShipmentProducts.
+            ToList().FindAll(x => x.ShipmentId == id);
+    }
+
+    public async Task<ShipmentAcceptanceDto> CreateShipmentAcceptanceAsync(ShipmentAcceptanceDto shipmentAcceptanceDto)
+    {
+       
+
+        _context.ShipmentAcceptances.Add(shipmentAcceptanceDto);
+        _context.SaveChanges();
+
+        return shipmentAcceptanceDto;
     }
 }

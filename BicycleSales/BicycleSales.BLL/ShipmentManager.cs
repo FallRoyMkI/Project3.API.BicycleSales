@@ -36,11 +36,6 @@ public class ShipmentManager : IShipmentManager
         var dto = _mapper.MapShipmentToShipmentDto(shipment);
         var callback = _shipmentRepository.CreateNewShipment(dto);
 
-        callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
-        callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
-        callback.FormedBy.Shop = await _shopRepository.GetShopById(callback.FormedBy.ShopId);
-        callback.Shop = await _shopRepository.GetShopById(callback.ShopId);
-
         var result = _mapper.MapShipmentDtoToShipment(callback);
 
         return result;
@@ -101,23 +96,15 @@ public class ShipmentManager : IShipmentManager
     public async Task<Shipment> UpdateShipment(Shipment shipment)
     {
         if (!_shipmentRepository.IsShipmentExist(shipment.Id))
-            throw new ObjectNotExistException("Shipment", shipment.Id);
+            throw new ObjectNotExistException("Acceptance", shipment.Id);
         if (!_userRepository.IsUserExist((int)shipment.SignedById!))
             throw new ObjectNotExistException("User", (int)shipment.SignedById!);
         if (_shipmentRepository.IsShipmentSigned(shipment.Id))
-            throw new RepetativeActionException("Signed", "Shipment");
+            throw new RepetativeActionException("Signed", "Acceptance");
 
         var dto = _mapper.MapShipmentToShipmentDto(shipment);
         dto.FactTime = DateTime.Now;
         var callback = _shipmentRepository.UpdateShipment(dto);
-
-        callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
-        callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
-        callback.SignedBy.Shop = await _shopRepository.GetShopById(callback.SignedBy.ShopId);
-        callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
-        callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
-        callback.FormedBy.Shop = await _shopRepository.GetShopById(callback.FormedBy.ShopId);
-        callback.Shop = await _shopRepository.GetShopById(callback.ShopId);
 
         var result = _mapper.MapShipmentDtoToShipment(callback);
 
@@ -127,17 +114,9 @@ public class ShipmentManager : IShipmentManager
     public async Task<Shipment> GetShipmentById(int id)
     {
         if (!_shipmentRepository.IsShipmentExist(id))
-            throw new ObjectNotExistException("Shipment", id);
+            throw new ObjectNotExistException("Acceptance", id);
 
         var callback = _shipmentRepository.GetShipmentById(id);
-
-        callback.SignedBy = _userRepository.GetUserById((int)callback.SignedById!);
-        callback.SignedBy.Authorization = _userRepository.GetAuthorizationById(callback.SignedBy.AuthorizationId);
-        callback.SignedBy.Shop = await _shopRepository.GetShopById(callback.SignedBy.ShopId);
-        callback.FormedBy = _userRepository.GetUserById(callback.FormedById);
-        callback.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.FormedBy.AuthorizationId);
-        callback.FormedBy.Shop = await _shopRepository.GetShopById(callback.FormedBy.ShopId);
-        callback.Shop = await _shopRepository.GetShopById(callback.ShopId);
 
         var result = _mapper.MapShipmentDtoToShipment(callback);
 
@@ -155,5 +134,15 @@ public class ShipmentManager : IShipmentManager
 
         var result = _mapper.MapShipmentProductDtoListToShipmentProductList(callback);
         return result;
+    }
+
+    public async Task<ShipmentAcceptance> CreateShipmentAcceptanceAsync(ShipmentAcceptance shipmentAcceptance)
+    {
+        var shipmentAcceptanceDto = _mapper.MapShipmentAcceptanceToShipmentAcceptanceDto(shipmentAcceptance);
+
+     //   var callback = await _shipmentRepository.CreateShipmentAcceptanceAsync(shipmentAcceptanceDto);
+      //  var result = _mapper.MapShopDtoToShop(callback);
+
+        return null;
     }
 }

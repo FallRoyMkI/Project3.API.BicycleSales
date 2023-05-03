@@ -36,15 +36,18 @@ public interface IMapperBLL
 
     public AcceptanceDto MapAcceptanceToAcceptanceDto(Acceptance acceptance);
 
-    public AcceptanceProduct MapAcceptanceProductDtoToAcceptanceProduct(AcceptanceProductDto dto);
+    public AcceptanceProduct MapAcceptanceProductDtoToAcceptanceProduct(
+        AcceptanceProductDto dto);
 
-    public AcceptanceProductDto MapAcceptanceProductToAcceptanceProductDto(AcceptanceProduct acceptanceProduct);
+    public AcceptanceProductDto MapAcceptanceProductToAcceptanceProductDto(
+        AcceptanceProduct acceptanceProduct);
 
     public ProductDto MapProductToProductDto(Product productBll);
 
     public Product MapProductDtoToProduct(ProductDto productDto);
 
-    public IEnumerable<Product> MapListProductDtoToListProduct(IEnumerable<ProductDto> listProductsDto);
+    public IEnumerable<Product> MapListProductDtoToListProduct(
+        IEnumerable<ProductDto> listProductsDto);
 
     public TagDto MapTagToTagDto(Tag tagBll);
 
@@ -56,19 +59,26 @@ public interface IMapperBLL
 
     public Shop MapShopDtoToShop(ShopDto shopDto);
 
-    public IEnumerable<ShopProduct> MapListShopProductDtoToListShopProduct(IEnumerable<ShopProductDto> shopProductsDto);
+    public IEnumerable<ShopProduct> MapListShopProductDtoToListShopProduct(
+        IEnumerable<ShopProductDto> shopProductsDto);
 
     public IEnumerable<AcceptanceProduct> MapAcceptanceProductDtoListToAcceptanceProductList(
         IEnumerable<AcceptanceProductDto> dtos);
+
     public IEnumerable<ShipmentProduct> MapShipmentProductDtoListToShipmentProductList(
         IEnumerable<ShipmentProductDto> dtos);
+
     public IEnumerable<Tag> MapListTagDtoToListTag(IEnumerable<TagDto> tagsDto);
 
-
     public ShopProduct MapShopProductDtoToShopProduct(ShopProductDto shopProductDto);
+
     public ShopProductDto MapShopProductToShopProductDto(ShopProduct shopProductDto);
+
     public IEnumerable<Shop> MapListShopDtoToListShop(IEnumerable<ShopDto> shopsDto);
 
-    
+    public ShipmentAcceptanceDto MapShipmentAcceptanceToShipmentAcceptanceDto(
+        ShipmentAcceptance shipmentAcceptance);
 
+    public ShipmentAcceptance MapShipmentAcceptanceDtoToShipmentAcceptance(
+        ShipmentAcceptanceDto shipmentAcceptanceDto);
 }
