@@ -25,6 +25,4 @@ public interface IShipmentRepository
     public bool IsShipmentSigned(int id);
 
     public IEnumerable<ShipmentProductDto> GetAllProductFromShipmentById(int id);
-
-    public Task<ShipmentAcceptanceDto> CreateShipmentAcceptanceAsync(ShipmentAcceptanceDto shipmentAcceptanceDto);
 }

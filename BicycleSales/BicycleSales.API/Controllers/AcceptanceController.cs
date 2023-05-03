@@ -3,6 +3,8 @@ using BicycleSales.API.Models.Acceptance.Request;
 using BicycleSales.API.Models.Acceptance.Response;
 using BicycleSales.API.Models.AcceptanceProduct.Request;
 using BicycleSales.API.Models.AcceptanceProduct.Response;
+using BicycleSales.API.Models.ShipmentAcceptance.Request;
+using BicycleSales.API.Models.ShipmentAcceptance.Response;
 using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -78,8 +80,8 @@ public class AcceptanceController : ControllerBase
         }
     }
 
-    [HttpPut("accept/{id}")]
-    public async Task<IActionResult> UpdateAcceptance([FromRoute] int id, 
+    [HttpPut("sign/{id}")]
+    public async Task<IActionResult> UpdateAcceptance([FromRoute] int id,
         [FromQuery] AcceptanceUpdateRequest acceptanceRequest)
     {
         try

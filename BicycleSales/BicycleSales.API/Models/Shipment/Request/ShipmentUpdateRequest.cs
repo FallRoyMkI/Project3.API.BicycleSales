@@ -1,10 +1,6 @@
-﻿
-namespace BicycleSales.API.Models.Shipment.Request
+﻿namespace BicycleSales.API.Models.Shipment.Request;
+
+public class ShipmentUpdateRequest
 {
-    public class ShipmentUpdateRequest
-    {
-        public int Id { get; set; }
-        public DateTime FactTime { get; set; }
-        public int SignedById { get; set; }
-    }
+    public int SignedById { get; set; }
 }

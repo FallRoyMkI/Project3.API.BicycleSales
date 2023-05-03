@@ -2,7 +2,6 @@
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BicycleSales.DAL;
 
@@ -49,7 +48,7 @@ public class AcceptanceRepository : IAcceptanceRepository
     public AcceptanceProductDto UpdateProductInAcceptance(AcceptanceProductDto acceptanceProduct)
     {
         var update = _context.AcceptanceProducts.ToList().
-            Find(x => x.ProductId == acceptanceProduct.ProductId 
+            Find(x => x.ProductId == acceptanceProduct.ProductId
                       && x.AcceptanceId == acceptanceProduct.AcceptanceId)!;
 
         update.FactProductCount = acceptanceProduct.FactProductCount;
@@ -62,6 +61,9 @@ public class AcceptanceRepository : IAcceptanceRepository
     public AcceptanceDto GetAcceptanceById(int id)
     {
         return _context.Acceptances
+            .Include(p => p.FormedBy)
+            .Include(p => p.Shop)
+            .Include(p => p.SignedBy)
             .Single(x => x.Id == id)!;
     }
 
@@ -75,11 +77,10 @@ public class AcceptanceRepository : IAcceptanceRepository
         return _context.AcceptanceProducts.ToList().
             Exists(x => x.ProductId == productId && x.AcceptanceId == acceptanceId);
     }
-
     public bool IsFactCountAlreadyAdded(int acceptanceId, int productId)
     {
         return _context.AcceptanceProducts.ToList()
-            .Exists(x => x.ProductId == productId && 
+            .Exists(x => x.ProductId == productId &&
                          x.AcceptanceId == acceptanceId && x.FactProductCount != null);
     }
 

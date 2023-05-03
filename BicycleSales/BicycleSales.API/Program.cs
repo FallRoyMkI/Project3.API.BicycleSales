@@ -29,6 +29,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IShipmentManager, ShipmentManager>();
+builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
+builder.Services.AddScoped<IShipmentAcceptanceRepository, ShipmentAcceptanceRepository>();
+builder.Services.AddScoped<IShipmentAcceptanceManager, ShipmentAcceptanceManager>();
 
 builder.Services.AddScoped<ProductValidator>();
 

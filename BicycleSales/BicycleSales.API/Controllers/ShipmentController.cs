@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
-using BicycleSales.API.Models.Acceptance.Request;
-using BicycleSales.API.Models.Acceptance.Response;
-using BicycleSales.API.Models.AcceptanceProduct.Response;
 using BicycleSales.API.Models.Shipment.Request;
 using BicycleSales.API.Models.Shipment.Response;
 using BicycleSales.API.Models.ShipmentAcceptance.Request;
 using BicycleSales.API.Models.ShipmentAcceptance.Response;
 using BicycleSales.API.Models.ShipmentProduct.Request;
 using BicycleSales.API.Models.ShipmentProduct.Response;
-using BicycleSales.BLL;
 using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
 using BicycleSales.Constants;
@@ -16,20 +12,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]/")]
 [ApiController]
 public class ShipmentController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IShipmentManager _shipmentManager;
 
-    public ShipmentController(IMapper mapper = null, IShipmentManager shipmentManager = null)
+    public ShipmentController(IMapper mapper, IShipmentManager shipmentManager)
     {
         _mapper = mapper;
-        _shipmentManager = shipmentManager ?? new ShipmentManager();
+        _shipmentManager = shipmentManager;
     }
 
-    [HttpPost("create-new-shipment")]
+    [HttpPost("")]
     public async Task<IActionResult> CreateNewShipment([FromBody] ShipmentAddRequest shipmentRequest)
     {
         try
@@ -46,63 +42,43 @@ public class ShipmentController : ControllerBase
         }
     }
 
-    [HttpPost("add-products-to-shipment")]
-    public async Task<IActionResult> AddProductToShipment([FromBody] ShipmentProductAddRequest shipmentProductRequest)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> AddProductToShipment([FromRoute] int id,
+        [FromBody] ShipmentProductAddRequest shipmentProductRequest)
     {
         try
         {
             var shipmentProduct = _mapper.Map<ShipmentProduct>(shipmentProductRequest);
+            shipmentProduct.ShipmentId = id;
             var callback = await _shipmentManager.AddProductToShipment(shipmentProduct);
             var result = _mapper.Map<ShipmentProductResponse>(callback);
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (RepetativeActionException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpPut("update-products-in-shipment")]
-    public async Task<IActionResult> UpdateProductInShipment([FromQuery] ShipmentProductUpdateRequest shipmentProductRequest)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProductInShipment([FromRoute] int id,
+        [FromQuery] ShipmentProductUpdateRequest shipmentProductRequest)
     {
         try
         {
             var shipmentProduct = _mapper.Map<ShipmentProduct>(shipmentProductRequest);
+            shipmentProduct.ShipmentId = id;
             var callback = await _shipmentManager.UpdateProductInShipment(shipmentProduct);
             var result = _mapper.Map<ShipmentProductResponse>(callback);
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (RepetativeActionException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
-    [HttpPut("shipment/{id}")]
+    [HttpPut("sign/{id}")]
     public async Task<IActionResult> UpdateShipment([FromRoute] int id,
        [FromQuery] ShipmentUpdateRequest shipmentRequest)
     {
@@ -120,8 +96,8 @@ public class ShipmentController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-     
-    [HttpGet("get-shipment-{id}")]
+
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetShipmentById([FromRoute] int id)
     {
         try
@@ -130,45 +106,16 @@ public class ShipmentController : ControllerBase
             var result = _mapper.Map<FullShipmentInfoResponse>(callback);
 
             var productsCallback = await _shipmentManager.GetAllProductFromShipmentById(id);
-            var products = _mapper.Map<IEnumerable<ShipmentProductLowInfoResponse>>(productsCallback);
+            var products = _mapper.Map<IEnumerable<ShipmentProductResponse>>(productsCallback);
             result.Products = products.ToList();
 
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-    }
-
-    [HttpPost("create-shipment-acceptance")]
-    public async Task<IActionResult> CreateShipmentAcceptanceAsync([FromBody] ShipmentAcceptanceAddRequest ShipmentAcceptanceAddRequest)
-    {
-        try
-        {
-            var shipmentAcceptance = _mapper.Map<ShipmentAcceptance>(ShipmentAcceptanceAddRequest);
-            var callback = await _shipmentManager.CreateShipmentAcceptanceAsync(shipmentAcceptance);
-            var result = _mapper.Map<ShipmentAcceptanceResponse>(callback);
-            return Ok(result);
-        }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
-        catch (RepetativeActionException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
-
 }
 
 

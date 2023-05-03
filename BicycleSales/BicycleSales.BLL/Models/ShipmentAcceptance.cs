@@ -6,7 +6,7 @@ public class ShipmentAcceptance
 {
     public int Id { get; set; }
 
-    public ShipmentAcceptanceStatus Status { get; set; } = ShipmentAcceptanceStatus.ShipmentCreated;
+    public ShipmentAcceptanceStatus Status { get; set; }
 
     public int ShipmentId { get; set; }
     public Shipment Shipment { get; set; }
@@ -14,8 +14,8 @@ public class ShipmentAcceptance
     public int AcceptanceId { get; set; }
     public Acceptance Acceptance { get; set; }
 
-    public int FactoryId { get; set; }
-    public Factory Factory { get; set; }
+    public int? FactoryId { get; set; }
+    public Factory? Factory { get; set; }
 
 
     public override bool Equals(object? obj)

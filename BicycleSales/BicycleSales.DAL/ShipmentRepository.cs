@@ -1,6 +1,7 @@
 ﻿using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BicycleSales.DAL;
 
@@ -40,7 +41,8 @@ public class ShipmentRepository : IShipmentRepository
         _context.ShipmentProducts.Add(shipmentProduct);
         _context.SaveChanges();
 
-        return shipmentProduct;
+        return _context.ShipmentProducts
+            .Single(p => p.Id == shipmentProduct.Id);
     }
 
     public ShipmentProductDto UpdateProductInShipment(ShipmentProductDto shipmentProduct)
@@ -52,12 +54,16 @@ public class ShipmentRepository : IShipmentRepository
         update.FactProductCount = shipmentProduct.FactProductCount;
         _context.SaveChanges();
 
-        return update;
+        return _context.ShipmentProducts
+            .Single(p => p.Id == update.Id);
     }
 
     public ShipmentDto GetShipmentById(int id)
     {
         return _context.Shipments
+            .Include(p => p.FormedBy)
+            .Include(p => p.Shop)
+            .Include(p => p.SignedBy)
             .Single(x => x.Id == id)!;
     }
 
@@ -90,13 +96,4 @@ public class ShipmentRepository : IShipmentRepository
             ToList().FindAll(x => x.ShipmentId == id);
     }
 
-    public async Task<ShipmentAcceptanceDto> CreateShipmentAcceptanceAsync(ShipmentAcceptanceDto shipmentAcceptanceDto)
-    {
-       
-
-        _context.ShipmentAcceptances.Add(shipmentAcceptanceDto);
-        _context.SaveChanges();
-
-        return shipmentAcceptanceDto;
-    }
 }

@@ -97,17 +97,17 @@ public class ShopRepository : IShopRepository
         }
         else
         {
-            if (!IsShopExist(shopProductDto.Shop.Id) && !IsProductExist(shopProductDto.Product.Id))
+            if (!IsShopExist(shopProductDto.ShopId) && !IsProductExist(shopProductDto.ProductId))
             {
-                throw new ShopProductException($"Магазина с id:{shopProductDto.Shop.Id} и продукта с id:{shopProductDto.Product.Id} не существует");
+                throw new ShopProductException($"Магазина с id:{shopProductDto.ShopId} и продукта с id:{shopProductDto.ProductId} не существует");
             }
-            else if (!IsShopExist(shopProductDto.Shop.Id))
+            else if (!IsShopExist(shopProductDto.ShopId))
             {
-                throw new ShopException($"Магазина с id:{shopProductDto.Shop.Id}");
+                throw new ShopException($"Магазина с id:{shopProductDto.ShopId}");
             }
-            else if (!IsProductExist(shopProductDto.Product.Id))
+            else if (!IsProductExist(shopProductDto.ProductId))
             {
-                throw new ProductException($"Продукта с id:{shopProductDto.Product.Id} не существует");
+                throw new ProductException($"Продукта с id:{shopProductDto.ProductId} не существует");
             }
             else
             {

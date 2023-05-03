@@ -1,7 +1,6 @@
 ﻿using BicycleSales.BLL.Interfaces;
 using BicycleSales.BLL.Models;
 using BicycleSales.Constants;
-using BicycleSales.DAL;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 
@@ -14,22 +13,28 @@ public class AcceptanceManager : IAcceptanceManager
     private readonly IUserRepository _userRepository;
     private readonly IShopRepository _shopRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IShipmentRepository _shipmentRepository;
+    private readonly IShipmentAcceptanceRepository _shipAccRepository;
 
     public AcceptanceManager(IMapperBLL mapper, IAcceptanceRepository acceptanceRepository,
-        IUserRepository userRepository, IShopRepository shopRepository, IProductRepository productRepository)
+        IUserRepository userRepository, IShopRepository shopRepository,
+        IProductRepository productRepository, IShipmentRepository shipmentRepository,
+        IShipmentAcceptanceRepository shipAccRepository)
     {
         _mapper = mapper;
         _acceptanceRepository = acceptanceRepository;
         _userRepository = userRepository;
         _shopRepository = shopRepository;
         _productRepository = productRepository;
+        _shipmentRepository = shipmentRepository;
+        _shipAccRepository = shipAccRepository;
     }
 
     public async Task<Acceptance> CreateNewAcceptance(Acceptance acceptance)
     {
-        if (!_userRepository.IsUserExist(acceptance.FormedById)) 
+        if (!_userRepository.IsUserExist(acceptance.FormedById))
             throw new ObjectNotExistException("User", acceptance.FormedById);
-        if (!_shopRepository.IsShopExist(acceptance.ShopId)) 
+        if (!_shopRepository.IsShopExist(acceptance.ShopId))
             throw new ObjectNotExistException("Shop", acceptance.ShopId);
         if (acceptance.PlanedTime < DateTime.UtcNow)
             throw new InvalidTimeException(acceptance.PlanedTime);
@@ -48,12 +53,12 @@ public class AcceptanceManager : IAcceptanceManager
             throw new ObjectNotExistException("Acceptance", acceptanceProduct.AcceptanceId);
         if (!_productRepository.IsProductExist(acceptanceProduct.ProductId))
             throw new ObjectNotExistException("Product", acceptanceProduct.ProductId);
-        if (acceptanceProduct.ProductCount < 1) 
+        if (acceptanceProduct.ProductCount < 1)
             throw new ArgumentOutOfRangeException("", "Product count must be positive");
         if (_acceptanceRepository.IsProductExistInAcceptance(acceptanceProduct.AcceptanceId, acceptanceProduct.ProductId))
             throw new RepetativeActionException("Adding", "Product");
         if (_acceptanceRepository.IsAcceptanceSigned(acceptanceProduct.AcceptanceId))
-            throw new WorkWithForbiddenResourceException("Acceptance",acceptanceProduct.Id);
+            throw new WorkWithForbiddenResourceException("Acceptance", acceptanceProduct.Id);
 
         var dto = _mapper.MapAcceptanceProductToAcceptanceProductDto(acceptanceProduct);
         var callback = _acceptanceRepository.AddProductToAcceptance(dto);
@@ -69,14 +74,13 @@ public class AcceptanceManager : IAcceptanceManager
             throw new ObjectNotExistException("Acceptance", acceptanceProduct.AcceptanceId);
         if (!_productRepository.IsProductExist(acceptanceProduct.ProductId))
             throw new ObjectNotExistException("Product", acceptanceProduct.ProductId);
-        if (!_acceptanceRepository.IsProductExistInAcceptance(acceptanceProduct.AcceptanceId,acceptanceProduct.ProductId))
-                throw new ObjectNotExistException("Product in Acceptance", acceptanceProduct.ProductId);
-
+        if (!_acceptanceRepository.IsProductExistInAcceptance(acceptanceProduct.AcceptanceId, acceptanceProduct.ProductId))
+            throw new ObjectNotExistException("Product in Acceptance", acceptanceProduct.ProductId);
         if (_acceptanceRepository.IsFactCountAlreadyAdded(acceptanceProduct.AcceptanceId, acceptanceProduct.ProductId))
             throw new RepetativeActionException("Adding", "Fact Product Count");
         if (acceptanceProduct.FactProductCount < 0)
             throw new ArgumentOutOfRangeException("", "Fact Product count must be non negative");
-        
+
         var dto = _mapper.MapAcceptanceProductToAcceptanceProductDto(acceptanceProduct);
         var callback = _acceptanceRepository.UpdateProductInAcceptance(dto);
 
@@ -100,6 +104,27 @@ public class AcceptanceManager : IAcceptanceManager
 
         var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
 
+        var shipmentAcceptance =await _shipAccRepository.GetShipmentAcceptanceAsync(null, acceptance.Id);
+        shipmentAcceptance.Status = ShipmentAcceptanceStatus.ShipmentAcceptanceFinished;
+        var kek = _acceptanceRepository.GetAllProductFromAcceptanceById(shipmentAcceptance.AcceptanceId).ToList();
+        var pep = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
+
+        for (var i = 0; i < kek.Count(); i++)
+        {
+            if (kek[i].FactProductCount != pep[i].FactProductCount)
+            {
+                shipmentAcceptance.Status = ShipmentAcceptanceStatus.ProductWasMissed;
+            }
+
+            var shopProducts = await _shopRepository.GetAllProductsByShopId(acceptance.ShopId);
+
+            var product = shopProducts.ToList().Find(x => x.ProductId == kek[i].ProductId);
+            product.ProductCount = (int)kek[i].FactProductCount!;
+            await _shopRepository.AddProductInShopAsync(product);
+        }
+
+        await _shipAccRepository.UpdateShipmentAcceptanceAsync(shipmentAcceptance);
+
         return result;
     }
 
@@ -111,7 +136,7 @@ public class AcceptanceManager : IAcceptanceManager
         var callback = _acceptanceRepository.GetAcceptanceById(id);
 
         var result = _mapper.MapAcceptanceDtoToAcceptance(callback);
-        
+
         return result;
     }
 
@@ -121,7 +146,7 @@ public class AcceptanceManager : IAcceptanceManager
 
         foreach (var line in callback)
         {
-            line.Product =await _productRepository.GetProductByIdAsync(line.ProductId);
+            line.Product = await _productRepository.GetProductByIdAsync(line.ProductId);
         }
 
         var result = _mapper.MapAcceptanceProductDtoListToAcceptanceProductList(callback);

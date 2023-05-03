@@ -11,7 +11,7 @@ public class Acceptance
     public User FormedBy { get; set; }
 
     public int? SignedById { get; set; }
-    public User SignedBy { get; set; }
+    public User? SignedBy { get; set; }
 
     public int ShopId { get; set; }
     public Shop Shop { get; set; }

@@ -1,10 +1,7 @@
-﻿
-namespace BicycleSales.API.Models.ShipmentProduct.Request
+﻿namespace BicycleSales.API.Models.ShipmentProduct.Request;
+
+public class ShipmentProductUpdateRequest
 {
-    public class ShipmentProductUpdateRequest
-    {
-        public int ProductId { get; set; }
-        public int ShipmentId { get; set; }
-        public int FactProductCount { get; set; }
-    }
+    public int ProductId { get; set; }
+    public int FactProductCount { get; set; }
 }

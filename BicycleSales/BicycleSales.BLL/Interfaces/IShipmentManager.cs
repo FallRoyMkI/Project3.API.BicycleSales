@@ -14,5 +14,4 @@ public interface IShipmentManager
     public Task<Shipment> GetShipmentById(int id);
 
     public Task<IEnumerable<ShipmentProduct>> GetAllProductFromShipmentById(int id);
-    public Task<ShipmentAcceptance> CreateShipmentAcceptanceAsync(ShipmentAcceptance shipmentAcceptance);
 }

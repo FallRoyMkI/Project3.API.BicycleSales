@@ -13,4 +13,6 @@ public interface IAcceptanceManager
     
     public Task<Acceptance> GetAcceptanceById(int id);
     public Task<IEnumerable<AcceptanceProduct>> GetAllProductFromAcceptanceById(int id);
+
+    
 }

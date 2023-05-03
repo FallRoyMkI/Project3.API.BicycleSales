@@ -3,6 +3,7 @@ using BicycleSales.BLL.Models;
 using BicycleSales.Constants;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BicycleSales.BLL;
 
@@ -13,15 +14,18 @@ public class ShipmentManager : IShipmentManager
     private readonly IUserRepository _userRepository;
     private readonly IShopRepository _shopRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IShipmentAcceptanceRepository _shipAccRepository;
 
-    public ShipmentManager(IMapperBLL mapper = null, IShipmentRepository shipmentRepository = null,
-        IUserRepository userRepository = null, IShopRepository shopRepository = null, IProductRepository productRepository = null)
+    public ShipmentManager(IMapperBLL mapper, IShipmentRepository shipmentRepository,
+        IUserRepository userRepository, IShopRepository shopRepository,
+        IProductRepository productRepository, IShipmentAcceptanceRepository shipAccRepository)
     {
-        _mapper = mapper ?? new MapperBLL();
-        _shipmentRepository = shipmentRepository ?? new ShipmentRepository();
-        _userRepository = userRepository ?? new UserRepository();
-        _shopRepository = shopRepository ?? new ShopRepository();
-        _productRepository = productRepository ?? new ProductRepository();
+        _mapper = mapper;
+        _shipmentRepository = shipmentRepository;
+        _userRepository = userRepository;
+        _shopRepository = shopRepository;
+        _productRepository = productRepository;
+        _shipAccRepository = shipAccRepository;
     }
 
     public async Task<Shipment> CreateNewShipment(Shipment shipment)
@@ -51,16 +55,11 @@ public class ShipmentManager : IShipmentManager
             throw new ArgumentOutOfRangeException("", "Product count must be positive");
         if (_shipmentRepository.IsProductExistInShipment(shipmentProduct.ShipmentId, shipmentProduct.ProductId))
             throw new RepetativeActionException("Adding", "Product");
+        if (_shipmentRepository.IsShipmentSigned(shipmentProduct.ShipmentId))
+            throw new WorkWithForbiddenResourceException("Shipment", shipmentProduct.Id);
 
         var dto = _mapper.MapShipmentProductToShipmentProductDto(shipmentProduct);
         var callback = _shipmentRepository.AddProductToShipment(dto);
-
-        callback.Shipment = _shipmentRepository.GetShipmentById(shipmentProduct.ShipmentId);
-        callback.Shipment.FormedBy = _userRepository.GetUserById(callback.Shipment.FormedById);
-        callback.Shipment.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.Shipment.FormedBy.AuthorizationId);
-        callback.Shipment.FormedBy.Shop = await _shopRepository.GetShopById(callback.Shipment.FormedBy.ShopId);
-        callback.Shipment.Shop = await _shopRepository.GetShopById(callback.Shipment.ShopId);
-        callback.Product = await _productRepository.GetProductByIdAsync(callback.ProductId);
 
         var result = _mapper.MapShipmentProductDtoToShipmentProduct(callback);
 
@@ -73,6 +72,8 @@ public class ShipmentManager : IShipmentManager
             throw new ObjectNotExistException("Shipment", shipmentProduct.ShipmentId);
         if (!_productRepository.IsProductExist(shipmentProduct.ProductId))
             throw new ObjectNotExistException("Product", shipmentProduct.ProductId);
+        if (!_shipmentRepository.IsProductExistInShipment(shipmentProduct.ShipmentId, shipmentProduct.ProductId))
+            throw new ObjectNotExistException("Product in Shipment", shipmentProduct.ProductId);
         if (_shipmentRepository.IsFactCountAlreadyAdded(shipmentProduct.ShipmentId, shipmentProduct.ProductId))
             throw new RepetativeActionException("Adding", "Fact Product Count");
         if (shipmentProduct.FactProductCount < 0)
@@ -80,13 +81,6 @@ public class ShipmentManager : IShipmentManager
 
         var dto = _mapper.MapShipmentProductToShipmentProductDto(shipmentProduct);
         var callback = _shipmentRepository.UpdateProductInShipment(dto);
-
-        callback.Shipment = _shipmentRepository.GetShipmentById(shipmentProduct.ShipmentId);
-        callback.Shipment.FormedBy = _userRepository.GetUserById(callback.Shipment.FormedById);
-        callback.Shipment.FormedBy.Authorization = _userRepository.GetAuthorizationById(callback.Shipment.FormedBy.AuthorizationId);
-        callback.Shipment.FormedBy.Shop = await _shopRepository.GetShopById(callback.Shipment.FormedBy.ShopId);
-        callback.Shipment.Shop = await _shopRepository.GetShopById(callback.Shipment.ShopId);
-        callback.Product = await _productRepository.GetProductByIdAsync(callback.ProductId);
 
         var result = _mapper.MapShipmentProductDtoToShipmentProduct(callback);
 
@@ -108,13 +102,28 @@ public class ShipmentManager : IShipmentManager
 
         var result = _mapper.MapShipmentDtoToShipment(callback);
 
+        var shipmentAcceptance = await _shipAccRepository.GetShipmentAcceptanceAsync(shipment.Id);
+        shipmentAcceptance.Status = ShipmentAcceptanceStatus.ShipmentSigned;
+        _shipAccRepository.UpdateShipmentAcceptanceAsync(shipmentAcceptance);
+
+        var kek = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
+
+        foreach (var line in kek)
+        {
+            var shopProducts = await _shopRepository.GetAllProductsByShopId(shipment.ShopId);
+
+            var product = shopProducts.ToList().Find(x => x.ProductId == line.ProductId);
+            product.ProductCount = (int)line.FactProductCount!;
+            await _shopRepository.DeleteProductCountInShopAsync(product);
+        }
+
         return result;
     }
 
     public async Task<Shipment> GetShipmentById(int id)
     {
         if (!_shipmentRepository.IsShipmentExist(id))
-            throw new ObjectNotExistException("Acceptance", id);
+            throw new ObjectNotExistException("Shipment", id);
 
         var callback = _shipmentRepository.GetShipmentById(id);
 
@@ -134,15 +143,5 @@ public class ShipmentManager : IShipmentManager
 
         var result = _mapper.MapShipmentProductDtoListToShipmentProductList(callback);
         return result;
-    }
-
-    public async Task<ShipmentAcceptance> CreateShipmentAcceptanceAsync(ShipmentAcceptance shipmentAcceptance)
-    {
-        var shipmentAcceptanceDto = _mapper.MapShipmentAcceptanceToShipmentAcceptanceDto(shipmentAcceptance);
-
-     //   var callback = await _shipmentRepository.CreateShipmentAcceptanceAsync(shipmentAcceptanceDto);
-      //  var result = _mapper.MapShopDtoToShop(callback);
-
-        return null;
     }
 }

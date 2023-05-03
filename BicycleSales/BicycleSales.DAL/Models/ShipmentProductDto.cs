@@ -9,7 +9,7 @@ public class ShipmentProductDto
     public int Id { get; set; }
 
     public int ProductCount { get; set; }
-    public int FactProductCount { get; set; }
+    public int? FactProductCount { get; set; }
 
     public int ProductId { get; set; }
     [ForeignKey(nameof(ProductId))]

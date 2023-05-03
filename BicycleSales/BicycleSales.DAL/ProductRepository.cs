@@ -1,4 +1,3 @@
-using BicycleSales.Constants.CustomExceptions;
 using BicycleSales.Constants.CustomExceptions.Product;
 using BicycleSales.Constants.CustomExceptions.ProductTag;
 using BicycleSales.Constants.CustomExceptions.Tag;
@@ -6,7 +5,6 @@ using BicycleSales.DAL.Contexts;
 using BicycleSales.DAL.Interfaces;
 using BicycleSales.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using System.Data;
 
 namespace BicycleSales.DAL
@@ -22,8 +20,8 @@ namespace BicycleSales.DAL
 
         public async Task<ProductDto> CreateProductAsync(ProductDto product)
         {
-            if(_context.Products
-                .ToList().Find(p => p.Name == product.Name) is not null) 
+            if (_context.Products
+                .ToList().Find(p => p.Name == product.Name) is not null)
             {
                 throw new ProductException($"Продукт с таким Name:{product.Name} существует");
             }
@@ -44,8 +42,8 @@ namespace BicycleSales.DAL
         {
             var existingProducts = _context.Products
                 .Where(p => p.IsDeleted == false).ToList();
-            
-            if(existingProducts.Count > 0)
+
+            if (existingProducts.Count > 0)
             {
                 return existingProducts;
             }
@@ -65,7 +63,7 @@ namespace BicycleSales.DAL
                 existingModel.Name = product.Name;
                 existingModel.Cost = product.Cost;
                 _context.SaveChanges();
-                
+
                 return existingModel;
             }
             else
@@ -78,10 +76,10 @@ namespace BicycleSales.DAL
         {
             var existingModel = _context.Products
                 .ToList().Find(p => p.Id == id);
-            
+
             if (existingModel is not null)
             {
-                if(existingModel.IsDeleted == true)
+                if (existingModel.IsDeleted == true)
                 {
                     throw new ProductException($"Продукт c id:{id} уже и так удалён");
                 }
@@ -112,7 +110,7 @@ namespace BicycleSales.DAL
                 }
                 else
                 {
-                    return existingModel;                
+                    return existingModel;
                 }
             }
             else
@@ -141,11 +139,11 @@ namespace BicycleSales.DAL
         {
             var existingProduct = _context.Products
                 .Where(p => p.IsDeleted == false).ToList().Find(p => p.Id == productId);
-            
+
             var existingTag = _context.Tags
                 .ToList().Find(t => t.Id == tagId);
 
-            if (existingProduct is not null && existingTag is not null) 
+            if (existingProduct is not null && existingTag is not null)
             {
                 var productTagDto = new ProductTagDto()
                 {
@@ -157,7 +155,7 @@ namespace BicycleSales.DAL
 
                 if (_context.ProductTags.Any(p => p.Id == productTagDto.TagId && p.Id == productTagDto.ProductId))
                 {
-                    throw new ProductTagException($"ProductTag с productId:{productId} и с tagId:{tagId} уже существует");;
+                    throw new ProductTagException($"ProductTag с productId:{productId} и с tagId:{tagId} уже существует"); ;
                 }
                 else
                 {
@@ -166,7 +164,7 @@ namespace BicycleSales.DAL
                     return productTagDto;
                 }
             }
-            else 
+            else
             {
                 if (existingProduct is null) { throw new ProductException($"Продукта с productId:{productId} не существует"); }
                 else if (existingTag is null) { throw new TagException($"Тэга с existingTag:{existingTag} не существует"); }
@@ -178,7 +176,7 @@ namespace BicycleSales.DAL
         {
             if (id is not null)
             {
-                if(!IsProductExist((int)id))
+                if (!IsProductExist((int)id))
                 {
                     throw new ProductException($"Продукта с id:{id} не существует или он удалён");
                 }
@@ -186,7 +184,7 @@ namespace BicycleSales.DAL
                 List<ProductTagDto> existingProductTags = _context.ProductTags
                     .Include(t => t.Tag)
                     .Where(p => p.ProductId == id)
-                    .ToList(); 
+                    .ToList();
 
                 if (existingProductTags.Count() == 0)
                 {
@@ -206,7 +204,7 @@ namespace BicycleSales.DAL
             {
                 var existingTags = _context.Tags.ToList();
 
-                if(existingTags.Count() == 0)
+                if (existingTags.Count() == 0)
                 {
                     throw new TagException("Список тэгов пуст");
                 }
@@ -217,7 +215,7 @@ namespace BicycleSales.DAL
 
         public async Task<IEnumerable<ProductDto>> GetAllProductsByTagIdAsync(int id)
         {
-            if(!IsTagtExist(id))
+            if (!IsTagtExist(id))
             {
                 throw new TagException($"Тэга с id:{id} не существует");
             }

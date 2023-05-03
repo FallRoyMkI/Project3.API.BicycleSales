@@ -5,17 +5,13 @@ using BicycleSales.API.Models.ProductTag.Request;
 using BicycleSales.API.Models.Tag.Request;
 using BicycleSales.API.Models.Tag.Response;
 using BicycleSales.API.Validation;
-using BicycleSales.BLL.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using BicycleSales.BLL.Models;
 using BicycleSales.BLL;
-using AutoMapper;
-using Azure.Core;
+using BicycleSales.BLL.Interfaces;
+using BicycleSales.BLL.Models;
 using BicycleSales.Constants.CustomExceptions.Product;
 using BicycleSales.Constants.CustomExceptions.ProductTag;
 using BicycleSales.Constants.CustomExceptions.Tag;
-using FluentValidation;
-using System.Net.WebSockets;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
 {
@@ -30,7 +26,7 @@ namespace BicycleSales.API.Controllers
 
         public ProductController(ProductValidator productValidator, IMapper mapper = null, IProductManager productManager = null, ILogger<ProductController> logger = null)
         {
-            _mapper = mapper; 
+            _mapper = mapper;
             _productManager = productManager ?? new ProductManager();
             _logger = logger;
             _productValidator = productValidator;
@@ -48,16 +44,16 @@ namespace BicycleSales.API.Controllers
                 }
 
                 _logger.Log(LogLevel.Information, "Received a request to create a product");
-                
+
                 var product = _mapper.Map<Product>(productAddRequest);
                 var callback = await ((ProductManager)_productManager).CreateProductAsync(product);
                 var result = _mapper.Map<ProductResponse>(callback);
 
                 _logger.Log(LogLevel.Information, "Received the product when creating", result);
-                
+
                 return Ok(result);
             }
-            catch(ProductException ex)
+            catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -109,7 +105,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(ProductException ex)
+            catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -131,7 +127,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(ProductException ex) 
+            catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -161,7 +157,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpPost("create-tag",Name = "CreateTag")]
+        [HttpPost("create-tag", Name = "CreateTag")]
         public async Task<IActionResult> CreateTagAsync([FromBody] TagAddRequest tagAddRequest)
         {
             try
@@ -176,7 +172,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(TagException ex)
+            catch (TagException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -198,7 +194,7 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch(ProductException ex) 
+            catch (ProductException ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
 
@@ -219,7 +215,7 @@ namespace BicycleSales.API.Controllers
         }
 
         [HttpGet("get-all-tags-by-product-id", Name = "GetAllTagsByProductId")]
-        public async Task<IActionResult> GetAllTagsByProductIdAsync( int? productId)
+        public async Task<IActionResult> GetAllTagsByProductIdAsync(int? productId)
         {
             try
             {

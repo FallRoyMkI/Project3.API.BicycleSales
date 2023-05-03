@@ -8,7 +8,7 @@ public class ShipmentAcceptanceDto
 {
     [Key]
     public int Id { get; set; }
-    public ShipmentAcceptanceStatus Status { get; set; } = ShipmentAcceptanceStatus.ShipmentCreated;
+    public ShipmentAcceptanceStatus Status { get; set; }
 
     public int ShipmentId { get; set; }
     [ForeignKey(nameof(ShipmentId))]
@@ -19,9 +19,9 @@ public class ShipmentAcceptanceDto
     public AcceptanceDto Acceptance { get; set; }
 
 
-    public int FactoryId { get; set; }
+    public int? FactoryId { get; set; }
     [ForeignKey(nameof(FactoryId))]
-    public FactoryDto Factory { get; set; }
+    public FactoryDto? Factory { get; set; }
 
     public override bool Equals(object? obj)
     {

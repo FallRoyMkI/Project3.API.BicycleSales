@@ -2,10 +2,8 @@
 
 public enum ShipmentAcceptanceStatus
 {
-    ShipmentCreated,
     ShipmentAcceptanceCreated,
     ShipmentSigned,
-    TransportationStarted,
-    TransportationFinished,
-    AcceptanceSigned
+    ShipmentAcceptanceFinished,
+    ProductWasMissed
 }
