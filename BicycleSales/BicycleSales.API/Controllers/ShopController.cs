@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/")]
     [ApiController]
     public class ShopController : ControllerBase
     {
@@ -30,7 +30,7 @@ namespace BicycleSales.API.Controllers
             _logger = logger;
         }
 
-        [HttpPost("create-new-shop")]
+        [HttpPost("")]
         public async Task<IActionResult> CreateNewShop([FromBody] ShopAddRequest shopAddRequest)
         {
             try
@@ -53,7 +53,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-all-shops", Name = "GetAllShops")]
+        [HttpGet("")]
         public async Task<IActionResult> GetAllShops()
         {
             try
@@ -75,7 +75,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-shop-{id}", Name = "GetShopById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetShopById([FromRoute] int id)
         {
             try
@@ -97,7 +97,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-all-products-by-{shopId}", Name = "GetAllProductsByShopId")]
+        [HttpGet("products/{shopId}")]
         public async Task<IActionResult> GetAllProductsByShopId([FromRoute] int shopId)
         {
             try
@@ -125,7 +125,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpPut("add-product-in-shop", Name = "AddProductInShopAsync")]
+        [HttpPut("add/product")]
         public async Task<IActionResult> AddProductInShopAsync([FromBody] ShopProductAddRequest shopProduct)
         {
             try
@@ -160,7 +160,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpPut("delete-product-in-shop", Name = "DeleteProductCountInShopAsync")]
+        [HttpPut("delete/product")]
         public async Task<IActionResult> DeleteProductCountInShopAsync([FromBody] ShopProductUpdateRequest shopProduct)
         {
             try

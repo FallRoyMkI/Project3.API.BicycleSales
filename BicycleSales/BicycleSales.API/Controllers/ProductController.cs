@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace BicycleSales.API.Controllers
             _productValidator = productValidator;
         }
 
-        [HttpPost("create-product", Name = "CreateProduct")]
+        [HttpPost("")]
         public async Task<IActionResult> CreateProduct([FromBody] ProductAddRequest productAddRequest)
         {
             try
@@ -61,7 +61,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-all-products", Name = "GetAllProducts")]
+        [HttpGet("")]
         public async Task<IActionResult> GetAllProductsAsync()
         {
             try
@@ -83,7 +83,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpPut("update-product", Name = "UpdateProduct")]
+        [HttpPut("")]
         public async Task<IActionResult> UpdateProductAsync([FromQuery] ProductUpdateRequest productUpdateRequest)
         {
             try
@@ -113,7 +113,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpDelete("{id}", Name = "DeleteProduct")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync([FromRoute] int id)
         {
             try
@@ -135,7 +135,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-product-{id}", Name = "GetProductById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductByIdAsync([FromRoute] int id)
         {
             try
@@ -157,7 +157,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpPost("create-tag", Name = "CreateTag")]
+        [HttpPost("tag")]
         public async Task<IActionResult> CreateTagAsync([FromBody] TagAddRequest tagAddRequest)
         {
             try
@@ -180,7 +180,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpPost("add-productTag-{productId}-{tagId}", Name = "AddProductTag")]
+        [HttpPost("{productId}/{tagId}")]
         public async Task<IActionResult> AddProductTagAsync(int productId, int tagId)
         {
             try
@@ -214,7 +214,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-all-tags-by-product-id", Name = "GetAllTagsByProductId")]
+        [HttpGet("tags/productId")]
         public async Task<IActionResult> GetAllTagsByProductIdAsync(int? productId)
         {
             try
@@ -248,7 +248,7 @@ namespace BicycleSales.API.Controllers
             }
         }
 
-        [HttpGet("get-all-products-by-{tagId}", Name = "GetAllProductsByTagIdAsync")]
+        [HttpGet("products/{tagId}")]
         public async Task<IActionResult> GetAllProductsByTagIdAsync(int tagId)
         {
             try
