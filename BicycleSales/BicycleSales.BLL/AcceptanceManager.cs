@@ -106,21 +106,29 @@ public class AcceptanceManager : IAcceptanceManager
 
         var shipmentAcceptance =await _shipAccRepository.GetShipmentAcceptanceAsync(null, acceptance.Id);
         shipmentAcceptance.Status = ShipmentAcceptanceStatus.ShipmentAcceptanceFinished;
-        var kek = _acceptanceRepository.GetAllProductFromAcceptanceById(shipmentAcceptance.AcceptanceId).ToList();
-        var pep = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
 
-        for (var i = 0; i < kek.Count(); i++)
+        var acceptanceProducts = _acceptanceRepository.GetAllProductFromAcceptanceById(shipmentAcceptance.AcceptanceId).ToList();
+        var shipmentProducts = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
+        var shopProducts = await _shopRepository.GetAllProductsByShopId(shipmentAcceptance.Acceptance.ShopId);
+        
+        for (var i = 0; i < acceptanceProducts.Count(); i++)
         {
-            if (kek[i].FactProductCount != pep[i].FactProductCount)
+            if (acceptanceProducts[i].FactProductCount != shipmentProducts
+                    .Find(x=> x.ProductId == acceptanceProducts[i].ProductId)!.FactProductCount)
             {
                 shipmentAcceptance.Status = ShipmentAcceptanceStatus.ProductWasMissed;
             }
+            
+            var product = shopProducts.ToList().Find(x => x.ProductId == acceptanceProducts[i].ProductId);
 
-            var shopProducts = await _shopRepository.GetAllProductsByShopId(acceptance.ShopId);
-
-            var product = shopProducts.ToList().Find(x => x.ProductId == kek[i].ProductId);
-            product.ProductCount = (int)kek[i].FactProductCount!;
-            await _shopRepository.AddProductInShopAsync(product);
+            ShopProductDto addProduct = new()
+            {
+                Id = product.Id,
+                ProductCount = (int)acceptanceProducts[i].FactProductCount!,
+                ProductId = product.ProductId,
+                ShopId = product.ShopId
+            };
+            await _shopRepository.AddProductInShopAsync(addProduct);
         }
 
         await _shipAccRepository.UpdateShipmentAcceptanceAsync(shipmentAcceptance);

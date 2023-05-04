@@ -37,7 +37,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok(ex.Message == "Login already exist" ? "ЛОГИН ЗАНЯТ" : "ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
@@ -53,12 +53,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return ex.Message switch
-            {
-                "Cannot find user with such Authorization Id" => Ok("ПОЛЬЗОВАТЕЛЬ НЕ НАЙДЕН"),
-                "Login already exist" => Ok("ЛОГИН ЗАНЯТ"),
-                _ => Ok("ЧТОТО ПОШЛО НЕ ТАК")
-            };
+            return BadRequest(ex.Message);
         }
     }
 
@@ -76,7 +71,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok(ex.Message == "Login already exist" ? "ЛОГИН ЗАНЯТ" : "ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
     [HttpPut("update-an-account-by-admin")]
@@ -91,7 +86,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 
@@ -116,11 +111,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return ex.Message switch
-            {
-                "Cannot find user with such Id" => Ok("ПОЛЬЗОВАТЕЛЬ НЕ НАЙДЕН"),
-                _ => Ok("ЧТОТО ПОШЛО НЕ ТАК")
-            };
+            return BadRequest(ex.Message);
         }
     }
 
@@ -133,13 +124,9 @@ public class UserController : ControllerBase
             var result = _mapper.Map<UserResponse>(user);
             return Ok(result);
         }
-        catch (ObjectNotExistException ex)
-        {
-            return Ok($"{ex.Message}");
-        }
         catch (Exception ex)
         {
-            return Ok("ЧТОТО ПОШЛО НЕ ТАК");
+            return BadRequest(ex.Message);
         }
     }
 }

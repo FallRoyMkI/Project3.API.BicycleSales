@@ -3,6 +3,7 @@ using BicycleSales.BLL.Models;
 using BicycleSales.Constants;
 using BicycleSales.DAL;
 using BicycleSales.DAL.Interfaces;
+using BicycleSales.DAL.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BicycleSales.BLL;
@@ -94,28 +95,33 @@ public class ShipmentManager : IShipmentManager
         if (!_userRepository.IsUserExist((int)shipment.SignedById!))
             throw new ObjectNotExistException("User", (int)shipment.SignedById!);
         if (_shipmentRepository.IsShipmentSigned(shipment.Id))
-            throw new RepetativeActionException("Signed", "Acceptance");
+            throw new RepetativeActionException("Signed", "Shipment");
+
+        var shipmentAcceptance = await _shipAccRepository.GetShipmentAcceptanceAsync(shipment.Id);
+        shipmentAcceptance.Status = ShipmentAcceptanceStatus.ShipmentSigned;
+        await _shipAccRepository.UpdateShipmentAcceptanceAsync(shipmentAcceptance);
+
+        var shipmentProduct = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
+        var shopProducts = await _shopRepository.GetAllProductsByShopId(shipmentAcceptance.Shipment.ShopId)!;
+
+        foreach (var line in shipmentProduct)
+        {
+            var product = shopProducts.ToList().Find(x => x.ProductId == line.ProductId)!;
+            ShopProductDto deleteProduct = new()
+            {
+                Id = product.Id,
+                ProductCount = (int)line.FactProductCount!,
+                ProductId = product.ProductId,
+                ShopId = product.ShopId
+            };
+
+            await _shopRepository.DeleteProductCountInShopAsync(deleteProduct);
+        }
 
         var dto = _mapper.MapShipmentToShipmentDto(shipment);
         dto.FactTime = DateTime.Now;
         var callback = _shipmentRepository.UpdateShipment(dto);
-
         var result = _mapper.MapShipmentDtoToShipment(callback);
-
-        var shipmentAcceptance = await _shipAccRepository.GetShipmentAcceptanceAsync(shipment.Id);
-        shipmentAcceptance.Status = ShipmentAcceptanceStatus.ShipmentSigned;
-        _shipAccRepository.UpdateShipmentAcceptanceAsync(shipmentAcceptance);
-
-        var kek = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
-
-        foreach (var line in kek)
-        {
-            var shopProducts = await _shopRepository.GetAllProductsByShopId(shipment.ShopId);
-
-            var product = shopProducts.ToList().Find(x => x.ProductId == line.ProductId);
-            product.ProductCount = (int)line.FactProductCount!;
-            await _shopRepository.DeleteProductCountInShopAsync(product);
-        }
 
         return result;
     }

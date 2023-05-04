@@ -1,12 +1,11 @@
-﻿using BicycleSales.BLL.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using BicycleSales.BLL.Models;
-using BicycleSales.BLL;
-using AutoMapper;
+﻿using AutoMapper;
 using BicycleSales.API.Models.Order.Request;
 using BicycleSales.API.Models.Order.Response;
 using BicycleSales.API.Models.OrderProduct.Request;
 using BicycleSales.API.Models.OrderProduct.Response;
+using BicycleSales.BLL.Interfaces;
+using BicycleSales.BLL.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers;
 
@@ -57,7 +56,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost("{id}")]
-    public async Task<IActionResult> AddProductToOrder([FromRoute] int id, 
+    public async Task<IActionResult> AddProductToOrder([FromRoute] int id,
         [FromBody] OrderProductAddRequest orderProductRequest)
     {
         try
@@ -75,7 +74,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditProductInOrder([FromRoute] int id, 
+    public async Task<IActionResult> EditProductInOrder([FromRoute] int id,
         [FromQuery] OrderProductUpdateRequest orderProductRequest)
     {
         try

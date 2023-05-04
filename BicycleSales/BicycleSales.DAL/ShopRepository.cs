@@ -52,16 +52,13 @@ public class ShopRepository : IShopRepository
 
     public async Task<IEnumerable<ShopProductDto>> GetAllProductsByShopId(int id)
     {
-        if (!IsShopExist(id))
-        {
-            throw new ShopException($"Магазина с таким id:{id} не существует");
-        }
-
+        if (!IsShopExist(id)) throw new ShopException($"Магазина с таким id:{id} не существует");
+        
         var existingShopProducts = _context.ShopProducts
             .Include(p => p.Product)
-            .Where(p => p.ShopId == id && p.Product.IsDeleted == false).ToList();
+            .Where(p => p.ShopId == id && p.Product.IsDeleted == false);
 
-        if(existingShopProducts.Count == 0)
+        if(existingShopProducts.ToList().Count == 0)
         {
             throw new ShopProductException($"Список продуктов с shopId:{id} пуст");
         }
@@ -172,7 +169,7 @@ public class ShopRepository : IShopRepository
     }
     public bool IsProductExist(int id)
     {
-        return _context.Products.ToList().Exists(x => x.Id == id);
+        return _context.Products.ToList().Exists(x => x.Id == id && x.IsDeleted == false);
     }
     public bool IsShopProductExist(ShopProductDto shopProductDto)
     {

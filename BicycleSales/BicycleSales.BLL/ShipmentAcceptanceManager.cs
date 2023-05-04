@@ -28,18 +28,19 @@ public class ShipmentAcceptanceManager :IShipmentAcceptanceManager
                 shipmentAcceptance.AcceptanceId))
             throw new RepetativeActionException("Adding", "ShipmentAcceptance");
 
-        var kek = _acceptanceRepository.GetAllProductFromAcceptanceById(shipmentAcceptance.AcceptanceId).ToList();
-        var pep = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
+        var acceptanceProducts = _acceptanceRepository.GetAllProductFromAcceptanceById(shipmentAcceptance.AcceptanceId).ToList();
+        var shipmentProducts = _shipmentRepository.GetAllProductFromShipmentById(shipmentAcceptance.ShipmentId).ToList();
 
-        if (kek.Count() != pep.Count()) throw new Exception();
+        if (acceptanceProducts.Count() != shipmentProducts.Count()) throw new Exception();
 
-        for (var i = 0; i < kek.Count(); i++)
+        for (var i = 0; i < acceptanceProducts.Count(); i++)
         {
-            if (kek[i].ProductCount != pep[i].ProductCount) throw new Exception();
+            if (acceptanceProducts[i].ProductCount != shipmentProducts[i].ProductCount) throw new Exception();
         }
-        var shipmentAcceptanceDto = _mapper.MapShipmentAcceptanceToShipmentAcceptanceDto(shipmentAcceptance);
-        shipmentAcceptanceDto.Status = ShipmentAcceptanceStatus.ShipmentAcceptanceCreated;
-        var callback = await _shipAccRepository.CreateShipmentAcceptanceAsync(shipmentAcceptanceDto);
+
+        var dto = _mapper.MapShipmentAcceptanceToShipmentAcceptanceDto(shipmentAcceptance);
+        dto.Status = ShipmentAcceptanceStatus.ShipmentAcceptanceCreated;
+        var callback = await _shipAccRepository.CreateShipmentAcceptanceAsync(dto);
         var result = _mapper.MapShipmentAcceptanceDtoToShipmentAcceptance(callback);
 
         return result;

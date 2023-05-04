@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BicycleSales.API.Models.Product.Response;
 using BicycleSales.API.Models.Shop.Request;
 using BicycleSales.API.Models.Shop.Response;
 using BicycleSales.API.Models.ShopProduct.Request;
@@ -10,12 +9,11 @@ using BicycleSales.BLL.Models;
 using BicycleSales.Constants.CustomExceptions.Product;
 using BicycleSales.Constants.CustomExceptions.Shop;
 using BicycleSales.Constants.CustomExceptions.ShopProduct;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BicycleSales.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/")]
     [ApiController]
     public class ShopController : ControllerBase
     {
@@ -25,12 +23,12 @@ namespace BicycleSales.API.Controllers
 
         public ShopController(IMapper mapper = null, IShopManager shopManager = null, ILogger<ShopController> logger = null)
         {
-            _mapper = mapper; 
+            _mapper = mapper;
             _shopManager = shopManager ?? new ShopManager();
             _logger = logger;
         }
 
-        [HttpPost("create-new-shop")]
+        [HttpPost("")]
         public async Task<IActionResult> CreateNewShop([FromBody] ShopAddRequest shopAddRequest)
         {
             try
@@ -45,15 +43,14 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (ShopException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet("get-all-shops", Name = "GetAllShops")]
+        [HttpGet("")]
         public async Task<IActionResult> GetAllShops()
         {
             try
@@ -67,15 +64,14 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (ShopException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet("get-shop-{id}", Name = "GetShopById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetShopById([FromRoute] int id)
         {
             try
@@ -89,15 +85,14 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (ShopException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet("get-all-products-by-{shopId}", Name = "GetAllProductsByShopId")]
+        [HttpGet("products/{shopId}")]
         public async Task<IActionResult> GetAllProductsByShopId([FromRoute] int shopId)
         {
             try
@@ -111,21 +106,14 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (ShopException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
-                return BadRequest(ex.Message);
-            }
-            catch (ShopProductException ex)
-            {
-                _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("add-product-in-shop", Name = "AddProductInShopAsync")]
+        [HttpPut("add/product")]
         public async Task<IActionResult> AddProductInShopAsync([FromBody] ShopProductAddRequest shopProduct)
         {
             try
@@ -140,27 +128,14 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (ShopProductException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
-                return BadRequest(ex.Message);
-            }
-            catch (ShopException ex)
-            {
-                _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
-                return BadRequest(ex.Message);
-            }
-            catch (ProductException ex)
-            {
-                _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("delete-product-in-shop", Name = "DeleteProductCountInShopAsync")]
+        [HttpPut("delete/product")]
         public async Task<IActionResult> DeleteProductCountInShopAsync([FromBody] ShopProductUpdateRequest shopProduct)
         {
             try
@@ -175,22 +150,9 @@ namespace BicycleSales.API.Controllers
 
                 return Ok(result);
             }
-            catch (ShopProductException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
-                return BadRequest(ex.Message);
-            }
-            catch (ShopException ex)
-            {
-                _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
-                return BadRequest(ex.Message);
-            }
-            catch (ProductException ex)
-            {
-                _logger.Log(LogLevel.Error, "Exception", ex.Message);
-
                 return BadRequest(ex.Message);
             }
         }
