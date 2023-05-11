@@ -37,6 +37,7 @@ public class OrderController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPut("{id}/status")]
     public IActionResult EditOrderInfo([FromRoute] int id,
         [FromQuery] OrderUpdateRequest orderRequest)

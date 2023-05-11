@@ -58,7 +58,6 @@ public class AcceptanceController : ControllerBase
         }
     }
 
-
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProductInAcceptance([FromRoute] int id,
         [FromQuery] AcceptanceProductUpdateRequest acceptanceProductRequest)

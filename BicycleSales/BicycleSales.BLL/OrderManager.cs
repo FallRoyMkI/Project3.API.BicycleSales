@@ -87,12 +87,12 @@ public class OrderManager : IOrderManager
         if (orderProductDb.ProductCount == orderProductDb.ReadyProductCount)
             throw new WorkWithForbiddenResourceException("Order Product", orderProductDb.Id);
 
-        var shopProductsDB = await ((ShopRepository)_shopRepository).GetAllProductsByShopId(order.ShopId);
+        var shopProductsDB = await _shopRepository.GetAllProductsByShopId(order.ShopId);
         var currentProductInShop = shopProductsDB.ToList().Find(x => x.Id == orderProduct.ProductId);
         var difference =  orderProductDb.ProductCount - orderProduct.ReadyProductCount;
         if (difference > 0)
         {
-            if (difference <= currentProductInShop.ProductCount)
+            if (difference <= currentProductInShop?.ProductCount)
             {
                 orderProductDb.ReadyProductCount = orderProductDb.ProductCount;
                 var remove = new ShopProductDto()
@@ -105,7 +105,7 @@ public class OrderManager : IOrderManager
                     ShopId = currentProductInShop.ShopId,
                 };
 
-                _shopRepository.DeleteProductCountInShopAsync(remove);
+                await _shopRepository.DeleteProductCountInShopAsync(remove);
             }
             else
             {
@@ -121,8 +121,7 @@ public class OrderManager : IOrderManager
                     ShopId = currentProductInShop.ShopId,
                 };
 
-                
-                _shopRepository.DeleteProductCountInShopAsync(remove);
+                await _shopRepository.DeleteProductCountInShopAsync(remove);
                 order.Status = OrderStatus.RequiredProductSupply;
             }
             _orderRepository.EditOrderInfo(order);

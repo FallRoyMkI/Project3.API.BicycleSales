@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace BicycleSales.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]/")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -57,8 +57,6 @@ public class UserController : ControllerBase
         }
     }
 
-
-
     [HttpPost("create-an-account-by-admin")]
     public IActionResult CreateAnAccountByAdmin([FromBody] AuthorizationAddByAdminRequest authorizationRequest)
     {
@@ -74,6 +72,7 @@ public class UserController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPut("update-an-account-by-admin")]
     public IActionResult UpdateAuthorizationByAdmin([FromQuery] AuthorizationUpdateByAdminRequest authorizationRequest)
     {
@@ -90,7 +89,6 @@ public class UserController : ControllerBase
         }
     }
 
-
     [HttpPost("add-user-info")]
     public async Task<IActionResult> AddUserInfo([FromBody] UserAddRequest userRequest)
     {
@@ -99,6 +97,7 @@ public class UserController : ControllerBase
         var result = _mapper.Map<UserResponse>(callback);
         return Ok(result);
     }
+
     [HttpPost("update-user-info")]
     public IActionResult UpdateUserInfo([FromBody] UserUpdateRequest userRequest)
     {
